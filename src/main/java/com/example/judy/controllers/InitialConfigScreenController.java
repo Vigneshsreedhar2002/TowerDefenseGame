@@ -1,4 +1,4 @@
-package com.example.judym2.controllers;
+package com.example.judy.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

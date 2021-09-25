@@ -1,4 +1,4 @@
-package com.example.judym2;
+package com.example.judy;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

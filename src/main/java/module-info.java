@@ -3,8 +3,8 @@ module com.example.judym2 {
     requires javafx.fxml;
 
 
-    opens com.example.judym2 to javafx.fxml;
-    exports com.example.judym2;
-    exports com.example.judym2.controllers;
-    opens com.example.judym2.controllers to javafx.fxml;
+    opens com.example.judy to javafx.fxml;
+    exports com.example.judy;
+    exports com.example.judy.controllers;
+    opens com.example.judy.controllers to javafx.fxml;
 }

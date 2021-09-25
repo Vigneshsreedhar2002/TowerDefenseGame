@@ -1,9 +1,9 @@
-package com.example.judym2.controllers;
+package com.example.judy.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class InitialGameScreenController {
+public class WelcomeScreenController {
     @FXML
     private Label welcomeText;
 
