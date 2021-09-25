@@ -1,3 +1,3 @@
-# JudyM2
+# Judy
 
 Judy's Tower Defense Game!
