@@ -3,9 +3,33 @@ package com.example.judy.modules;
 public class Player {
 
     private String name;
-    private int difficulty; // between 0 and 2 (easy, medium, hard)
-    private double money; // starting money of 50 coins
+    private double money;
+    private int health;
+    private int score;
 
+    /**
+     * Constructor with starting money of 50 coins, 100 HP and 0 score
+     *
+     * @param name the player name
+     */
+    public Player(String name) {
+        this(name, 50, 100, 0);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param name the player name
+     * @param money the player money
+     * @param health the player health
+     * @param score the player score
+     */
+    public Player(String name, double money, int health, int score) {
+        this.name = name;
+        this.money = money;
+        this.health = health;
+        this.score = score;
+    }
 
     /**
      * Gets the player name.
@@ -25,19 +49,11 @@ public class Player {
         this.name = name;
     }
 
-    public int getDifficulty() {
-        return difficulty;
-    }
-
     /**
-     * Sets the player difficulty.
+     * Gets the player difficulty.
      *
-     * @param difficulty the player difficulty to set
+     * @return money the money
      */
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
-    }
-
     public double getMoney() {
         return money;
     }
@@ -49,6 +65,42 @@ public class Player {
      */
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    /**
+     * Gets the player health.
+     *
+     * @return health the player health
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     * Sets the player health.
+     *
+     * @param health the player health to set
+     */
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    /**
+     * Gets the player score.
+     *
+     * @return score the player score
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Sets the player score.
+     *
+     * @param score the player score to set
+     */
+    public void setScore(int score) {
+        this.score = score;
     }
 
 
