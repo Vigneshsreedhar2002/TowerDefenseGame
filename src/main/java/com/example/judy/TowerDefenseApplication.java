@@ -12,8 +12,10 @@ import java.io.IOException;
 
 public class TowerDefenseApplication extends Application {
 
+
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
 
         // getting loader and a pane for the welcome screen
         FXMLLoader welcomePaneLoader = new FXMLLoader(
@@ -35,6 +37,7 @@ public class TowerDefenseApplication extends Application {
         Parent initialGamePane = initialGamePaneLoader.load();
         Scene initialGameScene = new Scene(initialGamePane, 1280, 720);
         initialGameScene.getRoot().setStyle("-fx-font-family: 'serif'");
+        initialGameScene.getStylesheets().addAll(this.getClass().getResource("assets/style.css").toExternalForm());
 
         // setting next scenes
         WelcomeScreenController welcomeScreenController =

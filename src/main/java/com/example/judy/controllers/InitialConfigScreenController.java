@@ -1,5 +1,9 @@
 package com.example.judy.controllers;
 
+import com.example.judy.modules.Enemy;
+import com.example.judy.modules.Game;
+import com.example.judy.modules.Monument;
+import com.example.judy.modules.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -7,11 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+
 public class InitialConfigScreenController {
     @FXML
     private Label initialConfigText;
 
     private Scene nextScene;
+    public Player player;
+    public Game game;
+    public Monument monument;
+    public Enemy enemy;
 
     @FXML
     private void initialize() {
@@ -43,4 +52,10 @@ public class InitialConfigScreenController {
     protected void onNextButtonClick(ActionEvent actionEvent) {
         openNextScene(actionEvent);
     }
+
+    public void setGameConfigurations(String name, int difficulty) {
+        player = new Player(name);
+        game = new Game(difficulty, player);
+    }
+
 }
