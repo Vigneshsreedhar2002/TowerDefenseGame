@@ -49,7 +49,7 @@ public class TowerDefenseApplication extends Application {
         initialConfigScreenController.setNextScene(initialGameScene);
 
 
-        stage.setTitle("Judy's Tower Defense Game");
+        stage.setTitle("SAVE JUDY");
         stage.setScene(welcomeScene);
         stage.show();
 
