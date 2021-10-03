@@ -1,9 +1,15 @@
 
 import com.example.judy.TowerDefenseApplication;
+import com.example.judy.controllers.WelcomeScreenController;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.testfx.framework.junit.ApplicationTest;
 
 /**
@@ -11,6 +17,7 @@ import org.testfx.framework.junit.ApplicationTest;
  */
 public class InitialConfigScreenTest extends ApplicationTest {
     private Node input;
+
     /**
      * Starts up TowerDefenseApplication.
      * @param stage Stage given to start
@@ -27,7 +34,7 @@ public class InitialConfigScreenTest extends ApplicationTest {
      */
     @Before
     public void traverseToInitialConfigScreen() {
-        clickOn("Next");
+        clickOn("#start");
         input = lookup("#nameInput").query();
     }
 
