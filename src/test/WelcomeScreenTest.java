@@ -31,4 +31,11 @@ public class WelcomeScreenTest extends ApplicationTest {
         clickOn("#start");
     }
 
+    /**
+     * Test to make sure welcome text is there
+     */
+    @Test
+    public void testWelcomeText() {
+        verifyThat("#welcomeText", NodeMatchers.isNotNull());
+    }
 }
