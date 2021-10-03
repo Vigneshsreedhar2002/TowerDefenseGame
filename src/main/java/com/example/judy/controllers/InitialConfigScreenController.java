@@ -1,6 +1,5 @@
 package com.example.judy.controllers;
-import com.example.judy.modules.Game;
-import com.example.judy.modules.Player;
+import com.example.judy.modules.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,7 +19,7 @@ public class InitialConfigScreenController {
     private Scene nextScene;
     private String name;
     private int difficulty = 0;
-    private Player player = new Player(null);
+    private Player player;
     private Game game;
 
     @FXML
