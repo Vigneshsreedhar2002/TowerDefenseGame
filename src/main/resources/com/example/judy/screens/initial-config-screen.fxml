@@ -28,7 +28,7 @@
         <VBox alignment="CENTER">
             <Label fx:id="nameText" text="Name: "/>
             <HBox alignment="CENTER" spacing="5">
-                <TextField fx:id="nameInput" promptText="Name"/>
+                <TextField fx:id="nameInput"/>
                 <Button text="Enter" onAction="#onNameButtonClick"/>
                 <padding>
                     <Insets bottom="40.0" left="20.0" right="20.0" top="20.0"/>
@@ -51,7 +51,7 @@
     </center>
     <bottom>
         <StackPane>
-            <Button text="Start" onAction="#onStartClick"/>
+            <Button text="Start" prefWidth="200" prefHeight="50" onAction="#onStartClick"/>
         </StackPane>
     </bottom>
 </BorderPane>
