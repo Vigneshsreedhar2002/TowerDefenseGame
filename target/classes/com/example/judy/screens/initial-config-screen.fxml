@@ -16,7 +16,7 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <top>
-        <StackPane alignment="CENTER">
+        <StackPane>
             <Label fx:id="initialConfigText" wrapText="true" alignment="CENTER">
                 <font>
                     <Font name="Arial Black" size="36"/>
