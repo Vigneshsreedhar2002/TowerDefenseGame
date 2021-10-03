@@ -58,60 +58,81 @@ public class InitialGameScreenController {
                 gridPane.getRowConstraints().add(row);
             }
 
-            GridPane.setRowIndex(gameData, 1);
-            GridPane.setColumnIndex(gameData, 0);
-            gameData.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-            moneyLabel.setText("MONEY: $" + String.format("%.2f", player.getMoney()));
-            moneyLabel.setTextFill(Color.web("#FFFFFF"));
-            moneyLabel.setFont(Font.font("Courier New", 15));
-
-            scoreLabel.setText("SCORE: " + player.getScore());
-            scoreLabel.setTextFill(Color.web("#FFFFFF"));
-            scoreLabel.setFont(Font.font("Courier New", 15));
-
-            levelLabel.setText("LEVEL: " + game.getLevel());
-            levelLabel.setTextFill(Color.web("#FFFFFF"));
-            levelLabel.setFont(Font.font("Courier New", 15));
-
-            try {
-                URL url = TowerDefenseApplication.class.getResource("assets/icons/enemy.png");
-                image = new Image(String.valueOf(url));
-            } catch (IllegalArgumentException exception) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
-                alert.show();
-            }
-            enemyImage.setImage(image);
-            enemyImage.setFitWidth(100);
-            //Setting the image view parameters
-            GridPane.setRowIndex(enemyImage, 9);
-            GridPane.setColumnIndex(enemyImage, 0);
-            enemyImage.setPreserveRatio(true);
-            enemyImage.toFront();
-
-
-            healthLabel.setText("HEALTH: " + monument.getHealth());
-            healthLabel.setTextFill(Color.web("#FFFFFF"));
-            healthLabel.setStyle("-fx-background-color: green;");
-            healthLabel.setFont(Font.font("Courier New", 14));
-            try {
-                URL url = TowerDefenseApplication.class.getResource("assets/icons/gate.png");
-                image = new Image(String.valueOf(url));
-            } catch (IllegalArgumentException exception) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
-                alert.show();
-            }
-            monumentImage.setImage(image);
-            monumentImage.setFitWidth(90);
-            //Setting the image view parameters
-            GridPane.setRowIndex(monumentData, 12);
-            GridPane.setColumnIndex(monumentData, 8);
-            monumentImage.setPreserveRatio(true);
-            monumentImage.toFront();
+            setGameData();
+            setEnemyImage();
+            setMonumentData();
         }
 
 
     }
+
+    /**
+     * Sets the game data
+     */
+    public void setGameData() {
+        GridPane.setRowIndex(gameData, 1);
+        GridPane.setColumnIndex(gameData, 0);
+        gameData.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        moneyLabel.setText("MONEY: $" + String.format("%.2f", player.getMoney()));
+        moneyLabel.setTextFill(Color.web("#FFFFFF"));
+        moneyLabel.setFont(Font.font("Courier New", 15));
+
+        scoreLabel.setText("SCORE: " + player.getScore());
+        scoreLabel.setTextFill(Color.web("#FFFFFF"));
+        scoreLabel.setFont(Font.font("Courier New", 15));
+
+        levelLabel.setText("LEVEL: " + game.getLevel());
+        levelLabel.setTextFill(Color.web("#FFFFFF"));
+        levelLabel.setFont(Font.font("Courier New", 15));
+
+    }
+
+    /**
+     * Sets the enemy image
+     */
+    public void setEnemyImage() {
+        try {
+            URL url = TowerDefenseApplication.class.getResource("assets/icons/enemy.png");
+            image = new Image(String.valueOf(url));
+        } catch (IllegalArgumentException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
+            alert.show();
+        }
+        enemyImage.setImage(image);
+        enemyImage.setFitWidth(100);
+        //Setting the image view parameters
+        GridPane.setRowIndex(enemyImage, 9);
+        GridPane.setColumnIndex(enemyImage, 0);
+        enemyImage.setPreserveRatio(true);
+        enemyImage.toFront();
+    }
+
+    /**
+     * Sets the monument data
+     */
+    public void setMonumentData() {
+        healthLabel.setText("HEALTH: " + monument.getHealth());
+        healthLabel.setTextFill(Color.web("#FFFFFF"));
+        healthLabel.setStyle("-fx-background-color: green;");
+        healthLabel.setFont(Font.font("Courier New", 14));
+        try {
+            URL url = TowerDefenseApplication.class.getResource("assets/icons/gate.png");
+            image = new Image(String.valueOf(url));
+        } catch (IllegalArgumentException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
+            alert.show();
+        }
+        monumentImage.setImage(image);
+        monumentImage.setFitWidth(90);
+        //Setting the image view parameters
+        GridPane.setRowIndex(monumentData, 12);
+        GridPane.setColumnIndex(monumentData, 8);
+        monumentImage.setPreserveRatio(true);
+        monumentImage.toFront();
+    }
+
+
 
 
 
