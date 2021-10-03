@@ -1,9 +1,7 @@
 
 import com.example.judy.TowerDefenseApplication;
-import com.example.judy.controllers.InitialConfigScreenController;
-import com.example.judy.controllers.InitialGameScreenController;
 import com.example.judy.controllers.WelcomeScreenController;
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,14 +9,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeAll;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
 
-
-import static org.testfx.api.FxAssert.verifyThat;
-
-public class InitialGameScreenTest extends ApplicationTest {
+/**
+ * Tests cases for the initial configuration screen in which players are supposed to select a name and difficulty.
+ */
+public class InitialConfigScreenTest extends ApplicationTest {
+    private Node input;
 
     /**
      * Starts up TowerDefenseApplication.
@@ -32,17 +30,28 @@ public class InitialGameScreenTest extends ApplicationTest {
     }
 
     /**
-     * Traverses to the initial game screen for testing.
+     * Traverses to the initial configuration screen for testing.
      */
     @Before
-    public void traverseToGameScreen() {
+    public void traverseToInitialConfigScreen() {
         clickOn("#start");
-        Node input = lookup("#nameInput").query();
-        clickOn(input);
-        write("Test");
-        clickOn("Easy");
-        clickOn("Start");
+        input = lookup("#nameInput").query();
     }
 
+    /**
+     * Tests to make sure that the player can move onto the initial
+     * game screen when they enter a valid name and difficulty.
+     */
+    @Test
+    public void testBlanks() {
+        clickOn(input);
+        write("  ");
+        clickOn("Enter");
+        clickOn(input);
+        write("Test");
+        clickOn("Start");
+        clickOn("Easy");
+        clickOn("Start");
 
+    }
 }
