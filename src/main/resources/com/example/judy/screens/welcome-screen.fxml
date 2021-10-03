@@ -12,5 +12,5 @@
     </padding>
 
     <Label fx:id="welcomeText"/>
-    <Button text="Next" onAction="#onNextButtonClick"/>
+    <Button text="Start Game" onAction="#onNextButtonClick"/>
 </VBox>

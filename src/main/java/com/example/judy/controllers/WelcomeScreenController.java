@@ -15,7 +15,7 @@ public class WelcomeScreenController {
 
     @FXML
     private void initialize() {
-        welcomeText.setText("Welcome Screen");
+        welcomeText.setText("Judy's Tower Defense Game");
     }
 
     /**
