@@ -32,7 +32,7 @@
                 <Button text="Enter" onAction="#onNameButtonClick"/>
             </HBox>
 
-            <Label fx:id="difficultyText" text="Difficulty:"/>
+            <Label fx:id="difficultyText" text="Difficulty: "/>
             <HBox alignment="CENTER" spacing="10">
                 <Button text="Easy" onAction="#onEasyClick"/>
                 <Button text="Medium" onAction="#onMediumClick"/>
