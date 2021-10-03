@@ -1,24 +1,16 @@
 
 import com.example.judy.TowerDefenseApplication;
-import com.example.judy.controllers.InitialConfigScreenController;
-import com.example.judy.controllers.InitialGameScreenController;
-import com.example.judy.controllers.WelcomeScreenController;
-
-import javafx.scene.input.KeyCode;
+import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-
-
-import static org.testfx.api.FxAssert.verifyThat;
 
 /**
  * Tests cases for the initial configuration screen in which players are supposed to select a name and difficulty.
  */
 public class InitialConfigScreenTest extends ApplicationTest {
+    private Node input;
     /**
      * Starts up TowerDefenseApplication.
      * @param stage Stage given to start
@@ -36,6 +28,7 @@ public class InitialConfigScreenTest extends ApplicationTest {
     @Before
     public void traverseToInitialConfigScreen() {
         clickOn("Next");
+        input = lookup("#nameInput").query();
     }
 
     /**
@@ -43,12 +36,15 @@ public class InitialConfigScreenTest extends ApplicationTest {
      * game screen when they enter a valid name and difficulty.
      */
     @Test
-    public void testNameAndDifficulty() {
-        type(KeyCode.A);
+    public void testBlanks() {
+        clickOn(input);
+        write("  ");
         clickOn("Enter");
+        clickOn(input);
+        write("Test");
+        clickOn("Start");
         clickOn("Easy");
         clickOn("Start");
 
-        verifyThat("#initialGameText", NodeMatchers.isNotNull());
     }
 }
