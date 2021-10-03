@@ -13,18 +13,11 @@ import org.testfx.matcher.base.NodeMatchers;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
-public class InitialGameScreenTest extends ApplicationTest {
+public class InitialConfigScreenTest extends ApplicationTest {
     @Override
     public void start(Stage stage) throws Exception {
         TowerDefenseApplication game = new TowerDefenseApplication();
         game.start(stage);
-    }
-    //Tests to make sure initial game text appears
-    @Test
-    public void testInitialGameText() {
-        clickOn("Next");
-        clickOn("Next");
-        verifyThat("#initialGameText", NodeMatchers.isNotNull());
     }
 
 }
