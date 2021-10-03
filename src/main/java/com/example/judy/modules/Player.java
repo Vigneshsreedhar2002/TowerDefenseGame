@@ -8,25 +8,23 @@ public class Player {
     private int score;
 
     /**
-     * Constructor with starting money of 50 coins, 100 HP and 0 score
+     * Constructor with starting 100 HP and 0 score
      *
      * @param name the player name
      */
     public Player(String name) {
-        this(name, 50, 100, 0);
+        this(name, 100, 0);
     }
 
     /**
      * Constructor
      *
      * @param name the player name
-     * @param money the player money
      * @param health the player health
      * @param score the player score
      */
-    public Player(String name, double money, int health, int score) {
+    public Player(String name, int health, int score) {
         this.name = name;
-        this.money = money;
         this.health = health;
         this.score = score;
     }
