@@ -2,10 +2,7 @@ package com.example.judy.controllers;
 
 import com.example.judy.TowerDefenseApplication;
 import com.example.judy.modules.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import java.net.URL;
 
 public class InitialGameScreenController {
@@ -49,9 +45,9 @@ public class InitialGameScreenController {
 
         game = GameDataHolder.getGame();
         if (game != null) {
-            player = GameDataHolder.game.getPlayer();
-            enemy = GameDataHolder.game.getEnemy();
-            monument = GameDataHolder.game.getMonument();
+            player = GameDataHolder.getGame().getPlayer();
+            enemy = GameDataHolder.getGame().getEnemy();
+            monument = GameDataHolder.getGame().getMonument();
 
             for (int i = 0; i < 20; i++) {
                 ColumnConstraints column = new ColumnConstraints(140);
@@ -117,15 +113,6 @@ public class InitialGameScreenController {
 
     }
 
-    /**
-     *
-     * Method to switch screens
-     *
-     * @param actionEvent actionEvent to trigger screen switch
-     */
-    public void openNextScene(ActionEvent actionEvent) {
-
-    }
 
 
 }

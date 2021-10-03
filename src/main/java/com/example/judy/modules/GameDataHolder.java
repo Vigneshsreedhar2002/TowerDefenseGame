@@ -3,7 +3,7 @@ package com.example.judy.modules;
 
 public class GameDataHolder {
 
-    public static Game game;
+    private static Game game;
 
     /**
      *
