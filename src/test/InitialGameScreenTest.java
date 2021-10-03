@@ -6,8 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
-
-
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class InitialGameScreenTest extends ApplicationTest {
