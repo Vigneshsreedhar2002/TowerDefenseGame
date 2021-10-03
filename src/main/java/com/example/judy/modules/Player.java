@@ -4,7 +4,6 @@ public class Player {
 
     private String name;
     private double money;
-    private int health;
     private int score;
 
     /**
@@ -13,19 +12,17 @@ public class Player {
      * @param name the player name
      */
     public Player(String name) {
-        this(name, 100, 0);
+        this(name, 0);
     }
 
     /**
      * Constructor
      *
      * @param name the player name
-     * @param health the player health
      * @param score the player score
      */
-    public Player(String name, int health, int score) {
+    public Player(String name, int score) {
         this.name = name;
-        this.health = health;
         this.score = score;
     }
 
@@ -63,24 +60,6 @@ public class Player {
      */
     public void setMoney(double money) {
         this.money = money;
-    }
-
-    /**
-     * Gets the player health.
-     *
-     * @return health the player health
-     */
-    public int getHealth() {
-        return health;
-    }
-
-    /**
-     * Sets the player health.
-     *
-     * @param health the player health to set
-     */
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     /**
