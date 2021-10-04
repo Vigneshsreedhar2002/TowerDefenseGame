@@ -13,27 +13,30 @@ public class Game {
      *
      * @param difficulty the game difficulty
      * @param player player
+     * @throws IllegalArgumentException when difficulty is invalid
      */
-    public Game(int difficulty, Player player) {
+    public Game(int difficulty, Player player) throws IllegalArgumentException {
         this.difficulty = difficulty;
         this.level = 0;
         this.player = player;
         switch (difficulty) {
-            case 0: 
-                this.player.setMoney(200);
-                this.enemy = new Enemy(5, 50);
-                this.monument = new Monument(100);
-                break;
-            case 1:
-                this.player.setMoney(150);
-                this.enemy = new Enemy(7, 75);
-                this.monument = new Monument(75);
-                break;
-            case 2: 
-                this.player.setMoney(100);
-                this.enemy = new Enemy(10, 100);
-                this.monument = new Monument(50);
-                break;
+        case 0:
+            this.player.setMoney(200);
+            this.enemy = new Enemy(5, 50);
+            this.monument = new Monument(100);
+            break;
+        case 1:
+            this.player.setMoney(150);
+            this.enemy = new Enemy(7, 75);
+            this.monument = new Monument(75);
+            break;
+        case 2:
+            this.player.setMoney(100);
+            this.enemy = new Enemy(10, 100);
+            this.monument = new Monument(50);
+            break;
+        default:
+            throw new IllegalArgumentException("Difficulty is not valid");
         }
     }
 
