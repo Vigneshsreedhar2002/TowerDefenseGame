@@ -31,8 +31,8 @@ public class InitialConfigScreenController {
 
     @FXML
     private void initialize() {
-        initialConfigText.setText("Welcome to Save Judy!\n" +
-                "Please choose a name and difficulty.");
+        initialConfigText.setText("Welcome to Save Judy!\n"
+                + "Please choose a name and difficulty.");
     }
 
     /**
@@ -40,6 +40,7 @@ public class InitialConfigScreenController {
      * Method to switch screens
      *
      * @param actionEvent actionEvent to trigger screen switch
+     * @throws IOException if file not found
      */
     public void openNextScene(ActionEvent actionEvent) throws IOException {
         // getting loader and a pane for the initial game screen

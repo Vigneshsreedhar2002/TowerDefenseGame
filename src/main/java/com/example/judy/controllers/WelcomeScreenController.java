@@ -30,6 +30,7 @@ public class WelcomeScreenController {
      * Method to switch screens
      *
      * @param actionEvent actionEvent to trigger screen switch
+     * @throws IOException if file not found
      */
     public void openNextScene(ActionEvent actionEvent) throws IOException {
         // getting loader and a pane for the initial config screen
