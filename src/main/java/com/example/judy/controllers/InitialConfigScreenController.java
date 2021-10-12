@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,22 +18,18 @@ import java.util.Objects;
 
 public class InitialConfigScreenController {
     @FXML
-    private Label initialConfigText;
+    private Label welcomeText, chooseText, nameText, difficultyText;
+    @FXML
+    private Button easyButton, mediumButton, hardButton;
     @FXML
     private TextField nameInput;
-    @FXML
-    private Label nameText;
-    @FXML
-    private Label difficultyText;
     private String name;
     private int difficulty = -1;
-    private Player player;
-    private Game game;
 
     @FXML
     private void initialize() {
-        initialConfigText.setText("Welcome to Save Judy!\n"
-                + "Please choose a name and difficulty.");
+        welcomeText.setText("Welcome to Save Judy!");
+        chooseText.setText("Please choose a name and difficulty.");
     }
 
     /**
@@ -66,8 +63,8 @@ public class InitialConfigScreenController {
         if (name == null || difficulty == -1) {
             return false;
         }
-        player = new Player(name);
-        game = new Game(difficulty, player);
+        Player player = new Player(name);
+        Game game = new Game(difficulty, player);
         GameDataHolder.setGame(game);
         return true;
     }
