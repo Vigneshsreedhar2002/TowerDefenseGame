@@ -18,9 +18,19 @@ import java.util.Objects;
 
 public class InitialConfigScreenController {
     @FXML
-    private Label welcomeText, chooseText, nameText, difficultyText;
+    private Label welcomeText;
     @FXML
-    private Button easyButton, mediumButton, hardButton;
+    private Label chooseText;
+    @FXML
+    private Label nameText;
+    @FXML
+    private Label difficultyText;
+    @FXML
+    private Button easyButton;
+    @FXML
+    private Button mediumButton;
+    @FXML
+    private Button hardButton;
     @FXML
     private TextField nameInput;
     private String name;
@@ -85,6 +95,8 @@ public class InitialConfigScreenController {
     public void onEasyClick(ActionEvent actionEvent) {
         difficultyText.setText("Difficulty: Easy");
         difficulty = 0;
+        //mediumButton.setStyle("-fx-background-color: white");
+        //hardButton.setStyle("-fx-background-color: grey");
     }
 
     public void onMediumClick(ActionEvent actionEvent) {
