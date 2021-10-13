@@ -70,7 +70,21 @@ public class InitialConfigScreenController {
     }
 
     public boolean setGameConfigurations(String name, int difficulty) {
-        if (name == null || difficulty == -1) {
+        boolean validName = name != null;
+        boolean difficultySelected = difficulty != -1;
+        if (!validName && !difficultySelected) {
+            welcomeText.setText("Please choose a name and difficulty to continue.");
+            chooseText.setText("");
+            return false;
+        }
+        if (!validName) {
+            welcomeText.setText("Please enter a name to continue.");
+            chooseText.setText("");
+            return false;
+        }
+        if (!difficultySelected) {
+            welcomeText.setText("Please choose a difficulty to continue.");
+            chooseText.setText("");
             return false;
         }
         Player player = new Player(name);
@@ -95,17 +109,24 @@ public class InitialConfigScreenController {
     public void onEasyClick(ActionEvent actionEvent) {
         difficultyText.setText("Difficulty: Easy");
         difficulty = 0;
-        //mediumButton.setStyle("-fx-background-color: white");
-        //hardButton.setStyle("-fx-background-color: grey");
+        easyButton.setStyle("-fx-background-color: white");
+        mediumButton.setStyle("-fx-background-color: gold");
+        hardButton.setStyle("-fx-background-color: gold");
     }
 
     public void onMediumClick(ActionEvent actionEvent) {
         difficultyText.setText("Difficulty: Medium");
         difficulty = 1;
+        easyButton.setStyle("-fx-background-color: gold");
+        mediumButton.setStyle("-fx-background-color: white");
+        hardButton.setStyle("-fx-background-color: gold");
     }
 
     public void onHardClick(ActionEvent actionEvent) {
         difficultyText.setText("Difficulty: Hard");
         difficulty = 2;
+        easyButton.setStyle("-fx-background-color: gold");
+        mediumButton.setStyle("-fx-background-color: gold");
+        hardButton.setStyle("-fx-background-color: white");
     }
 }
