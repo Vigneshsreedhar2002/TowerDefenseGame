@@ -1,5 +1,7 @@
 package com.example.judy.modules;
 
+import java.util.HashMap;
+
 public class Game {
 
     private Player player;
@@ -7,6 +9,7 @@ public class Game {
     private Enemy enemy;
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
+    private HashMap<String, Integer> towers;
 
     /**
      * Constructor
@@ -19,6 +22,10 @@ public class Game {
         this.difficulty = difficulty;
         this.level = 0;
         this.player = player;
+        towers = new HashMap<>(3);
+        towers.put(Cannon.NAME, 0);
+        towers.put(Crossbow.NAME, 0);
+        towers.put(Tank.NAME, 0);
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
@@ -130,5 +137,36 @@ public class Game {
         this.enemy = enemy;
     }
 
+    /**
+     * Gets the towers.
+     *
+     * @return towers towers
+     */
+    public HashMap<String, Integer> getTowers() {
+        return towers;
+    }
 
+    /**
+     * Add cannon.
+     *
+     */
+    public void addCannon() {
+        towers.put(Cannon.NAME, towers.get(Cannon.NAME) + 1);
+    }
+
+    /**
+     * Add crossbow.
+     *
+     */
+    public void addCrossbow() {
+        towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) + 1);
+    }
+
+    /**
+     * Add tank.
+     *
+     */
+    public void addTank() {
+        towers.put(Tank.NAME, towers.get(Tank.NAME) + 1);
+    }
 }

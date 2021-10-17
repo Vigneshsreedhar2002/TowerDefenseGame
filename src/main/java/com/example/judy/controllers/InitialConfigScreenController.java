@@ -89,7 +89,7 @@ public class InitialConfigScreenController {
         }
         Player player = new Player(name);
         Game game = new Game(difficulty, player);
-        GameDataHolder.setGame(game);
+        GameAdmin.setGame(game);
         return true;
     }
 
