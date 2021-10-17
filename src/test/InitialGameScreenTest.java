@@ -78,6 +78,4 @@ public class InitialGameScreenTest extends ApplicationTest {
 
 
 
-
-
 }
