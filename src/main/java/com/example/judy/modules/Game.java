@@ -31,16 +31,25 @@ public class Game {
             this.player.setMoney(200);
             this.enemy = new Enemy(5, 50);
             this.monument = new Monument(100);
+            Cannon.setCost(50);
+            Crossbow.setCost(75);
+            Tank.setCost(100);
             break;
         case 1:
             this.player.setMoney(150);
             this.enemy = new Enemy(7, 75);
             this.monument = new Monument(75);
+            Cannon.setCost(60);
+            Crossbow.setCost(85);
+            Tank.setCost(110);
             break;
         case 2:
             this.player.setMoney(100);
             this.enemy = new Enemy(10, 100);
             this.monument = new Monument(50);
+            Cannon.setCost(70);
+            Crossbow.setCost(95);
+            Tank.setCost(120);
             break;
         default:
             throw new IllegalArgumentException("Difficulty is not valid");

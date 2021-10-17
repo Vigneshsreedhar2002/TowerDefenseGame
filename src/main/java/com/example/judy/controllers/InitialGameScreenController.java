@@ -120,9 +120,12 @@ public class InitialGameScreenController {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            moneyLabel.setText("MONEY: $" + String.format("%.2f", player.getMoney()));
-                            scoreLabel.setText("SCORE: " + player.getScore());
-                            levelLabel.setText("LEVEL: " + game.getLevel());
+                            moneyLabel.setText("MONEY: $"
+                                    + String.format("%.2f", player.getMoney()));
+                            scoreLabel.setText("SCORE: "
+                                    + player.getScore());
+                            levelLabel.setText("LEVEL: "
+                                    + game.getLevel());
                         }
                     });
                     i++;
@@ -201,8 +204,8 @@ public class InitialGameScreenController {
         final Stage towerMenu = new Stage();
         towerMenu.setTitle("Tower Menu");
         towerMenu.initModality(Modality.APPLICATION_MODAL);
-        AnchorPane root = FXMLLoader.load(Objects.requireNonNull
-                (TowerDefenseApplication.class.getResource("screens/tower-menu.fxml")));
+        AnchorPane root = FXMLLoader.load(Objects.requireNonNull(
+                TowerDefenseApplication.class.getResource("screens/tower-menu.fxml")));
         Scene dialogScene = new Scene(root);
         towerMenu.setScene(dialogScene);
         towerMenu.show();
