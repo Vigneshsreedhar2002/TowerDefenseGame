@@ -28,37 +28,37 @@ import java.util.Optional;
 public class TowerMenuController {
 
     @FXML
-    HBox cannon;
+    private HBox cannon;
     @FXML
-    VBox cannonData;
+    private VBox cannonData;
     @FXML
-    Label cannonName;
+    private Label cannonName;
     @FXML
-    Text cannonDescription;
+    private Text cannonDescription;
     @FXML
-    ImageView cannonImage;
+    private ImageView cannonImage;
 
     @FXML
-    HBox crossbow;
+    private HBox crossbow;
     @FXML
-    VBox crossbowData;
+    private VBox crossbowData;
     @FXML
-    Label crossbowName;
+    private Label crossbowName;
     @FXML
-    Text crossbowDescription;
+    private Text crossbowDescription;
     @FXML
-    ImageView crossbowImage;
+    private ImageView crossbowImage;
 
     @FXML
-    HBox tank;
+    private HBox tank;
     @FXML
-    VBox tankData;
+    private VBox tankData;
     @FXML
-    Label tankName;
+    private Label tankName;
     @FXML
-    Text tankDescription;
+    private Text tankDescription;
     @FXML
-    ImageView tankImage;
+    private ImageView tankImage;
 
     private Image image;
     private Game game;
@@ -84,7 +84,7 @@ public class TowerMenuController {
         cannonName.setTextFill(Color.web("#000000"));
         cannonName.setFont(Font.font("Courier New", 15));
 
-        cannonDescription.setText(Cannon.DESCRIPTION);
+        cannonDescription.setText(Cannon.getDescription());
         cannonDescription.setFill(Color.BLACK);
         cannonDescription.setFont(Font.font("Courier New", 10));
         setCannonImage();
@@ -111,15 +111,16 @@ public class TowerMenuController {
     private void onCannonClicked() throws IOException {
         ButtonType yes = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("NO", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert buttonAlert = new Alert(Alert.AlertType.CONFIRMATION, "Do you wish to buy a cannon?", yes, no);
+        Alert buttonAlert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Do you wish to buy a cannon?", yes, no);
         buttonAlert.setTitle("Purchase Confirmation");
         buttonAlert.setHeaderText("Cannon Purchase Confirmation");
         ImageView cannonImageAlert = new ImageView();
         buttonAlert.setGraphic(getCannonImageAlert(cannonImageAlert));
         Optional<ButtonType> result = buttonAlert.showAndWait();
         if (result.isPresent() && result.get().getButtonData().toString().equals("OK_DONE")) {
-            if (game.getPlayer().getMoney() >= Cannon.COST) {
-                game.getPlayer().setMoney(game.getPlayer().getMoney() - Cannon.COST);
+            if (game.getPlayer().getMoney() >= Cannon.getCost()) {
+                game.getPlayer().setMoney(game.getPlayer().getMoney() - Cannon.getCost());
                 game.addCannon();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "You don't have enough money!");
@@ -132,6 +133,7 @@ public class TowerMenuController {
     /**
      * Method to set cannon alert image
      * @param cannonImageAlert cannonImage
+     * @return cannonImageAlert
      */
     private ImageView getCannonImageAlert(ImageView cannonImageAlert) {
         try {
@@ -161,7 +163,7 @@ public class TowerMenuController {
         crossbowName.setTextFill(Color.web("#000000"));
         crossbowName.setFont(Font.font("Courier New", 15));
 
-        crossbowDescription.setText(Crossbow.DESCRIPTION);
+        crossbowDescription.setText(Crossbow.getDescription());
         crossbowDescription.setFill(Color.BLACK);
         crossbowDescription.setFont(Font.font("Courier New", 10));
     }
@@ -187,15 +189,16 @@ public class TowerMenuController {
     private void onCrossbowClicked() throws IOException {
         ButtonType yes = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("NO", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert crossbowAlert = new Alert(Alert.AlertType.CONFIRMATION, "Do you wish to buy a crossbow?", yes, no);
+        Alert crossbowAlert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Do you wish to buy a crossbow?", yes, no);
         crossbowAlert.setTitle("Purchase Confirmation");
         crossbowAlert.setHeaderText("Crossbow Purchase Confirmation");
         ImageView crossbowImageAlert = new ImageView();
         crossbowAlert.setGraphic(getCrossbowAlertImage(crossbowImageAlert));
         Optional<ButtonType> result = crossbowAlert.showAndWait();
         if (result.isPresent() && result.get().getButtonData().toString().equals("OK_DONE")) {
-            if (game.getPlayer().getMoney() >= Crossbow.COST) {
-                game.getPlayer().setMoney(game.getPlayer().getMoney() - Crossbow.COST);
+            if (game.getPlayer().getMoney() >= Crossbow.getCost()) {
+                game.getPlayer().setMoney(game.getPlayer().getMoney() - Crossbow.getCost());
                 game.addCrossbow();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "You don't have enough money!");
@@ -208,6 +211,7 @@ public class TowerMenuController {
     /**
      * Method to set crossbow alert image
      * @param crossbowImageAlert crossbowImage
+     * @return crossbowImageAlert
      */
     private ImageView getCrossbowAlertImage(ImageView crossbowImageAlert) {
         try {
@@ -237,7 +241,7 @@ public class TowerMenuController {
         tankName.setTextFill(Color.web("#000000"));
         tankName.setFont(Font.font("Courier New", 15));
 
-        tankDescription.setText(Tank.DESCRIPTION);
+        tankDescription.setText(Tank.getDescription());
         tankDescription.setFill(Color.BLACK);
         tankDescription.setFont(Font.font("Courier New", 10));
     }
@@ -263,15 +267,16 @@ public class TowerMenuController {
     private void onTankClicked() throws IOException {
         ButtonType yes = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("NO", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert tankAlert = new Alert(Alert.AlertType.CONFIRMATION, "Do you wish to buy a tank?", yes, no);
+        Alert tankAlert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Do you wish to buy a tank?", yes, no);
         tankAlert.setTitle("Purchase Confirmation");
         tankAlert.setHeaderText("Tank Purchase Confirmation");
         ImageView tankImageAlert = new ImageView();
         tankAlert.setGraphic(getTankAlertImage(tankImageAlert));
         Optional<ButtonType> result = tankAlert.showAndWait();
         if (result.isPresent() && result.get().getButtonData().toString().equals("OK_DONE")) {
-            if (game.getPlayer().getMoney() >= Tank.COST) {
-                game.getPlayer().setMoney(game.getPlayer().getMoney() - Tank.COST);
+            if (game.getPlayer().getMoney() >= Tank.getCost()) {
+                game.getPlayer().setMoney(game.getPlayer().getMoney() - Tank.getCost());
                 game.addTank();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "You don't have enough money!");
@@ -284,6 +289,7 @@ public class TowerMenuController {
     /**
      * Method to set tank alert image
      * @param tankImageAlert tankImage
+     * @return tankImageAlert
      */
     private ImageView getTankAlertImage(ImageView tankImageAlert) {
         try {
