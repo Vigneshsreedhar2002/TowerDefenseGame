@@ -4,22 +4,34 @@ import com.example.judy.TowerDefenseApplication;
 import com.example.judy.modules.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class InitialGameScreenController {
@@ -61,11 +73,11 @@ public class InitialGameScreenController {
     private Label tankNumber;
 
 
-
     private Image image;
     private Game game;
     private Player player;
     private Monument monument;
+    private EnemyPath path;
 
 
     @FXML
@@ -75,6 +87,7 @@ public class InitialGameScreenController {
         if (game != null) {
             player = GameAdmin.getGame().getPlayer();
             monument = GameAdmin.getGame().getMonument();
+            path = GameAdmin.getGame().getPath();
 
             for (int i = 0; i < 20; i++) {
                 ColumnConstraints column = new ColumnConstraints(140);
@@ -88,6 +101,7 @@ public class InitialGameScreenController {
             setEnemyImage();
             setMonumentData();
             setMenuButton();
+            setPathComponents();
             updateTowerData();
         }
 
@@ -196,7 +210,16 @@ public class InitialGameScreenController {
     }
 
     /**
+     * Sets the rectangles that make up the path
+     */
+    private void setPathComponents() {
+        path.getPath().getElements().add(new MoveTo(0.0f, 500.0f));
+        path.getPath().getElements().add(new HLineTo(300.0f));
+    }
+
+    /**
      * Sets the monument data
+     *
      * @throws IOException FileNotFoundException
      */
     @FXML
@@ -219,9 +242,9 @@ public class InitialGameScreenController {
                 + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
                 + "-fx-border-radius: 5;" + "-fx-border-color: yellow;");
 
-        setCannonImage();
-        setCrossbowImage();
-        setTankImage();
+        setCannonImage(cannonImage);
+        setCrossbowImage(crossbowImage);
+        setTankImage(tankImage);
         cannonNumber.setTextFill(Color.web("#FFFFFF"));
         cannonNumber.setFont(Font.font("Courier New", 15));
         crossbowNumber.setTextFill(Color.web("#FFFFFF"));
@@ -258,7 +281,7 @@ public class InitialGameScreenController {
     /**
      * Method to set cannon image
      */
-    private void setCannonImage() {
+    private void setCannonImage(ImageView cannon) {
         try {
             URL url = TowerDefenseApplication.class.getResource("assets/icons/cannon.png");
             image = new Image(String.valueOf(url));
@@ -266,16 +289,25 @@ public class InitialGameScreenController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
             alert.show();
         }
-        cannonImage.setImage(image);
-        cannonImage.setFitWidth(100);
-        cannonImage.setPreserveRatio(true);
-        cannonImage.toFront();
+        cannon.setImage(image);
+        cannon.setFitWidth(100);
+        cannon.setPreserveRatio(true);
+        cannon.toFront();
+    }
+
+    @FXML
+    private void onCannonClicked() throws IOException {
+        Integer cannonValue = game.getTowers().get(Cannon.NAME);
+        if (cannonValue > 0) {
+            placeTower(new Cannon());
+        }
+        game.removeCannon();
     }
 
     /**
      * Method to set crossbow image
      */
-    private void setCrossbowImage() {
+    private void setCrossbowImage(ImageView crossbow) {
         try {
             URL url = TowerDefenseApplication.class.getResource("assets/icons/crossbow.png");
             image = new Image(String.valueOf(url));
@@ -283,16 +315,25 @@ public class InitialGameScreenController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
             alert.show();
         }
-        crossbowImage.setImage(image);
-        crossbowImage.setFitWidth(100);
-        crossbowImage.setPreserveRatio(true);
-        crossbowImage.toFront();
+        crossbow.setImage(image);
+        crossbow.setFitWidth(100);
+        crossbow.setPreserveRatio(true);
+        crossbow.toFront();
+    }
+
+    @FXML
+    private void onCrossbowClicked() throws IOException {
+        Integer crossbowValue = game.getTowers().get(Crossbow.NAME);
+        if (crossbowValue > 0) {
+            placeTower(new Crossbow());
+        }
+        game.removeCrossbow();
     }
 
     /**
      * Method to set tank image
      */
-    private void setTankImage() {
+    private void setTankImage(ImageView tank) {
         try {
             URL url = TowerDefenseApplication.class.getResource("assets/icons/tank.png");
             image = new Image(String.valueOf(url));
@@ -300,14 +341,48 @@ public class InitialGameScreenController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
             alert.show();
         }
-        tankImage.setImage(image);
-        tankImage.setFitWidth(100);
-        tankImage.setPreserveRatio(true);
-        tankImage.toFront();
+        tank.setImage(image);
+        tank.setFitWidth(100);
+        tank.setPreserveRatio(true);
+        tank.toFront();
     }
 
+    @FXML
+    private void onTankClicked() throws IOException {
+        Integer tankValue = game.getTowers().get(Tank.NAME);
+        if (tankValue > 0) {
+            placeTower(new Tank());
+        }
+        game.removeTank();
+    }
 
+    /**
+     * Places tower on map at (x,y) coordinate where player clicks
+     *
+     * @param tower to be placed
+     */
+    private void placeTower(Tower tower) {
+        System.out.println("Tower " + tower.toString() + " is being placed");
+        ImageView image = new ImageView();
+        if (tower instanceof Cannon) {
+            setCannonImage(image);
+        } else if (tower instanceof Crossbow) {
+            setCrossbowImage(image);
+        } else if (tower instanceof Tank) {
+            setTankImage(image);
+        }
 
-
-
+        gridPane.setOnMouseClicked(
+                mouseEvent -> {
+                    System.out.println("MouseEvent ran");
+                    image.setX(mouseEvent.getSceneX());
+                    image.setY(mouseEvent.getSceneY());
+                    int column = (int) image.getX() / 140;
+                    int row = (int) image.getY() / 40;
+                    gridPane.add(image, column, row);
+                    gridPane.setOnMouseClicked(null);
+                }
+        );
+        System.out.println("Finished placing tower");
+    }
 }
