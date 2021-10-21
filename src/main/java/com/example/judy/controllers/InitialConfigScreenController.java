@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,22 +18,28 @@ import java.util.Objects;
 
 public class InitialConfigScreenController {
     @FXML
-    private Label initialConfigText;
+    private Label welcomeText;
     @FXML
-    private TextField nameInput;
+    private Label chooseText;
     @FXML
     private Label nameText;
     @FXML
     private Label difficultyText;
+    @FXML
+    private Button easyButton;
+    @FXML
+    private Button mediumButton;
+    @FXML
+    private Button hardButton;
+    @FXML
+    private TextField nameInput;
     private String name;
     private int difficulty = -1;
-    private Player player;
-    private Game game;
 
     @FXML
     private void initialize() {
-        initialConfigText.setText("Welcome to Save Judy!\n" +
-                "Please choose a name and difficulty.");
+        welcomeText.setText("Welcome to Save Judy!");
+        chooseText.setText("Please choose a name and difficulty.");
     }
 
     /**
@@ -40,6 +47,7 @@ public class InitialConfigScreenController {
      * Method to switch screens
      *
      * @param actionEvent actionEvent to trigger screen switch
+     * @throws IOException if file not found
      */
     public void openNextScene(ActionEvent actionEvent) throws IOException {
         // getting loader and a pane for the initial game screen
@@ -62,17 +70,35 @@ public class InitialConfigScreenController {
     }
 
     public boolean setGameConfigurations(String name, int difficulty) {
-        if (name == null || difficulty == -1) {
+        boolean validName = name != null;
+        boolean difficultySelected = difficulty != -1;
+        if (!validName && !difficultySelected) {
+            welcomeText.setText("Please choose a name and difficulty to continue.");
+            chooseText.setText("");
             return false;
         }
-        player = new Player(name);
-        game = new Game(difficulty, player);
-        GameDataHolder.setGame(game);
+        if (!validName) {
+            welcomeText.setText("Please enter a name to continue.");
+            chooseText.setText("");
+            return false;
+        }
+        if (!difficultySelected) {
+            welcomeText.setText("Please choose a difficulty to continue.");
+            chooseText.setText("");
+            return false;
+        }
+        Player player = new Player(name);
+        Game game = new Game(difficulty, player);
+        GameAdmin.setGame(game);
         return true;
     }
 
+    /**
+     *
+     * Method to check name button click
+     */
     @FXML
-    protected void onNameButtonClick(ActionEvent actionEvent) {
+    protected void onNameButtonClick() {
         String name = nameInput.getText();
         nameInput.clear();
         if (name.isBlank()) {
@@ -84,18 +110,39 @@ public class InitialConfigScreenController {
         }
     }
 
-    public void onEasyClick(ActionEvent actionEvent) {
+    /**
+     *
+     * Method to check easy button click
+     */
+    public void onEasyClick() {
         difficultyText.setText("Difficulty: Easy");
         difficulty = 0;
+        easyButton.setStyle("-fx-background-color: white");
+        mediumButton.setStyle("-fx-background-color: gold");
+        hardButton.setStyle("-fx-background-color: gold");
     }
 
-    public void onMediumClick(ActionEvent actionEvent) {
+    /**
+     *
+     * Method to check medium button click
+     */
+    public void onMediumClick() {
         difficultyText.setText("Difficulty: Medium");
         difficulty = 1;
+        easyButton.setStyle("-fx-background-color: gold");
+        mediumButton.setStyle("-fx-background-color: white");
+        hardButton.setStyle("-fx-background-color: gold");
     }
 
-    public void onHardClick(ActionEvent actionEvent) {
+    /**
+     *
+     * Method to check hard button click
+     */
+    public void onHardClick() {
         difficultyText.setText("Difficulty: Hard");
         difficulty = 2;
+        easyButton.setStyle("-fx-background-color: gold");
+        mediumButton.setStyle("-fx-background-color: gold");
+        hardButton.setStyle("-fx-background-color: white");
     }
 }

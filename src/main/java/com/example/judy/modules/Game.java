@@ -1,5 +1,8 @@
 package com.example.judy.modules;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Game {
 
     private Player player;
@@ -7,33 +10,52 @@ public class Game {
     private Enemy enemy;
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
+    private HashMap<String, Integer> towers;
+    private ArrayList<Tower> towersPlaced;
 
     /**
      * Constructor
      *
      * @param difficulty the game difficulty
      * @param player player
+     * @throws IllegalArgumentException when difficulty is invalid
      */
-    public Game(int difficulty, Player player) {
+    public Game(int difficulty, Player player) throws IllegalArgumentException {
         this.difficulty = difficulty;
         this.level = 0;
         this.player = player;
+        towers = new HashMap<>(3);
+        towers.put(Cannon.NAME, 0);
+        towers.put(Crossbow.NAME, 0);
+        towers.put(Tank.NAME, 0);
+        towersPlaced = new ArrayList<>();
         switch (difficulty) {
-            case 0: 
-                this.player.setMoney(200);
-                this.enemy = new Enemy(5, 50);
-                this.monument = new Monument(100);
-                break;
-            case 1:
-                this.player.setMoney(150);
-                this.enemy = new Enemy(7, 75);
-                this.monument = new Monument(75);
-                break;
-            case 2: 
-                this.player.setMoney(100);
-                this.enemy = new Enemy(10, 100);
-                this.monument = new Monument(50);
-                break;
+        case 0:
+            this.player.setMoney(200);
+            this.enemy = new Enemy(5, 50);
+            this.monument = new Monument(100);
+            Cannon.setCost(50);
+            Crossbow.setCost(75);
+            Tank.setCost(100);
+            break;
+        case 1:
+            this.player.setMoney(150);
+            this.enemy = new Enemy(7, 75);
+            this.monument = new Monument(75);
+            Cannon.setCost(60);
+            Crossbow.setCost(85);
+            Tank.setCost(110);
+            break;
+        case 2:
+            this.player.setMoney(100);
+            this.enemy = new Enemy(10, 100);
+            this.monument = new Monument(50);
+            Cannon.setCost(70);
+            Crossbow.setCost(95);
+            Tank.setCost(120);
+            break;
+        default:
+            throw new IllegalArgumentException("Difficulty is not valid");
         }
     }
 
@@ -127,5 +149,65 @@ public class Game {
         this.enemy = enemy;
     }
 
+    /**
+     * Gets the towers.
+     *
+     * @return towers towers
+     */
+    public HashMap<String, Integer> getTowers() {
+        return towers;
+    }
 
+    /**
+     * Gets the towers placed.
+     *
+     * @return towers towers
+     */
+    public ArrayList<Tower> getTowersPlaced() {
+        return towersPlaced;
+    }
+
+    /**
+     * Add cannon.
+     *
+     */
+    public void addCannon() {
+        towers.put(Cannon.NAME, towers.get(Cannon.NAME) + 1);
+    }
+
+    /**
+     * Add crossbow.
+     *
+     */
+    public void addCrossbow() {
+        towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) + 1);
+    }
+
+    /**
+     * Add tank.
+     *
+     */
+    public void addTank() {
+        towers.put(Tank.NAME, towers.get(Tank.NAME) + 1);
+    }
+
+    /**
+     * @param tower tower
+     * Remove tower.
+     */
+    public void removeTower(Tower tower) {
+        if (tower instanceof Cannon) {
+            if (towers.get(Cannon.NAME) > 0) {
+                towers.put(Cannon.NAME, towers.get(Cannon.NAME) - 1);
+            }
+        } else if (tower instanceof Crossbow) {
+            if (towers.get(Crossbow.NAME) > 0) {
+                towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) - 1);
+            }
+        } else if (tower instanceof Tank) {
+            if (towers.get(Tank.NAME) > 0) {
+                towers.put(Tank.NAME, towers.get(Tank.NAME) - 1);
+            }
+        }
+    }
 }

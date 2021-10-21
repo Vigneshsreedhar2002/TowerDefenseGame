@@ -1,19 +1,14 @@
 
 import com.example.judy.TowerDefenseApplication;
-import com.example.judy.controllers.WelcomeScreenController;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.testfx.framework.junit.ApplicationTest;
 
 /**
- * Tests cases for the initial configuration screen in which players are supposed to select a name and difficulty.
+ * Tests cases for the initial configuration screen in which
+ * players are supposed to select a name and difficulty.
  */
 public class InitialConfigScreenTest extends ApplicationTest {
     private Node input;

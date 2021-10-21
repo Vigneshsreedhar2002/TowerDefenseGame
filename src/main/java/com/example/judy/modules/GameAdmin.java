@@ -1,9 +1,9 @@
 package com.example.judy.modules;
 
 
-public class GameDataHolder {
+public class GameAdmin {
 
-    public static Game game;
+    private static Game game;
 
     /**
      *
@@ -22,7 +22,7 @@ public class GameDataHolder {
      * @param game the current game to set
      */
     public static void setGame(Game game) {
-        GameDataHolder.game = game;
+        GameAdmin.game = game;
     }
 
 

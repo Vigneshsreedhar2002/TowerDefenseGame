@@ -5,6 +5,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+
+
 <GridPane id="pane" prefHeight="1280" prefWidth="720" xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.example.judy.controllers.InitialGameScreenController" fx:id="gridPane">
 
@@ -14,11 +17,18 @@
         <Label fx:id="levelLabel"/>
     </VBox>
 
+    <VBox fx:id="gameButtons">
+        <Button fx:id="towerMenu" onAction="#onShowTowerMenu"/>
+        <Button fx:id="inventoryMenu" onAction="#onShowInventoryMenu"/>
+    </VBox>
+
     <ImageView fx:id="enemyImage"/>
     <VBox fx:id="monumentData" alignment="CENTER">
         <Label fx:id="healthLabel"/>
         <ImageView fx:id="monumentImage"/>
     </VBox>
 
-</GridPane>
+    <Button fx:id="rotateTop" onAction="#onRotateTop"/>
+    <Button fx:id="rotateBottom" onAction="#onRotateBottom"/>
 
+</GridPane>
