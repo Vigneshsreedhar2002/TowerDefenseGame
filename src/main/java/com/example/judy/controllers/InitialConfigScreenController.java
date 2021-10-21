@@ -93,8 +93,12 @@ public class InitialConfigScreenController {
         return true;
     }
 
+    /**
+     *
+     * Method to check name button click
+     */
     @FXML
-    protected void onNameButtonClick(ActionEvent actionEvent) {
+    protected void onNameButtonClick() {
         String name = nameInput.getText();
         nameInput.clear();
         if (name.isBlank()) {
@@ -106,7 +110,11 @@ public class InitialConfigScreenController {
         }
     }
 
-    public void onEasyClick(ActionEvent actionEvent) {
+    /**
+     *
+     * Method to check easy button click
+     */
+    public void onEasyClick() {
         difficultyText.setText("Difficulty: Easy");
         difficulty = 0;
         easyButton.setStyle("-fx-background-color: white");
@@ -114,7 +122,11 @@ public class InitialConfigScreenController {
         hardButton.setStyle("-fx-background-color: gold");
     }
 
-    public void onMediumClick(ActionEvent actionEvent) {
+    /**
+     *
+     * Method to check medium button click
+     */
+    public void onMediumClick() {
         difficultyText.setText("Difficulty: Medium");
         difficulty = 1;
         easyButton.setStyle("-fx-background-color: gold");
@@ -122,7 +134,11 @@ public class InitialConfigScreenController {
         hardButton.setStyle("-fx-background-color: gold");
     }
 
-    public void onHardClick(ActionEvent actionEvent) {
+    /**
+     *
+     * Method to check hard button click
+     */
+    public void onHardClick() {
         difficultyText.setText("Difficulty: Hard");
         difficulty = 2;
         easyButton.setStyle("-fx-background-color: gold");

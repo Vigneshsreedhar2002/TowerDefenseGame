@@ -1,5 +1,6 @@
 package com.example.judy.modules;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Game {
@@ -10,6 +11,7 @@ public class Game {
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
     private HashMap<String, Integer> towers;
+    private ArrayList<Tower> towersPlaced;
 
     /**
      * Constructor
@@ -26,6 +28,7 @@ public class Game {
         towers.put(Cannon.NAME, 0);
         towers.put(Crossbow.NAME, 0);
         towers.put(Tank.NAME, 0);
+        towersPlaced = new ArrayList<>();
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
@@ -156,6 +159,15 @@ public class Game {
     }
 
     /**
+     * Gets the towers placed.
+     *
+     * @return towers towers
+     */
+    public ArrayList<Tower> getTowersPlaced() {
+        return towersPlaced;
+    }
+
+    /**
      * Add cannon.
      *
      */
@@ -177,5 +189,25 @@ public class Game {
      */
     public void addTank() {
         towers.put(Tank.NAME, towers.get(Tank.NAME) + 1);
+    }
+
+    /**
+     * @param tower tower
+     * Remove tower.
+     */
+    public void removeTower(Tower tower) {
+        if (tower instanceof Cannon) {
+            if (towers.get(Cannon.NAME) > 0) {
+                towers.put(Cannon.NAME, towers.get(Cannon.NAME) - 1);
+            }
+        } else if (tower instanceof Crossbow) {
+            if (towers.get(Crossbow.NAME) > 0) {
+                towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) - 1);
+            }
+        } else if (tower instanceof Tank) {
+            if (towers.get(Tank.NAME) > 0) {
+                towers.put(Tank.NAME, towers.get(Tank.NAME) - 1);
+            }
+        }
     }
 }

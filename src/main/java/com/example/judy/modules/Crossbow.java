@@ -1,5 +1,7 @@
 package com.example.judy.modules;
 
+import javafx.scene.image.ImageView;
+
 public class Crossbow extends Tower {
 
     private static double cost;
@@ -7,6 +9,22 @@ public class Crossbow extends Tower {
     private static String description;
     public static final int DAMAGE = 5;
     public static final int DAMAGE_PER_SECOND = 15;
+
+    public Crossbow() {
+        super();
+    }
+
+    public Crossbow(int x, int y, ImageView image) {
+        super(x, y, image);
+    }
+
+    public Crossbow(ImageView image) {
+        super(image);
+    }
+
+    public static void setDescription(String description) {
+        Crossbow.description = description;
+    }
 
     public static double getCost() {
         return cost;
@@ -22,6 +40,10 @@ public class Crossbow extends Tower {
                 + "\nCost: $" + String.format("%.2f", cost)
                 + "\nDamage: 5"
                 + "\nDamage per second: 15";
+    }
+
+    public String toString() {
+        return getX() + " " + getY() + " " + Crossbow.NAME;
     }
 
 }
