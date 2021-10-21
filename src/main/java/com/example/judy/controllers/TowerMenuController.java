@@ -321,7 +321,6 @@ public class TowerMenuController {
         initialGameScene.getStylesheets().addAll(Objects.requireNonNull(
                 TowerDefenseApplication.class.getResource("assets/style.css")).toExternalForm());
         Stage stage = (Stage) cannon.getScene().getWindow();
-        System.out.println(game.getPlayer().getMoney());
         stage.close();
     }
 

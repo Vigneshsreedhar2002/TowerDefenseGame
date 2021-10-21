@@ -7,12 +7,7 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,17 +16,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.HLineTo;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class InitialGameScreenController {
@@ -58,26 +48,21 @@ public class InitialGameScreenController {
     @FXML
     private Button towerMenu;
     @FXML
-    private HBox towers;
+    private Button inventoryMenu;
     @FXML
-    private ImageView cannonImage;
+    private Button rotateTop;
     @FXML
-    private Label cannonNumber;
-    @FXML
-    private ImageView crossbowImage;
-    @FXML
-    private Label crossbowNumber;
-    @FXML
-    private ImageView tankImage;
-    @FXML
-    private Label tankNumber;
+    private Button rotateBottom;
+
+    private static Tower towerToPlace;
+    private static boolean placementDone;
 
 
     private Image image;
     private Game game;
     private Player player;
     private Monument monument;
-    private EnemyPath path;
+
 
 
     @FXML
@@ -87,10 +72,14 @@ public class InitialGameScreenController {
         if (game != null) {
             player = GameAdmin.getGame().getPlayer();
             monument = GameAdmin.getGame().getMonument();
-            path = GameAdmin.getGame().getPath();
 
             for (int i = 0; i < 20; i++) {
-                ColumnConstraints column = new ColumnConstraints(140);
+                ColumnConstraints column;
+                if (i == 0 || i == 5) {
+                    column = new ColumnConstraints(140, 120, Double.MAX_VALUE);
+                } else {
+                    column = new ColumnConstraints(120, 120, Double.MAX_VALUE);
+                }
                 gridPane.getColumnConstraints().add(column);
             }
             for (int i = 0; i < 20; i++) {
@@ -100,10 +89,10 @@ public class InitialGameScreenController {
             updateGameData();
             setEnemyImage();
             setMonumentData();
-            setMenuButton();
-            setPathComponents();
-            updateTowerData();
+            setMenuButtons();
+            setRotateButtons();
         }
+
 
 
     }
@@ -140,10 +129,13 @@ public class InitialGameScreenController {
                                     + player.getScore());
                             levelLabel.setText("LEVEL: "
                                     + game.getLevel());
+                            if (towerToPlace != null) {
+                                placeTower();
+                            }
                         }
                     });
                     i++;
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 }
             }
         };
@@ -192,29 +184,43 @@ public class InitialGameScreenController {
         monumentImage.setFitWidth(90);
         //Setting the image view parameters
         GridPane.setRowIndex(monumentData, 12);
-        GridPane.setColumnIndex(monumentData, 8);
+        GridPane.setColumnIndex(monumentData, 9);
         monumentImage.setPreserveRatio(true);
         monumentImage.toFront();
     }
 
     /**
-     * Sets the monument data
+     * Sets the menu data
      */
-    private void setMenuButton() {
+    private void setMenuButtons() {
         GridPane.setRowIndex(gameButtons, 1);
-        GridPane.setColumnIndex(gameButtons, 8);
-        towerMenu.setText("Menu");
+        GridPane.setColumnIndex(gameButtons, 9);
+        towerMenu.setText("Store");
         towerMenu.setPrefWidth(200);
-        towerMenu.setStyle("-fx-background-color: #FFFF00; ");
+        towerMenu.setStyle("-fx-background-color: #FF0000; ");
         towerMenu.setFont(Font.font("Courier New", 15));
+        inventoryMenu.setText("Inventory");
+        inventoryMenu.setPrefWidth(200);
+        inventoryMenu.setStyle("-fx-background-color: #FFFF00; ");
+        inventoryMenu.setFont(Font.font("Courier New", 15));
     }
 
     /**
-     * Sets the rectangles that make up the path
+     * Sets the rotate buttons
      */
-    private void setPathComponents() {
-        path.getPath().getElements().add(new MoveTo(0.0f, 500.0f));
-        path.getPath().getElements().add(new HLineTo(300.0f));
+    private void setRotateButtons() {
+        GridPane.setRowIndex(rotateTop, 1);
+        GridPane.setColumnIndex(rotateTop, 5);
+        rotateTop.setText("Rotate");
+        rotateTop.setPrefWidth(120);
+        rotateTop.setStyle("-fx-background-color: #FF0000; ");
+        rotateTop.setFont(Font.font("Courier New", 15));
+        GridPane.setRowIndex(rotateBottom, 12);
+        GridPane.setColumnIndex(rotateBottom, 3);
+        rotateBottom.setText("Rotate");
+        rotateBottom.setPrefWidth(120);
+        rotateBottom.setStyle("-fx-background-color: #FF0000; ");
+        rotateBottom.setFont(Font.font("Courier New", 15));
     }
 
     /**
@@ -234,155 +240,135 @@ public class InitialGameScreenController {
         towerMenu.show();
     }
 
-    private void updateTowerData() {
-        GridPane.setRowIndex(towers, 16);
-        GridPane.setColumnIndex(towers, 0);
-
-        towers.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
-                + "-fx-border-width: 2;" + "-fx-border-insets: 5;"
-                + "-fx-border-radius: 5;" + "-fx-border-color: yellow;");
-
-        setCannonImage(cannonImage);
-        setCrossbowImage(crossbowImage);
-        setTankImage(tankImage);
-        cannonNumber.setTextFill(Color.web("#FFFFFF"));
-        cannonNumber.setFont(Font.font("Courier New", 15));
-        crossbowNumber.setTextFill(Color.web("#FFFFFF"));
-        crossbowNumber.setFont(Font.font("Courier New", 15));
-        tankNumber.setTextFill(Color.web("#FFFFFF"));
-        tankNumber.setFont(Font.font("Courier New", 15));
-
-        Task task = new Task<Void>() {
-            @Override
-            public Void call() throws Exception {
-                int i = 0;
-                while (true) {
-                    final int finalI = i;
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            cannonNumber.setText(game.getTowers().get(Cannon.NAME).toString());
-                            crossbowNumber.setText(game.getTowers().get(Crossbow.NAME).toString());
-                            tankNumber.setText(game.getTowers().get(Tank.NAME).toString());
-                        }
-                    });
-                    i++;
-                    Thread.sleep(500);
-                }
+    /**
+     * Sets rotate top button
+     */
+    @FXML
+    private void onRotateTop() {
+        for (int i = 0; i < game.getTowersPlaced().size(); i++) {
+            if (game.getTowersPlaced().get(i).getX() == 1
+                    && game.getTowersPlaced().get(i).getY() == 6) {
+                game.getTowersPlaced().get(i).getImage().setRotate(
+                        game.getTowersPlaced().get(i).getImage().getRotate() + 90);
             }
-        };
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-
-
+        }
     }
 
     /**
-     * Method to set cannon image
+     * Sets rotate bottom button
      */
-    private void setCannonImage(ImageView cannon) {
-        try {
-            URL url = TowerDefenseApplication.class.getResource("assets/icons/cannon.png");
-            image = new Image(String.valueOf(url));
-        } catch (IllegalArgumentException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
-            alert.show();
-        }
-        cannon.setImage(image);
-        cannon.setFitWidth(100);
-        cannon.setPreserveRatio(true);
-        cannon.toFront();
-    }
-
     @FXML
-    private void onCannonClicked() throws IOException {
-        Integer cannonValue = game.getTowers().get(Cannon.NAME);
-        if (cannonValue > 0) {
-            placeTower(new Cannon());
+    private void onRotateBottom() {
+        for (int i = 0; i < game.getTowersPlaced().size(); i++) {
+            if (game.getTowersPlaced().get(i).getX() == 12
+                    && game.getTowersPlaced().get(i).getY() == 2) {
+                game.getTowersPlaced().get(i).getImage().setRotate(
+                        game.getTowersPlaced().get(i).getImage().getRotate() + 90);
+            }
         }
-        game.removeCannon();
     }
 
     /**
-     * Method to set crossbow image
+     * Sets the monument data
+     *
+     * @throws IOException FileNotFoundException
      */
-    private void setCrossbowImage(ImageView crossbow) {
-        try {
-            URL url = TowerDefenseApplication.class.getResource("assets/icons/crossbow.png");
-            image = new Image(String.valueOf(url));
-        } catch (IllegalArgumentException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
-            alert.show();
-        }
-        crossbow.setImage(image);
-        crossbow.setFitWidth(100);
-        crossbow.setPreserveRatio(true);
-        crossbow.toFront();
-    }
-
     @FXML
-    private void onCrossbowClicked() throws IOException {
-        Integer crossbowValue = game.getTowers().get(Crossbow.NAME);
-        if (crossbowValue > 0) {
-            placeTower(new Crossbow());
-        }
-        game.removeCrossbow();
-    }
-
-    /**
-     * Method to set tank image
-     */
-    private void setTankImage(ImageView tank) {
-        try {
-            URL url = TowerDefenseApplication.class.getResource("assets/icons/tank.png");
-            image = new Image(String.valueOf(url));
-        } catch (IllegalArgumentException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
-            alert.show();
-        }
-        tank.setImage(image);
-        tank.setFitWidth(100);
-        tank.setPreserveRatio(true);
-        tank.toFront();
-    }
-
-    @FXML
-    private void onTankClicked() throws IOException {
-        Integer tankValue = game.getTowers().get(Tank.NAME);
-        if (tankValue > 0) {
-            placeTower(new Tank());
-        }
-        game.removeTank();
+    private void onShowInventoryMenu() throws IOException {
+        final Stage inventoryMenu = new Stage();
+        inventoryMenu.setTitle("Inventory");
+        inventoryMenu.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane root = FXMLLoader.load(Objects.requireNonNull(
+                TowerDefenseApplication.class.getResource("screens/inventory-menu.fxml")));
+        Scene dialogScene = new Scene(root);
+        inventoryMenu.setScene(dialogScene);
+        inventoryMenu.show();
     }
 
     /**
      * Places tower on map at (x,y) coordinate where player clicks
      *
-     * @param tower to be placed
      */
-    private void placeTower(Tower tower) {
-        System.out.println("Tower " + tower.toString() + " is being placed");
-        ImageView image = new ImageView();
-        if (tower instanceof Cannon) {
-            setCannonImage(image);
-        } else if (tower instanceof Crossbow) {
-            setCrossbowImage(image);
-        } else if (tower instanceof Tank) {
-            setTankImage(image);
-        }
-
-        gridPane.setOnMouseClicked(
-                mouseEvent -> {
-                    System.out.println("MouseEvent ran");
-                    image.setX(mouseEvent.getSceneX());
-                    image.setY(mouseEvent.getSceneY());
-                    int column = (int) image.getX() / 140;
-                    int row = (int) image.getY() / 40;
-                    gridPane.add(image, column, row);
-                    gridPane.setOnMouseClicked(null);
+    private void placeTower() {
+        if (towerToPlace != null && towerToPlace.getImage() != null
+                && !InitialGameScreenController.placementDone) {
+            EventHandler onClickHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
+                public void handle(javafx.scene.input.MouseEvent mouseEvent) {
+                    gridPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                    double x = Objects.requireNonNull(mouseEvent).getSceneX();
+                    double y = Objects.requireNonNull(mouseEvent).getSceneY();
+                    int column = (int) x / 120;
+                    int row = (int) y / 40;
+                    if (checkPlacement(towerToPlace, row, column)) {
+                        gridPane.add(towerToPlace.getImage(), column, row);
+                        System.out.println("added");
+                        game.getTowersPlaced().add(towerToPlace);
+                        towerToPlace.setX(row);
+                        towerToPlace.setY(column);
+                        System.out.println(game.getTowersPlaced());
+                        game.removeTower(towerToPlace);
+                        towerToPlace = null;
+                    } else {
+                        towerToPlace = null;
+                        Alert alert = new Alert(Alert.AlertType.ERROR,
+                                "Place the tower in an empty yellow square!");
+                        alert.show();
+                    }
+                    InitialGameScreenController.placementDone = true;
                 }
-        );
-        System.out.println("Finished placing tower");
+            };
+            gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED, onClickHandler);
+        }
+    }
+
+
+    /**
+     * Checks if placement is appropriate
+     *
+     * @param tower tower
+     * @param col col
+     * @param row row
+     * @return if correct placement
+     */
+    private boolean checkPlacement(Tower tower, int row, int col) {
+        if ((row == 12 && col == 2) || (row == 1 && col == 6)) {
+            for (int i = 0; i < game.getTowersPlaced().size(); i++) {
+                if (game.getTowersPlaced().get(i).getX() == row
+                        && game.getTowersPlaced().get(i).getY() == col) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets towerToPlace
+     *
+     * @return towerToPlace
+     */
+    public static Tower getTowerToPlace() {
+        return towerToPlace;
+    }
+
+    /**
+     *
+     * Sets towerToPlace
+     *
+     * @param towerToPlace towerToPlace
+     */
+    public static void setTowerToPlace(Tower towerToPlace) {
+        InitialGameScreenController.towerToPlace = towerToPlace;
+    }
+
+    /**
+     *
+     * Sets placementDone
+     *
+     * @param placementDone placementDone
+     */
+    public static void setPlacementDone(boolean placementDone) {
+        InitialGameScreenController.placementDone = placementDone;
     }
 }

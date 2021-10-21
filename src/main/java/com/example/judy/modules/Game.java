@@ -1,5 +1,6 @@
 package com.example.judy.modules;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Game {
@@ -7,10 +8,10 @@ public class Game {
     private Player player;
     private Monument monument;
     private Enemy enemy;
-    private EnemyPath path;
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
     private HashMap<String, Integer> towers;
+    private ArrayList<Tower> towersPlaced;
 
     /**
      * Constructor
@@ -23,11 +24,11 @@ public class Game {
         this.difficulty = difficulty;
         this.level = 0;
         this.player = player;
-        this.path = new EnemyPath();
         towers = new HashMap<>(3);
         towers.put(Cannon.NAME, 0);
         towers.put(Crossbow.NAME, 0);
         towers.put(Tank.NAME, 0);
+        towersPlaced = new ArrayList<>();
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
@@ -149,17 +150,6 @@ public class Game {
     }
 
     /**
-     * Gets the path.
-     * @return path the path
-     */
-    public EnemyPath getPath() { return path; }
-
-    /**
-     * Sets the path.
-     * @param path the path to set
-     */
-    public void setPath(EnemyPath path) { this.path = path; }
-    /**
      * Gets the towers.
      *
      * @return towers towers
@@ -169,47 +159,55 @@ public class Game {
     }
 
     /**
+     * Gets the towers placed.
+     *
+     * @return towers towers
+     */
+    public ArrayList<Tower> getTowersPlaced() {
+        return towersPlaced;
+    }
+
+    /**
      * Add cannon.
      *
      */
-    public void addCannon() { towers.put(Cannon.NAME, towers.get(Cannon.NAME) + 1); }
-
-    /**
-     * Remove cannon.
-     */
-    public void removeCannon() {
-        if (towers.get(Cannon.NAME) > 0) {
-            towers.put(Cannon.NAME, towers.get(Cannon.NAME) - 1);
-        }
+    public void addCannon() {
+        towers.put(Cannon.NAME, towers.get(Cannon.NAME) + 1);
     }
 
     /**
      * Add crossbow.
      *
      */
-    public void addCrossbow() { towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) + 1); }
-
-    /**
-     * Remove crossbow.
-     */
-    public void removeCrossbow() {
-        if (towers.get(Crossbow.NAME) > 0) {
-            towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) - 1);
-        }
+    public void addCrossbow() {
+        towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) + 1);
     }
 
     /**
      * Add tank.
      *
      */
-    public void addTank() { towers.put(Tank.NAME, towers.get(Tank.NAME) + 1); }
+    public void addTank() {
+        towers.put(Tank.NAME, towers.get(Tank.NAME) + 1);
+    }
 
     /**
-     * Remove tank.
+     * @param tower tower
+     * Remove tower.
      */
-    public void removeTank() {
-        if (towers.get(Tank.NAME) > 0) {
-            towers.put(Tank.NAME, towers.get(Tank.NAME) - 1);
+    public void removeTower(Tower tower) {
+        if (tower instanceof Cannon) {
+            if (towers.get(Cannon.NAME) > 0) {
+                towers.put(Cannon.NAME, towers.get(Cannon.NAME) - 1);
+            }
+        } else if (tower instanceof Crossbow) {
+            if (towers.get(Crossbow.NAME) > 0) {
+                towers.put(Crossbow.NAME, towers.get(Crossbow.NAME) - 1);
+            }
+        } else if (tower instanceof Tank) {
+            if (towers.get(Tank.NAME) > 0) {
+                towers.put(Tank.NAME, towers.get(Tank.NAME) - 1);
+            }
         }
     }
 }

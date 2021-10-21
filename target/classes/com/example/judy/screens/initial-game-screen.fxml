@@ -6,8 +6,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 
 
 <GridPane id="pane" prefHeight="1280" prefWidth="720" xmlns:fx="http://javafx.com/fxml"
@@ -21,6 +19,7 @@
 
     <VBox fx:id="gameButtons">
         <Button fx:id="towerMenu" onAction="#onShowTowerMenu"/>
+        <Button fx:id="inventoryMenu" onAction="#onShowInventoryMenu"/>
     </VBox>
 
     <ImageView fx:id="enemyImage"/>
@@ -29,19 +28,7 @@
         <ImageView fx:id="monumentImage"/>
     </VBox>
 
-    <HBox fx:id="towers">
-        <VBox onMouseClicked="#onCannonClicked">
-            <Label fx:id="cannonNumber"/>
-            <ImageView fx:id="cannonImage"/>
-        </VBox>
-        <VBox onMouseClicked="#onCrossbowClicked">
-            <Label fx:id="crossbowNumber"/>
-            <ImageView fx:id="crossbowImage"/>
-        </VBox>
-        <VBox onMouseClicked="#onTankClicked">
-            <Label fx:id="tankNumber"/>
-            <ImageView fx:id="tankImage"/>
-        </VBox>
-    </HBox>
+    <Button fx:id="rotateTop" onAction="#onRotateTop"/>
+    <Button fx:id="rotateBottom" onAction="#onRotateBottom"/>
 
 </GridPane>
