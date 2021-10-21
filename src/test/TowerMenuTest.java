@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
+import org.testfx.matcher.control.TextMatchers;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -55,7 +56,10 @@ public class TowerMenuTest extends ApplicationTest {
     public void testInventoryVisible() {
         clickOn("Hard");
         clickOn("Start");
-        verifyThat("#towers", NodeMatchers.isNotNull());
+        clickOn("#inventoryMenu");
+        verifyThat("#cannon", NodeMatchers.isNotNull());
+        verifyThat("#crossbow", NodeMatchers.isNotNull());
+        verifyThat("#tank", NodeMatchers.isNotNull());
     }
 
     /**
@@ -95,7 +99,8 @@ public class TowerMenuTest extends ApplicationTest {
         clickOn("#tank");
         clickOn("YES");
         clickOn("OK");
-        verifyThat("#tankNumber", LabeledMatchers.hasText("0"));
+        clickOn("#inventoryMenu");
+        verifyThat("#tankCount", TextMatchers.hasText("You have: 0"));
     }
 
 }
