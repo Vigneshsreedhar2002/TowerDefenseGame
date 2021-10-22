@@ -108,41 +108,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn(240, 480);
         assertNull(InitialGameScreenController.getTowerToPlace());
     }
-    /**
-     * Tests the functionality of buying towers on the easy difficulty setting.
-     */
-    @Test
-    public void testEasyBuyingFunctionality() throws InterruptedException {
-        clickOn("Easy");
-        clickOn("Start");
 
-        clickOn("#towerMenu");
-        clickOn("#crossbow");
-        clickOn("YES");
-        Thread.sleep(200);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $125.00"));
-
-        clickOn("#towerMenu");
-        clickOn("#tank");
-        clickOn("YES");
-        Thread.sleep(200);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $25.00"));
-    }
-
-    /**
-     * Tests the functionality of buying towers on the medium difficulty setting.
-     */
-    @Test
-    public void testMediumBuyingFunctionality() throws InterruptedException {
-        clickOn("Medium");
-        clickOn("Start");
-
-        clickOn("#towerMenu");
-        clickOn("#crossbow");
-        clickOn("YES");
-        Thread.sleep(200);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $65.00"));
-    }
 
 
 }
