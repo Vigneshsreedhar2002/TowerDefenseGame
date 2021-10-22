@@ -142,33 +142,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("YES");
         Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $65.00"));
-
-        clickOn("#towerMenu");
-        clickOn("#cannon");
-        clickOn("YES");
-        Thread.sleep(200);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
     }
 
-    /**
-     * Tests the functionality of buying towers on the hard difficulty setting.
-     */
-    @Test
-    public void testHardBuyingFunctionality() throws InterruptedException {
-        clickOn("Hard");
-        clickOn("Start");
-
-        clickOn("#towerMenu");
-        clickOn("#crossbow");
-        clickOn("YES");
-        Thread.sleep(200);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
-
-        clickOn("#towerMenu");
-        clickOn("#tank");
-        clickOn("YES");
-        Thread.sleep(200);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
-    }
 
 }
