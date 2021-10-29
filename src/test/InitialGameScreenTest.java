@@ -119,13 +119,13 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("#towerMenu");
         clickOn("#crossbow");
         clickOn("YES");
-        Thread.sleep(500);
+        Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $125.00"));
 
         clickOn("#towerMenu");
         clickOn("#tank");
         clickOn("YES");
-        Thread.sleep(500);
+        Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $25.00"));
     }
 
@@ -140,13 +140,13 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("#towerMenu");
         clickOn("#crossbow");
         clickOn("YES");
-        Thread.sleep(500);
+        Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $65.00"));
 
         clickOn("#towerMenu");
         clickOn("#cannon");
         clickOn("YES");
-        Thread.sleep(500);
+        Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
     }
 
@@ -161,16 +161,14 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("#towerMenu");
         clickOn("#crossbow");
         clickOn("YES");
-        Thread.sleep(500);
+        Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
 
         clickOn("#towerMenu");
         clickOn("#tank");
         clickOn("YES");
-        Thread.sleep(500);
+        Thread.sleep(200);
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
     }
-
-
 
 }
