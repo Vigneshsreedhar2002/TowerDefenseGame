@@ -47,4 +47,12 @@ public class WelcomeScreenController {
     protected void onStartButtonClick(ActionEvent actionEvent) throws IOException {
         openNextScene(actionEvent);
     }
+    @FXML
+    public void onMouseDrag() {
+        start.setStyle("-fx-background-color: white");
+    }
+
+    public void onMouseExited() {
+        start.setStyle("-fx-background-color: gold");
+    }
 }
