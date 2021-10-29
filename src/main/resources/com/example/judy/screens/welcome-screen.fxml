@@ -5,12 +5,33 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.judy.controllers.WelcomeScreenController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button fx:id="start" text="Start" onAction="#onStartButtonClick"/>
-</VBox>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.judy.controllers.WelcomeScreenController">
+    <Rectangle height="720" width="1280" fill="#1224b6">
+    </Rectangle>
+    <center>
+        <VBox alignment="CENTER" spacing="40.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <Label fx:id="welcomeText" textFill="white">
+                <font>
+                    <Font name="Arial Black" size="44"/>
+                </font>
+            </Label>
+            <Button fx:id="start" text="Start" onAction="#onStartButtonClick"
+                    prefWidth="300" prefHeight="100" style="-fx-background-color: gold"
+                    onMouseEntered="#onMouseDrag" onMouseExited="#onMouseExited">
+                <font>
+                    <Font name="Arial Black" size="30"/>
+                </font>
+            </Button>
+        </VBox>
+    </center>
+
+</BorderPane>
+

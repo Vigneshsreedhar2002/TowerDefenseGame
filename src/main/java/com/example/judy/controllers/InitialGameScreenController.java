@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -105,13 +104,10 @@ public class InitialGameScreenController {
         GridPane.setColumnIndex(gameData, 0);
         gameData.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        moneyLabel.setTextFill(Color.web("#FFFFFF"));
         moneyLabel.setFont(Font.font("Courier New", 15));
 
-        scoreLabel.setTextFill(Color.web("#FFFFFF"));
         scoreLabel.setFont(Font.font("Courier New", 15));
 
-        levelLabel.setTextFill(Color.web("#FFFFFF"));
         levelLabel.setFont(Font.font("Courier New", 15));
 
         Task task = new Task<Void>() {
@@ -135,7 +131,7 @@ public class InitialGameScreenController {
                         }
                     });
                     i++;
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 }
             }
         };
@@ -170,8 +166,6 @@ public class InitialGameScreenController {
      */
     private void setMonumentData() {
         healthLabel.setText("HEALTH: " + monument.getHealth());
-        healthLabel.setTextFill(Color.web("#FFFFFF"));
-        healthLabel.setStyle("-fx-background-color: green;");
         healthLabel.setFont(Font.font("Courier New", 14));
         try {
             URL url = TowerDefenseApplication.class.getResource("assets/icons/gate.png");
@@ -195,13 +189,7 @@ public class InitialGameScreenController {
     private void setMenuButtons() {
         GridPane.setRowIndex(gameButtons, 1);
         GridPane.setColumnIndex(gameButtons, 9);
-        towerMenu.setText("Store");
-        towerMenu.setPrefWidth(200);
-        towerMenu.setStyle("-fx-background-color: #FF0000; ");
         towerMenu.setFont(Font.font("Courier New", 15));
-        inventoryMenu.setText("Inventory");
-        inventoryMenu.setPrefWidth(200);
-        inventoryMenu.setStyle("-fx-background-color: #FFFF00; ");
         inventoryMenu.setFont(Font.font("Courier New", 15));
     }
 
@@ -211,15 +199,9 @@ public class InitialGameScreenController {
     private void setRotateButtons() {
         GridPane.setRowIndex(rotateTop, 1);
         GridPane.setColumnIndex(rotateTop, 5);
-        rotateTop.setText("Rotate");
-        rotateTop.setPrefWidth(120);
-        rotateTop.setStyle("-fx-background-color: #FF0000; ");
         rotateTop.setFont(Font.font("Courier New", 15));
         GridPane.setRowIndex(rotateBottom, 12);
         GridPane.setColumnIndex(rotateBottom, 3);
-        rotateBottom.setText("Rotate");
-        rotateBottom.setPrefWidth(120);
-        rotateBottom.setStyle("-fx-background-color: #FF0000; ");
         rotateBottom.setFont(Font.font("Courier New", 15));
     }
 
