@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.judy.controllers.WelcomeScreenController">
-    <Rectangle height="720" width="1280" fill="#1224b6">
+    <Rectangle height="700" width="1260" fill="#1224b6">
     </Rectangle>
     <center>
         <VBox alignment="CENTER" spacing="40.0">
@@ -23,7 +23,7 @@
                     <Font name="Arial Black" size="44"/>
                 </font>
             </Label>
-            <Button fx:id="start" text="Start" onAction="#onStartButtonClick"
+            <Button fx:id="start" text="START" onAction="#onStartButtonClick"
                     prefWidth="300" prefHeight="100" style="-fx-background-color: gold"
                     onMouseEntered="#onMouseDrag" onMouseExited="#onMouseExited">
                 <font>
