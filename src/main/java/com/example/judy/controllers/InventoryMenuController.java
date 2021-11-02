@@ -149,7 +149,7 @@ public class InventoryMenuController {
         FXMLLoader initialGamePaneLoader = new FXMLLoader(
                 TowerDefenseApplication.class.getResource("screens/initial-game-screen.fxml"));
         Parent initialGamePane = initialGamePaneLoader.load();
-        Scene initialGameScene = new Scene(initialGamePane, 1280, 720);
+        Scene initialGameScene = new Scene(initialGamePane, 1260, 700);
         initialGameScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
         initialGameScene.getStylesheets().addAll(Objects.requireNonNull(
                 TowerDefenseApplication.class.getResource("assets/style.css")).toExternalForm());
@@ -170,7 +170,7 @@ public class InventoryMenuController {
             alert.show();
         }
         tank.setImage(image);
-        tank.setFitWidth(100);
+        tank.setFitWidth(120);
         tank.setPreserveRatio(true);
         tank.toFront();
     }
@@ -188,7 +188,7 @@ public class InventoryMenuController {
             alert.show();
         }
         cannon.setImage(image);
-        cannon.setFitWidth(100);
+        cannon.setFitWidth(120);
         cannon.setPreserveRatio(true);
         cannon.toFront();
     }
@@ -206,7 +206,7 @@ public class InventoryMenuController {
             alert.show();
         }
         crossbow.setImage(image);
-        crossbow.setFitWidth(100);
+        crossbow.setFitWidth(120);
         crossbow.setPreserveRatio(true);
         crossbow.toFront();
     }

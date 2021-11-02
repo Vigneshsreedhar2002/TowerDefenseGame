@@ -17,7 +17,7 @@ public class TowerDefenseApplication extends Application {
         FXMLLoader welcomePaneLoader = new FXMLLoader(
                 TowerDefenseApplication.class.getResource("screens/welcome-screen.fxml"));
         Parent welcomePane = welcomePaneLoader.load();
-        Scene welcomeScene = new Scene(welcomePane, 1280, 720);
+        Scene welcomeScene = new Scene(welcomePane, 1260, 700);
         welcomeScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
         stage.setTitle("SAVE JUDY");
         stage.setScene(welcomeScene);

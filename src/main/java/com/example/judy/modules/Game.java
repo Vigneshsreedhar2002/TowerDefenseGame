@@ -10,6 +10,7 @@ public class Game {
     private Enemy enemy;
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
+    private boolean started;
     private HashMap<String, Integer> towers;
     private ArrayList<Tower> towersPlaced;
 
@@ -24,6 +25,7 @@ public class Game {
         this.difficulty = difficulty;
         this.level = 0;
         this.player = player;
+        this.started = false;
         towers = new HashMap<>(3);
         towers.put(Cannon.NAME, 0);
         towers.put(Crossbow.NAME, 0);
@@ -32,7 +34,7 @@ public class Game {
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
-            this.enemy = new Enemy(5, 50);
+            this.enemy = new Enemy(3000, 50);
             this.monument = new Monument(100);
             Cannon.setCost(50);
             Crossbow.setCost(75);
@@ -40,7 +42,7 @@ public class Game {
             break;
         case 1:
             this.player.setMoney(150);
-            this.enemy = new Enemy(7, 75);
+            this.enemy = new Enemy(2500, 75);
             this.monument = new Monument(75);
             Cannon.setCost(60);
             Crossbow.setCost(85);
@@ -48,7 +50,7 @@ public class Game {
             break;
         case 2:
             this.player.setMoney(100);
-            this.enemy = new Enemy(10, 100);
+            this.enemy = new Enemy(2000, 100);
             this.monument = new Monument(50);
             Cannon.setCost(70);
             Crossbow.setCost(95);
@@ -192,6 +194,9 @@ public class Game {
     }
 
     /**
+     *
+     * Removes tower from the map
+     *
      * @param tower tower
      * Remove tower.
      */
@@ -209,5 +214,23 @@ public class Game {
                 towers.put(Tank.NAME, towers.get(Tank.NAME) - 1);
             }
         }
+    }
+
+    /**
+     * Gets started value
+     *
+     * @return started
+     */
+    public boolean hasStarted() {
+        return started;
+    }
+
+    /**
+     * Sets started value
+     *
+     * @param started started
+     */
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

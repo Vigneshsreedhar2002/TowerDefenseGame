@@ -37,7 +37,7 @@ public class WelcomeScreenController {
         FXMLLoader initialConfigPaneLoader = new FXMLLoader(
                 TowerDefenseApplication.class.getResource("screens/initial-config-screen.fxml"));
         Parent initialConfigPane = initialConfigPaneLoader.load();
-        Scene initialConfigScene = new Scene(initialConfigPane, 1280, 720);
+        Scene initialConfigScene = new Scene(initialConfigPane, 1260, 700);
         initialConfigScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(initialConfigScene);
