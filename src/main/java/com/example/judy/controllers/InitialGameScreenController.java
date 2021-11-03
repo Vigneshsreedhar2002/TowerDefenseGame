@@ -4,6 +4,7 @@ import com.example.judy.TowerDefenseApplication;
 import com.example.judy.modules.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,15 +14,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class InitialGameScreenController {
@@ -36,13 +37,9 @@ public class InitialGameScreenController {
     @FXML
     private Label levelLabel;
     @FXML
-    private ImageView enemyImage;
-    @FXML
-    private VBox monumentData;
-    @FXML
     private Label healthLabel;
     @FXML
-    private ImageView monumentImage;
+    private Label enemyHealthLabel;
     @FXML
     private VBox gameButtons;
     @FXML
@@ -50,9 +47,7 @@ public class InitialGameScreenController {
     @FXML
     private Button inventoryMenu;
     @FXML
-    private Button rotateTop;
-    @FXML
-    private Button rotateBottom;
+    private Button startCombat;
 
     private static Tower towerToPlace;
     private static boolean placementDone;
@@ -62,35 +57,144 @@ public class InitialGameScreenController {
     private Game game;
     private Player player;
     private Monument monument;
+    private Enemy enemy;
+
+    public static final int NUM_ROWS = 5;
+    public static final int NUM_COLS = 9;
+    public static final int TILE_WIDTH = 140;
+    private Tile[][] grid;
 
 
 
     @FXML
     private void initialize() {
-
+        System.out.println("initialize");
         game = GameAdmin.getGame();
         if (game != null) {
+            HashMap<Integer, ArrayList<Integer>> path = new HashMap<>();
+            HashMap<Integer, ArrayList<Integer>> excluded = new HashMap<>();
             player = GameAdmin.getGame().getPlayer();
             monument = GameAdmin.getGame().getMonument();
+            enemy = GameAdmin.getGame().getEnemy();
 
-            for (int i = 0; i < 20; i++) {
-                ColumnConstraints column;
-                if (i == 0 || i == 5) {
-                    column = new ColumnConstraints(140, 120, Double.MAX_VALUE);
-                } else {
-                    column = new ColumnConstraints(120, 120, Double.MAX_VALUE);
-                }
+            grid = new Tile[NUM_ROWS][NUM_COLS];
+
+            ArrayList<Integer> onePath = new ArrayList<>();
+            onePath.add(2);
+            onePath.add(3);
+            onePath.add(4);
+            onePath.add(5);
+            onePath.add(6);
+            path.put(1, onePath);
+
+            ArrayList<Integer> twoPath = new ArrayList<>();
+            twoPath.add(2);
+            twoPath.add(6);
+            path.put(2, twoPath);
+
+            ArrayList<Integer> threePath = new ArrayList<>();
+            threePath.add(0);
+            threePath.add(1);
+            threePath.add(2);
+            threePath.add(6);
+            threePath.add(7);
+            threePath.add(8);
+            path.put(3, threePath);
+
+            ArrayList<Integer> zeroExcluded = new ArrayList<>();
+            zeroExcluded.add(1);
+            zeroExcluded.add(7);
+            excluded.put(0, zeroExcluded);
+
+            ArrayList<Integer> oneTwoExcluded = new ArrayList<>();
+            oneTwoExcluded.add(0);
+            oneTwoExcluded.add(8);
+            excluded.put(1, oneTwoExcluded);
+            excluded.put(2, oneTwoExcluded);
+
+            ArrayList<Integer> threeExcluded = new ArrayList<>();
+            threeExcluded.add(4);
+            excluded.put(3, threeExcluded);
+
+            ArrayList<Integer> fourExcluded = new ArrayList<>();
+            fourExcluded.add(3);
+            fourExcluded.add(4);
+            fourExcluded.add(5);
+            excluded.put(4, fourExcluded);
+
+            for (int i = 0; i < NUM_COLS; i++) {
+                ColumnConstraints column = new ColumnConstraints(TILE_WIDTH);
                 gridPane.getColumnConstraints().add(column);
             }
-            for (int i = 0; i < 20; i++) {
-                RowConstraints row = new RowConstraints(40);
+            for (int i = 0; i < NUM_ROWS; i++) {
+                RowConstraints row = new RowConstraints(TILE_WIDTH);
                 gridPane.getRowConstraints().add(row);
             }
-            updateGameData();
-            setEnemyImage();
-            setMonumentData();
+            for (int row = 0; row < NUM_ROWS; row++) {
+                for (int col = 0; col < NUM_COLS; col++) {
+                    if ((row == 0 && col == 0) || (row == 0 && col == 8)) {
+                        continue;
+                    }
+                    if (path.containsKey(row) && path.get(row).contains(col)) {
+                        Button tileButton = new Button();
+                        tileButton.setPrefWidth(TILE_WIDTH);
+                        tileButton.setPrefHeight(TILE_WIDTH);
+                        tileButton.setGraphic(getWhiteImage());
+                        tileButton.setStyle("-fx-background-color: #FFFFFF; "
+                                + "-fx-background-radius: 0;");
+                        Tile tile = new Tile(row, col, tileButton, false,
+                                true, false);
+                        tile.getButton().setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                onNotTowerTileClicked(tile);
+                            }
+                        });
+                        gridPane.add(tile.getButton(), tile.getCol(), tile.getRow());
+                        grid[row][col] = tile;
+                    } else if (excluded.containsKey(row) && excluded.get(row).contains(col)) {
+                        Button tileButton = new Button();
+                        tileButton.setPrefWidth(TILE_WIDTH);
+                        tileButton.setPrefHeight(TILE_WIDTH);
+                        ImageView xImage = new ImageView();
+                        tileButton.setGraphic(getXImage(xImage));
+                        tileButton.setStyle("-fx-background-color: transparent; "
+                                + "-fx-border-color: transparent; "
+                                + "-fx-background-radius: 0;");
+                        Tile tile = new Tile(row, col, tileButton, false,
+                                false, false);
+                        tile.getButton().setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                onNotTowerTileClicked(tile);
+                            }
+                        });
+                        gridPane.add(tile.getButton(), tile.getCol(), tile.getRow());
+                        grid[row][col] = tile;
+                    } else {
+                        Button tileButton = new Button();
+                        tileButton.setPrefWidth(TILE_WIDTH);
+                        tileButton.setPrefHeight(TILE_WIDTH);
+                        tileButton.setStyle("-fx-background-color: transparent; "
+                                + "-fx-border-color: transparent; "
+                                + "-fx-background-radius: 0;");
+                        Tile tile = new Tile(row, col, tileButton, false,
+                                false, true);
+                        tile.getButton().setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                onTowerTileClicked(tile);
+                            }
+                        });
+                        gridPane.add(tile.getButton(), tile.getCol(), tile.getRow());
+                        grid[row][col] = tile;
+                    }
+                }
+            }
+
+            placeMonument();
             setMenuButtons();
-            setRotateButtons();
+            updateGameData();
         }
 
 
@@ -101,25 +205,24 @@ public class InitialGameScreenController {
      * Constantly updates the game data
      */
     private void updateGameData() {
-        GridPane.setRowIndex(gameData, 1);
+        GridPane.setRowIndex(gameData, 0);
         GridPane.setColumnIndex(gameData, 0);
         gameData.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        moneyLabel.setTextFill(Color.web("#FFFFFF"));
         moneyLabel.setFont(Font.font("Courier New", 15));
 
-        scoreLabel.setTextFill(Color.web("#FFFFFF"));
         scoreLabel.setFont(Font.font("Courier New", 15));
 
-        levelLabel.setTextFill(Color.web("#FFFFFF"));
         levelLabel.setFont(Font.font("Courier New", 15));
 
-        Task task = new Task<Void>() {
+        healthLabel.setFont(Font.font("Courier New", 15));
+
+        enemyHealthLabel.setFont(Font.font("Courier New", 15));
+
+        Task task = new Task<Integer>() {
             @Override
-            public Void call() throws Exception {
-                int i = 0;
-                while (true) {
-                    final int finalI = i;
+            public Integer call() throws Exception {
+                while (monument.getHealth() > 0) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -129,14 +232,13 @@ public class InitialGameScreenController {
                                     + player.getScore());
                             levelLabel.setText("LEVEL: "
                                     + game.getLevel());
-                            if (towerToPlace != null) {
-                                placeTower();
-                            }
+                            healthLabel.setText("HP: " + monument.getHealth());
+                            enemyHealthLabel.setText("ENEMY HP: " + enemy.getHealth());
                         }
                     });
-                    i++;
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 }
+                return monument.getHealth();
             }
         };
         Thread th = new Thread(task);
@@ -146,33 +248,29 @@ public class InitialGameScreenController {
     }
 
     /**
-     * Sets the enemy image
+     * Gets skull image
+     * @return skullImage
      */
-    private void setEnemyImage() {
+    private ImageView getSkullImage() {
         try {
-            URL url = TowerDefenseApplication.class.getResource("assets/icons/enemy.png");
+            URL url = TowerDefenseApplication.class.getResource("assets/icons/skull.png");
             image = new Image(String.valueOf(url));
         } catch (IllegalArgumentException exception) {
+            System.out.println("error");
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
             alert.show();
         }
-        enemyImage.setImage(image);
-        enemyImage.setFitWidth(100);
-        //Setting the image view parameters
-        GridPane.setRowIndex(enemyImage, 9);
-        GridPane.setColumnIndex(enemyImage, 0);
-        enemyImage.setPreserveRatio(true);
-        enemyImage.toFront();
+        ImageView skullImage = new ImageView();
+        skullImage.setImage(image);
+        skullImage.setFitWidth(120);
+        skullImage.setPreserveRatio(true);
+        return skullImage;
     }
 
     /**
-     * Sets the monument data
+     * Places the monument
      */
-    private void setMonumentData() {
-        healthLabel.setText("HEALTH: " + monument.getHealth());
-        healthLabel.setTextFill(Color.web("#FFFFFF"));
-        healthLabel.setStyle("-fx-background-color: green;");
-        healthLabel.setFont(Font.font("Courier New", 14));
+    private void placeMonument() {
         try {
             URL url = TowerDefenseApplication.class.getResource("assets/icons/gate.png");
             image = new Image(String.valueOf(url));
@@ -180,47 +278,61 @@ public class InitialGameScreenController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
             alert.show();
         }
+        ImageView monumentImage = new ImageView();
         monumentImage.setImage(image);
-        monumentImage.setFitWidth(90);
-        //Setting the image view parameters
-        GridPane.setRowIndex(monumentData, 12);
-        GridPane.setColumnIndex(monumentData, 9);
+        monumentImage.setFitWidth(120);
         monumentImage.setPreserveRatio(true);
-        monumentImage.toFront();
+        grid[3][8].getButton().setGraphic(monumentImage);
+        grid[3][8].setOccupied(true);
+    }
+
+    /**
+     * Gets x image
+     * @param xImage xImage
+     * @return xImage
+     */
+    private ImageView getXImage(ImageView xImage) {
+        try {
+            URL url = TowerDefenseApplication.class.getResource("assets/images/X.png");
+            image = new Image(String.valueOf(url));
+        } catch (IllegalArgumentException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
+            alert.show();
+        }
+        xImage.setImage(image);
+        xImage.setFitWidth(120);
+        xImage.setPreserveRatio(true);
+        return xImage;
+    }
+
+    /**
+     * Gets white image
+     * @return whiteImage
+     */
+    private ImageView getWhiteImage() {
+        try {
+            URL url = TowerDefenseApplication.class.getResource("assets/images/white.jpeg");
+            image = new Image(String.valueOf(url));
+        } catch (IllegalArgumentException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
+            alert.show();
+        }
+        ImageView whiteImage = new ImageView();
+        whiteImage.setImage(image);
+        whiteImage.setFitWidth(120);
+        whiteImage.setPreserveRatio(true);
+        return whiteImage;
     }
 
     /**
      * Sets the menu data
      */
     private void setMenuButtons() {
-        GridPane.setRowIndex(gameButtons, 1);
-        GridPane.setColumnIndex(gameButtons, 9);
-        towerMenu.setText("Store");
-        towerMenu.setPrefWidth(200);
-        towerMenu.setStyle("-fx-background-color: #FF0000; ");
+        GridPane.setRowIndex(gameButtons, 0);
+        GridPane.setColumnIndex(gameButtons, 8);
         towerMenu.setFont(Font.font("Courier New", 15));
-        inventoryMenu.setText("Inventory");
-        inventoryMenu.setPrefWidth(200);
-        inventoryMenu.setStyle("-fx-background-color: #FFFF00; ");
         inventoryMenu.setFont(Font.font("Courier New", 15));
-    }
-
-    /**
-     * Sets the rotate buttons
-     */
-    private void setRotateButtons() {
-        GridPane.setRowIndex(rotateTop, 1);
-        GridPane.setColumnIndex(rotateTop, 5);
-        rotateTop.setText("Rotate");
-        rotateTop.setPrefWidth(120);
-        rotateTop.setStyle("-fx-background-color: #FF0000; ");
-        rotateTop.setFont(Font.font("Courier New", 15));
-        GridPane.setRowIndex(rotateBottom, 12);
-        GridPane.setColumnIndex(rotateBottom, 3);
-        rotateBottom.setText("Rotate");
-        rotateBottom.setPrefWidth(120);
-        rotateBottom.setStyle("-fx-background-color: #FF0000; ");
-        rotateBottom.setFont(Font.font("Courier New", 15));
+        startCombat.setFont(Font.font("Courier New", 15));
     }
 
     /**
@@ -241,32 +353,64 @@ public class InitialGameScreenController {
     }
 
     /**
-     * Sets rotate top button
+     * Starts combat
      */
     @FXML
-    private void onRotateTop() {
-        for (int i = 0; i < game.getTowersPlaced().size(); i++) {
-            if (game.getTowersPlaced().get(i).getX() == 1
-                    && game.getTowersPlaced().get(i).getY() == 6) {
-                game.getTowersPlaced().get(i).getImage().setRotate(
-                        game.getTowersPlaced().get(i).getImage().getRotate() + 90);
-            }
+    private void onStartCombat() {
+        if (game.hasStarted()) {
+            return;
+        }
+        System.out.println("start");
+        grid[3][0].getButton().setGraphic(getSkullImage());
+        grid[3][0].setOccupied(true);
+        game.setStarted(true);
+        System.out.println(game.hasStarted());
+        startWave();
+    }
+
+
+    /**
+     * On tower tile clicked
+     *
+     * @param tile tile
+     */
+    public void onTowerTileClicked(Tile tile) {
+        System.out.println("clicked");
+        if (towerToPlace != null && towerToPlace.getImage() != null
+                && !InitialGameScreenController.placementDone && !tile.isOccupied()) {
+            tile.getButton().setGraphic(towerToPlace.getImage());
+            tile.setOccupied(true);
+            game.getTowersPlaced().add(towerToPlace);
+            game.removeTower(towerToPlace);
+            towerToPlace = null;
+            InitialGameScreenController.placementDone = true;
+        } else if (towerToPlace != null && towerToPlace.getImage() != null
+                && !InitialGameScreenController.placementDone && tile.isOccupied()) {
+            onNotTowerTileClicked(tile);
+        } else if (tile.isOccupied()) {
+            System.out.println("occupied");
+            ImageView graphic = (ImageView) tile.getButton().getGraphic();
+            graphic.setRotate(graphic.getRotate() + 90);
+            tile.getButton().setGraphic(graphic);
         }
     }
 
     /**
-     * Sets rotate bottom button
+     * On path/excluded tile clicked
+     *
+     * @param tile tile
      */
-    @FXML
-    private void onRotateBottom() {
-        for (int i = 0; i < game.getTowersPlaced().size(); i++) {
-            if (game.getTowersPlaced().get(i).getX() == 12
-                    && game.getTowersPlaced().get(i).getY() == 2) {
-                game.getTowersPlaced().get(i).getImage().setRotate(
-                        game.getTowersPlaced().get(i).getImage().getRotate() + 90);
-            }
+    public void onNotTowerTileClicked(Tile tile) {
+        if (towerToPlace != null && towerToPlace.getImage() != null
+                && !InitialGameScreenController.placementDone) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Place the tower in an empty blue spot!");
+            alert.show();
+            towerToPlace = null;
+            InitialGameScreenController.placementDone = true;
         }
     }
+
 
     /**
      * Sets the monument data
@@ -285,62 +429,74 @@ public class InitialGameScreenController {
         inventoryMenu.show();
     }
 
-    /**
-     * Places tower on map at (x,y) coordinate where player clicks
-     *
-     */
-    private void placeTower() {
-        if (towerToPlace != null && towerToPlace.getImage() != null
-                && !InitialGameScreenController.placementDone) {
-            EventHandler onClickHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
-                public void handle(javafx.scene.input.MouseEvent mouseEvent) {
-                    gridPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-                    double x = Objects.requireNonNull(mouseEvent).getSceneX();
-                    double y = Objects.requireNonNull(mouseEvent).getSceneY();
-                    int column = (int) x / 120;
-                    int row = (int) y / 40;
-                    if (checkPlacement(towerToPlace, row, column)) {
-                        gridPane.add(towerToPlace.getImage(), column, row);
-                        System.out.println("added");
-                        game.getTowersPlaced().add(towerToPlace);
-                        towerToPlace.setX(row);
-                        towerToPlace.setY(column);
-                        System.out.println(game.getTowersPlaced());
-                        game.removeTower(towerToPlace);
-                        towerToPlace = null;
+    private void startWave() {
+        if (!game.hasStarted()) {
+            return;
+        }
+        System.out.println("Start wave");
+        Task task = new Task<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                int row = 3;
+                int col = -1;
+                int nextRow = 3;
+                int nextCol = 0;
+                while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
+                        && enemy.getHealth() > 0 && monument.getHealth() > 0) {
+                    System.out.println("Loop: " + row + " " + col);
+                    final int finalCol = col;
+                    final int finalRow = row;
+                    final int finalNextCol = nextCol;
+                    final int finalNextRow = nextRow;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            grid[finalNextRow][finalNextCol].setOccupied(true);
+                            grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                    getSkullImage());
+                            if (!(finalNextRow == 3 && finalNextCol == 0)) {
+                                grid[finalRow][finalCol].setOccupied(false);
+                                grid[finalRow][finalCol].getButton().setGraphic(
+                                        getWhiteImage());
+                            }
+
+                        }
+                    });
+                    if (nextRow == 3 && nextCol < 2) {
+                        nextCol++;
+                    } else if (nextRow > 1 && nextCol == 2) {
+                        nextRow--;
+                    } else if (nextRow == 1 && nextCol < 6) {
+                        nextCol++;
+                    } else if (nextRow < 3 && nextCol == 6) {
+                        nextRow++;
+                    } else if (nextRow == 3 && nextCol < 7) {
+                        nextCol++;
                     } else {
-                        towerToPlace = null;
-                        Alert alert = new Alert(Alert.AlertType.ERROR,
-                                "Place the tower in an empty yellow square!");
-                        alert.show();
+                        break;
                     }
-                    InitialGameScreenController.placementDone = true;
+                    if (row == 3 && col < 2) {
+                        col++;
+                    } else if (row > 1 && col == 2) {
+                        row--;
+                    } else if (row == 1 && col < 6) {
+                        col++;
+                    } else if (row < 3 && col == 6) {
+                        row++;
+                    } else if (row == 3 && col < 6) {
+                        col++;
+                    } else {
+                        break;
+                    }
+                    Thread.sleep(enemy.getSpeed());
                 }
-            };
-            gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED, onClickHandler);
-        }
-    }
-
-
-    /**
-     * Checks if placement is appropriate
-     *
-     * @param tower tower
-     * @param col col
-     * @param row row
-     * @return if correct placement
-     */
-    private boolean checkPlacement(Tower tower, int row, int col) {
-        if ((row == 12 && col == 2) || (row == 1 && col == 6)) {
-            for (int i = 0; i < game.getTowersPlaced().size(); i++) {
-                if (game.getTowersPlaced().get(i).getX() == row
-                        && game.getTowersPlaced().get(i).getY() == col) {
-                    return false;
-                }
+                return monument.getHealth();
             }
-            return true;
-        }
-        return false;
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
+
     }
 
     /**

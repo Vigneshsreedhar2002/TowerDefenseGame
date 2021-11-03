@@ -6,12 +6,10 @@ import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.testfx.api.FxAssert.assertContext;
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class InitialGameScreenTest extends ApplicationTest {
@@ -84,7 +82,7 @@ public class InitialGameScreenTest extends ApplicationTest {
      * Tests to make sure you can't place a tower in an invalid location
      */
     @Test
-    public void testInvalidTowerPlace(){
+    public void testInvalidTowerPlace() {
         clickOn("Easy");
         clickOn("Start");
         clickOn("#towerMenu");
@@ -94,14 +92,12 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("#tank");
         clickOn("#towerMenu");
         assertNotNull(InitialGameScreenController.getTowerToPlace());
-
-
     }
     /**
      * Tests to make sure you can place a tower in a valid location
      */
     @Test
-    public void testValidTowerPlace(){
+    public void testValidTowerPlace() {
         clickOn("Easy");
         clickOn("Start");
         clickOn("#towerMenu");
@@ -111,10 +107,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("#tank");
         clickOn(240, 480);
         assertNull(InitialGameScreenController.getTowerToPlace());
-
-
     }
-
 
 
 

@@ -8,27 +8,25 @@
 <?import javafx.scene.control.Button?>
 
 
-<GridPane id="pane" prefHeight="1280" prefWidth="720" xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.judy.controllers.InitialGameScreenController" fx:id="gridPane">
+<GridPane id="pane" prefHeight="1260" prefWidth="700" xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.example.judy.controllers.InitialGameScreenController" fx:id="gridPane" gridLinesVisible="true">
 
     <VBox fx:id="gameData">
-        <Label fx:id="moneyLabel"/>
-        <Label fx:id="scoreLabel"/>
-        <Label fx:id="levelLabel"/>
+        <Label fx:id="moneyLabel" textFill="white"/>
+        <Label fx:id="scoreLabel" textFill="white"/>
+        <Label fx:id="levelLabel" textFill="white"/>
+        <Label fx:id="enemyHealthLabel" textFill="white"/>
+        <Label fx:id="healthLabel" textFill="white"/>
     </VBox>
 
     <VBox fx:id="gameButtons">
-        <Button fx:id="towerMenu" onAction="#onShowTowerMenu"/>
-        <Button fx:id="inventoryMenu" onAction="#onShowInventoryMenu"/>
+        <Button fx:id="towerMenu" onAction="#onShowTowerMenu"
+                text="Store" style="-fx-background-color: orange" prefWidth="200"/>
+        <Button fx:id="inventoryMenu" onAction="#onShowInventoryMenu"
+                text="Inventory" style="-fx-background-color: yellow" prefWidth="200"/>
+        <Button fx:id="startCombat" onAction="#onStartCombat"
+                text="Start" style="-fx-background-color: green" prefWidth="200"/>
     </VBox>
 
-    <ImageView fx:id="enemyImage"/>
-    <VBox fx:id="monumentData" alignment="CENTER">
-        <Label fx:id="healthLabel"/>
-        <ImageView fx:id="monumentImage"/>
-    </VBox>
-
-    <Button fx:id="rotateTop" onAction="#onRotateTop"/>
-    <Button fx:id="rotateBottom" onAction="#onRotateBottom"/>
 
 </GridPane>

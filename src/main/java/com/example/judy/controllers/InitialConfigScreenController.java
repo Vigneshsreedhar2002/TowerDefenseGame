@@ -54,7 +54,7 @@ public class InitialConfigScreenController {
         FXMLLoader initialGamePaneLoader = new FXMLLoader(
                 TowerDefenseApplication.class.getResource("screens/initial-game-screen.fxml"));
         Parent initialGamePane = initialGamePaneLoader.load();
-        Scene initialGameScene = new Scene(initialGamePane, 1280, 720);
+        Scene initialGameScene = new Scene(initialGamePane, 1260, 700);
         initialGameScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
         initialGameScene.getStylesheets().addAll(Objects.requireNonNull(
                 TowerDefenseApplication.class.getResource("assets/style.css")).toExternalForm());
