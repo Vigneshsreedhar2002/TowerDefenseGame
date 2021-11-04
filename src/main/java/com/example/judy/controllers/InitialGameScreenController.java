@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -48,6 +50,7 @@ public class InitialGameScreenController {
     private Button inventoryMenu;
     @FXML
     private Button startCombat;
+    private Stage stage;
 
     private static Tower towerToPlace;
     private static boolean placementDone;
@@ -494,6 +497,16 @@ public class InitialGameScreenController {
                         break;
                     }
                     Thread.sleep(enemy.getSpeed());
+                }
+                // to transition to game over screen
+                if (monument.getHealth() <= 0) {
+                    FXMLLoader gameOverPaneLoader = new FXMLLoader(
+                            TowerDefenseApplication.class.getResource("screens/gameover-screen.fxml"));
+                    Parent gameOverPane = gameOverPaneLoader.load();
+                    Scene gameOverScene = new Scene(gameOverPane, 1260, 700);
+                    gameOverScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
+                    stage.setScene(gameOverScene);
+                    stage.show();
                 }
                 return monument.getHealth();
             }
