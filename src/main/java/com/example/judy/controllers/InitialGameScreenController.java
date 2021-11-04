@@ -137,6 +137,7 @@ public class InitialGameScreenController {
                     }
                     if (path.containsKey(row) && path.get(row).contains(col)) {
                         Button tileButton = new Button();
+                        tileButton.setId(row + "" + col);
                         tileButton.setPrefWidth(TILE_WIDTH);
                         tileButton.setPrefHeight(TILE_WIDTH);
                         tileButton.setGraphic(getWhiteImage());
@@ -154,6 +155,7 @@ public class InitialGameScreenController {
                         grid[row][col] = tile;
                     } else if (excluded.containsKey(row) && excluded.get(row).contains(col)) {
                         Button tileButton = new Button();
+                        tileButton.setId(row + "" + col);
                         tileButton.setPrefWidth(TILE_WIDTH);
                         tileButton.setPrefHeight(TILE_WIDTH);
                         ImageView xImage = new ImageView();
@@ -173,6 +175,7 @@ public class InitialGameScreenController {
                         grid[row][col] = tile;
                     } else {
                         Button tileButton = new Button();
+                        tileButton.setId(row + "" + col);
                         tileButton.setPrefWidth(TILE_WIDTH);
                         tileButton.setPrefHeight(TILE_WIDTH);
                         tileButton.setStyle("-fx-background-color: transparent; "
@@ -452,10 +455,12 @@ public class InitialGameScreenController {
                         @Override
                         public void run() {
                             grid[finalNextRow][finalNextCol].setOccupied(true);
+                            grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
                             grid[finalNextRow][finalNextCol].getButton().setGraphic(
                                     getSkullImage());
                             if (!(finalNextRow == 3 && finalNextCol == 0)) {
                                 grid[finalRow][finalCol].setOccupied(false);
+                                grid[finalRow][finalCol].getButton().setFocusTraversable(false);
                                 grid[finalRow][finalCol].getButton().setGraphic(
                                         getWhiteImage());
                             }
@@ -526,5 +531,14 @@ public class InitialGameScreenController {
      */
     public static void setPlacementDone(boolean placementDone) {
         InitialGameScreenController.placementDone = placementDone;
+    }
+
+    /**
+     * Gets grid
+     *
+     * @return grid
+     */
+    public Tile[][] getGrid() {
+        return grid;
     }
 }
