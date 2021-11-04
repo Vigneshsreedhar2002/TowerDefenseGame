@@ -497,16 +497,18 @@ public class InitialGameScreenController {
                         break;
                     }
                     Thread.sleep(enemy.getSpeed());
-                }
-                // to transition to game over screen
-                if (monument.getHealth() <= 0) {
-                    FXMLLoader gameOverPaneLoader = new FXMLLoader(
-                            TowerDefenseApplication.class.getResource("screens/gameover-screen.fxml"));
-                    Parent gameOverPane = gameOverPaneLoader.load();
-                    Scene gameOverScene = new Scene(gameOverPane, 1260, 700);
-                    gameOverScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
-                    stage.setScene(gameOverScene);
-                    stage.show();
+                    monument.setHealth(0);
+                    // to transition to game over screen
+                    if (monument.getHealth() <= 0) {
+                        final Stage gameOver = new Stage();
+                        FXMLLoader gameOverPaneLoader = new FXMLLoader(
+                                TowerDefenseApplication.class.getResource("screens/gameover-screen.fxml"));
+                        Parent gameOverPane = gameOverPaneLoader.load();
+                        Scene gameOverScene = new Scene(gameOverPane, 1260, 700);
+                        gameOverScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
+                        gameOver.setScene(gameOverScene);
+                        gameOver.show();
+                    }
                 }
                 return monument.getHealth();
             }

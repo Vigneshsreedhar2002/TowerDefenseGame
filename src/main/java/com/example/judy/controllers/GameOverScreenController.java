@@ -43,7 +43,7 @@ public class GameOverScreenController {
         stage.setScene(welcomeConfigScene);
     }
     @FXML
-    public void onCloseButtonClick (ActionEvent actionEvent) throws IOException {
+    protected void onCloseButtonClick (ActionEvent actionEvent) throws IOException {
         close.setOnAction(e -> Platform.exit());
     }
 
@@ -57,16 +57,18 @@ public class GameOverScreenController {
         restart.setStyle("-fx-background-color: white");
     }
 
+    @FXML
     public void onRestartMouseExited() {
         restart.setStyle("-fx-background-color: gold");
     }
 
     @FXML
-    public void onMouseDrag() {
+    public void onCloseMouseDrag() {
         close.setStyle("-fx-background-color: white");
     }
 
-    public void onMouseExited() {
+    @FXML
+    public void onCloseMouseExited() {
         close.setStyle("-fx-background-color: gold");
     }
 }
