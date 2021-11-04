@@ -48,7 +48,8 @@ public class InitialGameScreenTest extends ApplicationTest {
         verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 0"));
         verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 0"));
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $200.00"));
-        verifyThat("#healthLabel", LabeledMatchers.hasText("HEALTH: 100"));
+        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 100"));
+        verifyThat("#enemyHealthLabel", LabeledMatchers.hasText("ENEMY HP: 50"));
     }
 
     /**
@@ -62,7 +63,8 @@ public class InitialGameScreenTest extends ApplicationTest {
         verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 0"));
         verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 0"));
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $150.00"));
-        verifyThat("#healthLabel", LabeledMatchers.hasText("HEALTH: 75"));
+        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 75"));
+        verifyThat("#enemyHealthLabel", LabeledMatchers.hasText("ENEMY HP: 75"));
     }
 
     /**
@@ -76,7 +78,8 @@ public class InitialGameScreenTest extends ApplicationTest {
         verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 0"));
         verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 0"));
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $100.00"));
-        verifyThat("#healthLabel", LabeledMatchers.hasText("HEALTH: 50"));
+        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 50"));
+        verifyThat("#enemyHealthLabel", LabeledMatchers.hasText("ENEMY HP: 100"));
     }
     /**
      * Tests to make sure you can't place a tower in an invalid location
