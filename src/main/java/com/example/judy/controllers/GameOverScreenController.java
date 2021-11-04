@@ -1,6 +1,7 @@
 package com.example.judy.controllers;
 
 import com.example.judy.TowerDefenseApplication;
+import com.example.judy.modules.GameAdmin;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,14 +25,13 @@ public class GameOverScreenController {
 
     @FXML
     private void initialize() {
-        gameOverText.setText("Your monument has reached 0 health. It was an outstanding effort! Click 'restart' to " +
-                "again or 'close' to exit application");
+        gameOverText.setText("You lost! The enemy has captured Judy!");
     }
 
     /**
-     * method to return to welcome screen
-     * @param actionEvent
-     * @throws IOException
+     * Method to return to welcome screen
+     * @param actionEvent actionEvent
+     * @throws IOException IOException
      */
     public void openWelcomeScreen(ActionEvent actionEvent) throws IOException {
         FXMLLoader welcomePaneLoader = new FXMLLoader(
@@ -42,33 +42,25 @@ public class GameOverScreenController {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(welcomeConfigScene);
     }
+
+    /**
+     * Method to close screen
+     * @param actionEvent actionEvent
+     */
     @FXML
-    protected void onCloseButtonClick (ActionEvent actionEvent) throws IOException {
+    protected void onCloseButtonClick(ActionEvent actionEvent) {
         close.setOnAction(e -> Platform.exit());
     }
 
+    /**
+     * Onclick restart button
+     * @param actionEvent actionEvent
+     * @throws IOException IOException
+     */
     @FXML
     protected void onRestartButtonClick(ActionEvent actionEvent) throws IOException {
+        GameAdmin.setGame(null);
         openWelcomeScreen(actionEvent);
     }
 
-    @FXML
-    public void onRestartMouseDrag() {
-        restart.setStyle("-fx-background-color: white");
-    }
-
-    @FXML
-    public void onRestartMouseExited() {
-        restart.setStyle("-fx-background-color: gold");
-    }
-
-    @FXML
-    public void onCloseMouseDrag() {
-        close.setStyle("-fx-background-color: white");
-    }
-
-    @FXML
-    public void onCloseMouseExited() {
-        close.setStyle("-fx-background-color: gold");
-    }
 }

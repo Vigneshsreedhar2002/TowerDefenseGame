@@ -4,10 +4,12 @@ public class Enemy {
 
     private int speed;
     private int health;
+    private int damage;
 
-    public Enemy(int speed, int health) {
+    public Enemy(int speed, int health, int damage) {
         this.speed = speed;
         this.health = health;
+        this.damage = damage;
     }
 
     public int getSpeed() {
@@ -26,4 +28,11 @@ public class Enemy {
         this.health = health;
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 }
