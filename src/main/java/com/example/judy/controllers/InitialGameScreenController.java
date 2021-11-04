@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -58,6 +60,8 @@ public class InitialGameScreenController {
     private Player player;
     private Monument monument;
     private Enemy enemy;
+
+    private boolean inDamageZone;
 
     public static final int NUM_ROWS = 5;
     public static final int NUM_COLS = 9;
@@ -369,6 +373,7 @@ public class InitialGameScreenController {
         game.setStarted(true);
         System.out.println(game.hasStarted());
         startWave();
+        System.out.println("here");
     }
 
 
@@ -446,7 +451,10 @@ public class InitialGameScreenController {
                 int nextCol = 0;
                 while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
                         && enemy.getHealth() > 0 && monument.getHealth() > 0) {
-                    System.out.println("Loop: " + row + " " + col);
+                    System.out.println("Loop: " + nextRow + " " + nextCol);
+                    if (nextRow == 3 && nextCol == 7) {
+                        inDamageZone = true;
+                    }
                     final int finalCol = col;
                     final int finalRow = row;
                     final int finalNextCol = nextCol;
@@ -495,6 +503,14 @@ public class InitialGameScreenController {
                     }
                     Thread.sleep(enemy.getSpeed());
                 }
+                System.out.println("end of loop");
+                System.out.println(inDamageZone);
+                if (inDamageZone) {
+                    grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
+                            + "-fx-background-radius: 0;");
+                    healthLabel.setTextFill(Paint.valueOf("RED"));
+                    damageMonument();
+                }
                 return monument.getHealth();
             }
         };
@@ -502,6 +518,51 @@ public class InitialGameScreenController {
         th.setDaemon(true);
         th.start();
 
+    }
+
+    /**
+     * Damage monument
+     */
+    private void damageMonument() {
+        System.out.println("damaging");
+        Task task = new Task<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                while (enemy.getHealth() > 0 && monument.getHealth() > 0) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            monument.setHealth(monument.getHealth() - enemy.getDamage());
+                            if (monument.getHealth() <= 0) {
+                                try {
+                                    openGameOverScreen();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                    Thread.sleep(2000);
+                }
+                return monument.getHealth();
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
+    }
+
+    public void openGameOverScreen() throws IOException {
+        // getting loader and a pane for the initial game screen
+        FXMLLoader initialGamePaneLoader = new FXMLLoader(
+                TowerDefenseApplication.class.getResource("screens/game-over-screen.fxml"));
+        Parent initialGamePane = initialGamePaneLoader.load();
+        Scene initialGameScene = new Scene(initialGamePane, 1260, 700);
+        initialGameScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
+        initialGameScene.getStylesheets().addAll(Objects.requireNonNull(
+                TowerDefenseApplication.class.getResource("assets/style.css")).toExternalForm());
+        Stage stage = (Stage) gridPane.getScene().getWindow();
+        stage.setScene(initialGameScene);
     }
 
     /**
