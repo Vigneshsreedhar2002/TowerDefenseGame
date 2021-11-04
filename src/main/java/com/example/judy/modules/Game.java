@@ -34,7 +34,7 @@ public class Game {
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
-            this.enemy = new Enemy(3000, 50);
+            this.enemy = new Enemy(2000, 50, 10);
             this.monument = new Monument(100);
             Cannon.setCost(50);
             Crossbow.setCost(75);
@@ -42,7 +42,7 @@ public class Game {
             break;
         case 1:
             this.player.setMoney(150);
-            this.enemy = new Enemy(2500, 75);
+            this.enemy = new Enemy(1500, 75, 10);
             this.monument = new Monument(75);
             Cannon.setCost(60);
             Crossbow.setCost(85);
@@ -50,7 +50,7 @@ public class Game {
             break;
         case 2:
             this.player.setMoney(100);
-            this.enemy = new Enemy(2000, 100);
+            this.enemy = new Enemy(1000, 100, 10);
             this.monument = new Monument(50);
             Cannon.setCost(70);
             Crossbow.setCost(95);

@@ -5,6 +5,9 @@ import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
+import org.testfx.matcher.control.LabeledMatchers;
+
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class StartWaveTest extends ApplicationTest {
@@ -64,6 +67,7 @@ public class StartWaveTest extends ApplicationTest {
 
     /**
      * Verifies that enemies are always on the right path
+     * @throws InterruptedException exception
      */
     @Test
     public void testEnemyOnPath() throws InterruptedException {
@@ -71,86 +75,94 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Start");
         clickOn("#startCombat");
         verifyThat("#30", Node::isFocusTraversable);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         verifyThat("#31", Node::isFocusTraversable);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         verifyThat("#32", Node::isFocusTraversable);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         verifyThat("#22", Node::isFocusTraversable);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         verifyThat("#12", Node::isFocusTraversable);
     }
 
     /**
      * Verifies that the game over shows up when health is 0
+     * @throws InterruptedException exception
      */
     @Test
-    public void testMoveToGameOver() {
-        clickOn("Easy");
+    public void testMoveToGameOver() throws InterruptedException {
+        clickOn("Hard");
         clickOn("Start");
+        clickOn("#startCombat");
+        Thread.sleep(16000);
+
+
     }
 
     /**
      * Verifies that the restart button resets the game to the welcome screen
+     * @throws InterruptedException exception
      */
     @Test
-    public void testRestartGame() {
-        clickOn("Easy");
+    public void testRestartGame() throws InterruptedException {
+        clickOn("Hard");
         clickOn("Start");
+        clickOn("#startCombat");
+        Thread.sleep(21000);
+        clickOn("#restart");
+        verifyThat("#welcomeText", NodeMatchers.isNotNull());
+
     }
 
     /**
      * Verifies if the enemy does the correct damage number to the monument
+     * @throws InterruptedException exception
      */
     @Test
-    public void testEnemyDamage() {
-        clickOn("Easy");
+    public void testEnemyDamage() throws InterruptedException {
+        clickOn("Hard");
         clickOn("Start");
-    }
-
-    /**
-     * Verifies if the game over screen keeps the player from
-     * placing a tower once the game has been lost
-     */
-    @Test
-    public void testNoTowerOnGameOver() {
-        clickOn("Easy");
-        clickOn("Start");
+        clickOn("#startCombat");
+        Thread.sleep(15000);
+        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 30"));
     }
 
     /**
      * Verifies that the enemy is moving at the correct speed for easy level
+     * @throws InterruptedException exception
      */
     @Test
     public void testEnemyEasySpeed() throws InterruptedException {
         clickOn("Easy");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(5000);
+        Thread.sleep(3500);
         verifyThat("#31", Node::isFocusTraversable);
     }
 
     /**
      * Verifies that the enemy is moving at the correct speed for hard level
+     * @throws InterruptedException exception
      */
     @Test
     public void testEnemyMediumSpeed() throws InterruptedException {
         clickOn("Medium");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(4000);
+        Thread.sleep(2500);
         verifyThat("#31", Node::isFocusTraversable);
     }
 
     /**
      * Verifies that the enemy is moving at the correct speed for hard level
+     * @throws InterruptedException exception
      */
     @Test
     public void testEnemyHardSpeed() throws InterruptedException {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(3000);
+        Thread.sleep(1500);
         verifyThat("#31", Node::isFocusTraversable);
     }
 
