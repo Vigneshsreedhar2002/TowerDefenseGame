@@ -93,7 +93,10 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("YES");
         clickOn("#inventoryMenu");
         clickOn("#tank");
-        clickOn("#towerMenu");
+        clickOn("#32");
+        clickOn("OK");
+        clickOn("#inventoryMenu");
+        clickOn("#tank");
         assertNotNull(InitialGameScreenController.getTowerToPlace());
     }
     /**
@@ -108,7 +111,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("YES");
         clickOn("#inventoryMenu");
         clickOn("#tank");
-        clickOn(240, 480);
+        clickOn("#42");
         assertNull(InitialGameScreenController.getTowerToPlace());
     }
 
