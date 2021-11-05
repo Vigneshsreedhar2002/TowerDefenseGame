@@ -1,12 +1,19 @@
 
 import com.example.judy.TowerDefenseApplication;
+import com.example.judy.modules.Tile;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import java.net.URL;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -33,25 +40,45 @@ public class StartWaveTest extends ApplicationTest {
         clickOn(input);
         write("Test");
         clickOn("Enter");
+
     }
 
     /**
      * Tests if the start combat button exists and starts the next wave on click
      */
     @Test
-    public void testStartNextWave() {
+    public void testStartNextWave() throws InterruptedException {
         clickOn("Easy");
         clickOn("Start");
 
+        verifyThat("Start", NodeMatchers.isNotNull());
+        clickOn("Start");
+
+        Button startingSquare = lookup("#30").query();
+        verifyThat(startingSquare, Node::isFocusTraversable);
+
+        Thread.sleep(2000);
+        clickOn("Start");
+        assertFalse(startingSquare.isFocusTraversable());
     }
 
     /**
      * Verifies that any enemy released is moving
      */
     @Test
-    public void testEnemyMoving() {
+    public void testEnemyMoving() throws InterruptedException {
         clickOn("Medium");
         clickOn("Start");
+        clickOn("Start");
+
+        Button startingSquare = lookup("#30").query();
+        verifyThat(startingSquare, Node::isFocusTraversable);
+
+        Thread.sleep(2000);
+
+        assertFalse(startingSquare.isFocusTraversable());
+
+        verifyThat("#31", Node::isFocusTraversable);
     }
 
     /**
