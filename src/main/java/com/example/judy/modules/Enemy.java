@@ -1,6 +1,6 @@
 package com.example.judy.modules;
 
-public class Enemy {
+public abstract class Enemy {
 
     private int speed;
     private int health;

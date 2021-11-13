@@ -1,19 +1,14 @@
 
 import com.example.judy.TowerDefenseApplication;
-import com.example.judy.modules.Tile;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import java.net.URL;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -121,8 +116,9 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(16000);
-
+        Thread.sleep(20000);
+        verifyThat("#restart", NodeMatchers.isNotNull());
+        verifyThat("#close", NodeMatchers.isNotNull());
 
     }
 
@@ -135,7 +131,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(21000);
+        Thread.sleep(20000);
         clickOn("#restart");
         verifyThat("#welcomeText", NodeMatchers.isNotNull());
 

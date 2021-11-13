@@ -275,6 +275,26 @@ public class InitialGameScreenController {
     }
 
     /**
+     * Gets red skull image
+     * @return skullImage
+     */
+    private ImageView getRedSkullImage() {
+        try {
+            URL url = TowerDefenseApplication.class.getResource("assets/icons/redskull.png");
+            image = new Image(String.valueOf(url));
+        } catch (IllegalArgumentException exception) {
+            System.out.println("error");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
+            alert.show();
+        }
+        ImageView skullImage = new ImageView();
+        skullImage.setImage(image);
+        skullImage.setFitWidth(120);
+        skullImage.setPreserveRatio(true);
+        return skullImage;
+    }
+
+    /**
      * Places the monument
      */
     private void placeMonument() {
