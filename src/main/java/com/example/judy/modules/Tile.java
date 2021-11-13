@@ -7,16 +7,16 @@ public class Tile {
     private int row;
     private int col;
     private Button button;
-    private boolean isOccupied;
+    private Object occupiedBy;
     private boolean isPath;
     private boolean isTowerTerritory;
 
-    public Tile(int row, int col, Button button, boolean isOccupied,
+    public Tile(int row, int col, Button button, Object occupiedBy,
                 boolean isPath, boolean isTowerTerritory) {
         this.row = row;
         this.col = col;
         this.button = button;
-        this.isOccupied = isOccupied;
+        this.occupiedBy = occupiedBy;
         this.isPath = isPath;
         this.isTowerTerritory = isTowerTerritory;
     }
@@ -45,12 +45,12 @@ public class Tile {
         this.button = button;
     }
 
-    public boolean isOccupied() {
-        return isOccupied;
+    public Object occupiedBy() {
+        return occupiedBy;
     }
 
-    public void setOccupied(boolean occupied) {
-        isOccupied = occupied;
+    public void setOccupied(Object occupied) {
+        occupiedBy = occupied;
     }
 
     public boolean isPath() {

@@ -7,7 +7,7 @@ public class Game {
 
     private Player player;
     private Monument monument;
-    private Enemy enemy;
+    private ArrayList<Enemy> enemy = new ArrayList<>();
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
     private boolean started;
@@ -34,7 +34,7 @@ public class Game {
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
-            this.enemy = new BasicEnemy(2000, 50, 10);
+            this.enemy.add(new BasicEnemy(2000, 50, 10));
             this.monument = new Monument(100);
             Cannon.setCost(50);
             Crossbow.setCost(75);
@@ -42,7 +42,7 @@ public class Game {
             break;
         case 1:
             this.player.setMoney(150);
-            this.enemy = new BasicEnemy(1500, 75, 10);
+            this.enemy.add(new BasicEnemy(1500, 75, 10));
             this.monument = new Monument(75);
             Cannon.setCost(60);
             Crossbow.setCost(85);
@@ -50,7 +50,8 @@ public class Game {
             break;
         case 2:
             this.player.setMoney(100);
-            this.enemy = new BasicEnemy(1000, 100, 10);
+            this.enemy.add(new BasicEnemy(1000, 100, 10));
+            this.enemy.add(new StrongEnemy(1000, 150, 20));
             this.monument = new Monument(50);
             Cannon.setCost(70);
             Crossbow.setCost(95);
@@ -138,7 +139,7 @@ public class Game {
      *
      * @return enemy the enemy
      */
-    public Enemy getEnemy() {
+    public ArrayList<Enemy> getEnemy() {
         return enemy;
     }
 
@@ -147,8 +148,8 @@ public class Game {
      *
      * @param enemy the enemy to set
      */
-    public void setEnemy(Enemy enemy) {
-        this.enemy = enemy;
+    public void addEnemy(Enemy enemy) {
+        this.enemy.add(enemy);
     }
 
     /**
