@@ -59,7 +59,7 @@ public class InitialGameScreenController {
     private Game game;
     private Player player;
     private Monument monument;
-    private Enemy enemy;
+    private ArrayList<Enemy> enemy = new ArrayList<>();
 
     private boolean inDamageZone;
 
@@ -167,7 +167,7 @@ public class InitialGameScreenController {
                         tileButton.setStyle("-fx-background-color: transparent; "
                                 + "-fx-border-color: transparent; "
                                 + "-fx-background-radius: 0;");
-                        Tile tile = new Tile(row, col, tileButton, false,
+                        Tile tile = new Tile(row, col, tileButton, null,
                                 false, false);
                         tile.getButton().setOnAction(new EventHandler<ActionEvent>() {
                             @Override
@@ -185,7 +185,7 @@ public class InitialGameScreenController {
                         tileButton.setStyle("-fx-background-color: transparent; "
                                 + "-fx-border-color: transparent; "
                                 + "-fx-background-radius: 0;");
-                        Tile tile = new Tile(row, col, tileButton, false,
+                        Tile tile = new Tile(row, col, tileButton, null,
                                 false, true);
                         tile.getButton().setOnAction(new EventHandler<ActionEvent>() {
                             @Override
@@ -240,7 +240,7 @@ public class InitialGameScreenController {
                             levelLabel.setText("LEVEL: "
                                     + game.getLevel());
                             healthLabel.setText("HP: " + monument.getHealth());
-                            enemyHealthLabel.setText("ENEMY HP: " + enemy.getHealth());
+                            enemyHealthLabel.setText("ENEMY HP: " + enemy.get(0).getHealth());
                         }
                     });
                     Thread.sleep(100);
@@ -310,7 +310,7 @@ public class InitialGameScreenController {
         monumentImage.setFitWidth(120);
         monumentImage.setPreserveRatio(true);
         grid[3][8].getButton().setGraphic(monumentImage);
-        grid[3][8].setOccupied(true);
+        grid[3][8].setOccupied(monument);
     }
 
     /**
@@ -389,7 +389,7 @@ public class InitialGameScreenController {
         }
         System.out.println("start");
         grid[3][0].getButton().setGraphic(getSkullImage());
-        grid[3][0].setOccupied(true);
+        grid[3][0].setOccupied(enemy.get(0));
         game.setStarted(true);
         System.out.println(game.hasStarted());
         startWave();
@@ -405,17 +405,17 @@ public class InitialGameScreenController {
     public void onTowerTileClicked(Tile tile) {
         System.out.println("clicked");
         if (towerToPlace != null && towerToPlace.getImage() != null
-                && !InitialGameScreenController.placementDone && !tile.isOccupied()) {
+                && !InitialGameScreenController.placementDone && tile.occupiedBy() == null) {
             tile.getButton().setGraphic(towerToPlace.getImage());
-            tile.setOccupied(true);
+            tile.setOccupied(towerToPlace);
             game.getTowersPlaced().add(towerToPlace);
             game.removeTower(towerToPlace);
             towerToPlace = null;
             InitialGameScreenController.placementDone = true;
         } else if (towerToPlace != null && towerToPlace.getImage() != null
-                && !InitialGameScreenController.placementDone && tile.isOccupied()) {
+                && !InitialGameScreenController.placementDone && tile.occupiedBy() != null) {
             onNotTowerTileClicked(tile);
-        } else if (tile.isOccupied()) {
+        } else if (tile.occupiedBy() != null) {
             System.out.println("occupied");
             ImageView graphic = (ImageView) tile.getButton().getGraphic();
             graphic.setRotate(graphic.getRotate() + 90);
@@ -469,8 +469,9 @@ public class InitialGameScreenController {
                 int col = -1;
                 int nextRow = 3;
                 int nextCol = 0;
+                int threadCounter = 0;
                 while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
-                        && enemy.getHealth() > 0 && monument.getHealth() > 0) {
+                        && enemy.get(0).getHealth() > 0 && enemy.get(1).getHealth() > 0 && monument.getHealth() > 0) {
                     System.out.println("Loop: " + nextRow + " " + nextCol);
                     if (nextRow == 3 && nextCol == 7) {
                         inDamageZone = true;
@@ -521,7 +522,8 @@ public class InitialGameScreenController {
                     } else {
                         break;
                     }
-                    Thread.sleep(enemy.getSpeed());
+                    Thread.sleep(enemy.get(0).getSpeed());
+                    threadCounter++;
                 }
                 System.out.println("end of loop");
                 System.out.println(inDamageZone);
@@ -548,11 +550,11 @@ public class InitialGameScreenController {
         Task task = new Task<Integer>() {
             @Override
             public Integer call() throws Exception {
-                while (enemy.getHealth() > 0 && monument.getHealth() > 0) {
+                while (enemy.get(0).getHealth() > 0 && monument.getHealth() > 0) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            monument.setHealth(monument.getHealth() - enemy.getDamage());
+                            monument.setHealth(monument.getHealth() - enemy.get(0).getDamage());
                             if (monument.getHealth() <= 0) {
                                 try {
                                     openGameOverScreen();
