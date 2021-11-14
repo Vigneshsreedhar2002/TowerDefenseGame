@@ -6,4 +6,7 @@ public class BasicEnemy extends Enemy {
         super(speed, health, damage);
     }
 
+    public BasicEnemy() {
+        super();
+    }
 }

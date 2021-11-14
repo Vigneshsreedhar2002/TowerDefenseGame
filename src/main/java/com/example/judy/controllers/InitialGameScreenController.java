@@ -383,7 +383,7 @@ public class InitialGameScreenController {
      * Starts combat
      */
     @FXML
-    private void onStartCombat() {
+    private void onStartCombat() throws Exception {
         if (game.hasStarted()) {
             return;
         }
@@ -457,88 +457,100 @@ public class InitialGameScreenController {
         inventoryMenu.show();
     }
 
-    private void startWave() {
+    private void startWave() throws Exception {
+        int sleepTimer = 0;
         if (!game.hasStarted()) {
             return;
         }
         System.out.println("Start wave");
-        Task task = new Task<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                int row = 3;
-                int col = -1;
-                int nextRow = 3;
-                int nextCol = 0;
-                int threadCounter = 0;
-                while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
-                        && enemy.get(0).getHealth() > 0 && enemy.get(1).getHealth() > 0 && monument.getHealth() > 0) {
-                    System.out.println("Loop: " + nextRow + " " + nextCol);
-                    if (nextRow == 3 && nextCol == 7) {
-                        inDamageZone = true;
-                    }
-                    final int finalCol = col;
-                    final int finalRow = row;
-                    final int finalNextCol = nextCol;
-                    final int finalNextRow = nextRow;
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            grid[finalNextRow][finalNextCol].setOccupied(true);
-                            grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
-                            grid[finalNextRow][finalNextCol].getButton().setGraphic(
-                                    getSkullImage());
-                            if (!(finalNextRow == 3 && finalNextCol == 0)) {
-                                grid[finalRow][finalCol].setOccupied(false);
-                                grid[finalRow][finalCol].getButton().setFocusTraversable(false);
-                                grid[finalRow][finalCol].getButton().setGraphic(
-                                        getWhiteImage());
-                            }
-
+        for (int i = 0; i < enemy.size(); i++) {
+            Thread.sleep(sleepTimer);
+            sleepTimer += enemy.get(i).getSpeed();
+            int finalI = i;
+            Task task = new Task<Integer>() {
+                @Override
+                public Integer call() throws Exception {
+                    int row = 3;
+                    int col = -1;
+                    int nextRow = 3;
+                    int nextCol = 0;
+                    while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
+                            && enemy.get(finalI).getHealth() > 0 && monument.getHealth() > 0) {
+                        System.out.println("Loop: Enemy: " + enemy.get(finalI).getClass() + nextRow + " " + nextCol);
+                        if (nextRow == 3 && nextCol == 7) {
+                            inDamageZone = true;
                         }
-                    });
-                    if (nextRow == 3 && nextCol < 2) {
-                        nextCol++;
-                    } else if (nextRow > 1 && nextCol == 2) {
-                        nextRow--;
-                    } else if (nextRow == 1 && nextCol < 6) {
-                        nextCol++;
-                    } else if (nextRow < 3 && nextCol == 6) {
-                        nextRow++;
-                    } else if (nextRow == 3 && nextCol < 7) {
-                        nextCol++;
-                    } else {
-                        break;
+                        final int finalCol = col;
+                        final int finalRow = row;
+                        final int finalNextCol = nextCol;
+                        final int finalNextRow = nextRow;
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                grid[finalNextRow][finalNextCol].setOccupied(enemy.get(finalI));
+                                grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
+                                if (enemy.get(finalI) instanceof BasicEnemy) {
+                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                            getSkullImage());
+                                } else {
+                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                            getRedSkullImage());
+                                }
+                                if (!(finalNextRow == 3 && finalNextCol == 0)) {
+                                    if (grid[finalRow][finalCol].occupiedBy() == enemy.get(finalI)) {
+                                        grid[finalRow][finalCol].setOccupied(null);
+                                        grid[finalRow][finalCol].getButton().setFocusTraversable(false);
+                                        grid[finalRow][finalCol].getButton().setGraphic(
+                                                getWhiteImage());
+                                    }
+                                }
+
+                            }
+                        });
+                        if (nextRow == 3 && nextCol < 2) {
+                            nextCol++;
+                        } else if (nextRow > 1 && nextCol == 2) {
+                            nextRow--;
+                        } else if (nextRow == 1 && nextCol < 6) {
+                            nextCol++;
+                        } else if (nextRow < 3 && nextCol == 6) {
+                            nextRow++;
+                        } else if (nextRow == 3 && nextCol < 7) {
+                            nextCol++;
+                        } else {
+                            break;
+                        }
+                        if (row == 3 && col < 2) {
+                            col++;
+                        } else if (row > 1 && col == 2) {
+                            row--;
+                        } else if (row == 1 && col < 6) {
+                            col++;
+                        } else if (row < 3 && col == 6) {
+                            row++;
+                        } else if (row == 3 && col < 6) {
+                            col++;
+                        } else {
+                            break;
+                        }
+                        Thread.sleep(enemy.get(finalI).getSpeed());
                     }
-                    if (row == 3 && col < 2) {
-                        col++;
-                    } else if (row > 1 && col == 2) {
-                        row--;
-                    } else if (row == 1 && col < 6) {
-                        col++;
-                    } else if (row < 3 && col == 6) {
-                        row++;
-                    } else if (row == 3 && col < 6) {
-                        col++;
-                    } else {
-                        break;
+                    System.out.println("end of loop");
+                    System.out.println(inDamageZone);
+                    if (inDamageZone) {
+                        enemy.get(finalI).setInLine(true);
+                        grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
+                                + "-fx-background-radius: 0;");
+                        healthLabel.setTextFill(Paint.valueOf("RED"));
+                        damageMonument();
                     }
-                    Thread.sleep(enemy.get(0).getSpeed());
-                    threadCounter++;
+                    return monument.getHealth();
                 }
-                System.out.println("end of loop");
-                System.out.println(inDamageZone);
-                if (inDamageZone) {
-                    grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
-                            + "-fx-background-radius: 0;");
-                    healthLabel.setTextFill(Paint.valueOf("RED"));
-                    damageMonument();
-                }
-                return monument.getHealth();
-            }
-        };
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+            };
+            Thread th = new Thread(task);
+            th.setDaemon(true);
+            th.start();
+        }
 
     }
 
