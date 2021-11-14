@@ -458,14 +458,14 @@ public class InitialGameScreenController {
     }
 
     private void startWave() throws Exception {
-        int sleepTimer = 0;
+        int sleepTimer = enemy.get(0).getSpeed();
         if (!game.hasStarted()) {
             return;
         }
         System.out.println("Start wave");
         for (int i = 0; i < enemy.size(); i++) {
-            Thread.sleep(sleepTimer);
-            sleepTimer += enemy.get(i).getSpeed();
+            // Thread.sleep(sleepTimer);
+            // sleepTimer += enemy.get(i).getSpeed();
             int finalI = i;
             Task task = new Task<Integer>() {
                 @Override
@@ -487,24 +487,29 @@ public class InitialGameScreenController {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                grid[finalNextRow][finalNextCol].setOccupied(enemy.get(finalI));
-                                grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
-                                if (enemy.get(finalI) instanceof BasicEnemy) {
-                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
-                                            getSkullImage());
-                                } else {
-                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
-                                            getRedSkullImage());
-                                }
-                                if (!(finalNextRow == 3 && finalNextCol == 0)) {
-                                    if (grid[finalRow][finalCol].occupiedBy() == enemy.get(finalI)) {
-                                        grid[finalRow][finalCol].setOccupied(null);
-                                        grid[finalRow][finalCol].getButton().setFocusTraversable(false);
-                                        grid[finalRow][finalCol].getButton().setGraphic(
-                                                getWhiteImage());
+                                if (finalI == 0 || !enemy.get(finalI - 1).isInLine()) {
+                                    grid[finalNextRow][finalNextCol].setOccupied(enemy.get(finalI));
+                                    grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
+                                    if (enemy.get(finalI) instanceof BasicEnemy) {
+                                        grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                                getSkullImage());
+                                    } else {
+                                        grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                                getRedSkullImage());
+                                    }
+                                    if (!(finalNextRow == 3 && finalNextCol == 0)) {
+                                        if (grid[finalRow][finalCol].occupiedBy() == enemy.get(finalI)) {
+                                            grid[finalRow][finalCol].setOccupied(null);
+                                            grid[finalRow][finalCol].getButton().setFocusTraversable(false);
+                                            grid[finalRow][finalCol].getButton().setGraphic(
+                                                    getWhiteImage());
+                                        }
+                                    }
+
+                                    if (finalI != 0 && !enemy.get(finalI - 1).isInLine()) {
+                                        enemy.get(finalI).setInLine(true);
                                     }
                                 }
-
                             }
                         });
                         if (nextRow == 3 && nextCol < 2) {
@@ -547,6 +552,9 @@ public class InitialGameScreenController {
                     return monument.getHealth();
                 }
             };
+            Thread.sleep(sleepTimer);
+            sleepTimer = enemy.get(i).getSpeed();
+
             Thread th = new Thread(task);
             th.setDaemon(true);
             th.start();
