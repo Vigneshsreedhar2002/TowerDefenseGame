@@ -35,7 +35,7 @@ public class Game {
         case 0:
             this.player.setMoney(200);
             this.enemy.add(new BasicEnemy(2000, 50, 10));
-            this.enemy.add(new StrongEnemy(2000, 75, 13));
+            // this.enemy.add(new StrongEnemy(2000, 75, 13));
             this.monument = new Monument(100);
             Cannon.setCost(50);
             Crossbow.setCost(75);

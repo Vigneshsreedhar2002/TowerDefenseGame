@@ -387,11 +387,7 @@ public class InitialGameScreenController {
         if (game.hasStarted()) {
             return;
         }
-        System.out.println("start");
-        grid[3][0].getButton().setGraphic(getSkullImage());
-        grid[3][0].setOccupied(enemy.get(0));
         game.setStarted(true);
-        System.out.println(game.hasStarted());
         startWave();
         System.out.println("here");
     }
@@ -476,7 +472,6 @@ public class InitialGameScreenController {
                     int nextCol = 0;
                     while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
                             && enemy.get(finalI).getHealth() > 0 && monument.getHealth() > 0) {
-                        System.out.println("Loop: Enemy: " + enemy.get(finalI).getClass() + nextRow + " " + nextCol);
                         if (nextRow == 3 && nextCol == 7) {
                             inDamageZone = true;
                         }
@@ -487,6 +482,7 @@ public class InitialGameScreenController {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                                System.out.println("Run function");
                                 if (finalI == 0 || !enemy.get(finalI - 1).isInLine()) {
                                     grid[finalNextRow][finalNextCol].setOccupied(enemy.get(finalI));
                                     grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
@@ -506,9 +502,9 @@ public class InitialGameScreenController {
                                         }
                                     }
 
-                                    if (finalI != 0 && !enemy.get(finalI - 1).isInLine()) {
+                                     /* if (finalI != 0 && enemy.get(finalI - 1).isInLine()) {
                                         enemy.get(finalI).setInLine(true);
-                                    }
+                                    } */
                                 }
                             }
                         });
@@ -539,6 +535,9 @@ public class InitialGameScreenController {
                             break;
                         }
                         Thread.sleep(enemy.get(finalI).getSpeed());
+                        if (finalI != 0 && enemy.get(finalI - 1).isInLine()) {
+                            enemy.get(finalI).setInLine(true);
+                        }
                     }
                     System.out.println("end of loop");
                     System.out.println(inDamageZone);
@@ -552,11 +551,11 @@ public class InitialGameScreenController {
                     return monument.getHealth();
                 }
             };
-            Thread.sleep(sleepTimer);
-            sleepTimer = enemy.get(i).getSpeed();
 
+            Thread.sleep(sleepTimer);
             Thread th = new Thread(task);
             th.setDaemon(true);
+            System.out.println("Thread " + finalI + " starting");
             th.start();
         }
 
