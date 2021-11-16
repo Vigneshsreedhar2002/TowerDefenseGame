@@ -8,7 +8,7 @@ public class Crossbow extends Tower {
     public static final String NAME = "CROSSBOW";
     private static String description;
     public static final int DAMAGE = 5;
-    public static final int DAMAGE_PER_SECOND = 15;
+    public static final int DAMAGE_PER_SECOND = 8;
 
     public Crossbow() {
         super();

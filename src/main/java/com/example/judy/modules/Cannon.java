@@ -10,7 +10,7 @@ public class Cannon extends Tower {
     public static final String NAME = "CANNON";
     private static String description;
     public static final int DAMAGE = 10;
-    public static final int DAMAGE_PER_SECOND = 10;
+    public static final int DAMAGE_PER_SECOND = 5;
 
     public Cannon() {
         super();
