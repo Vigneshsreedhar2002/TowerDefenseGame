@@ -629,16 +629,20 @@ public class InitialGameScreenController {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
                         player.setMoney(player.getMoney() + 30);
+                        player.setScore(player.getScore() + 10);
                     } else if (enemy.get(finalI) instanceof StrongEnemy) {
                         player.setMoney(player.getMoney() + 50);
-                    } else {
+                        player.setScore(player.getScore() + 25);
+                    } else if (enemy.get(finalI) instanceof BossEnemy) {
                         player.setMoney(player.getMoney() + 100);
+                        player.setScore(player.getScore() + 50);
                     }
                     grid[finalNextRow][finalNextCol].setOccupied(null);
                     grid[finalNextRow][finalNextCol].getButton()
                             .setFocusTraversable(false);
                     grid[finalNextRow][finalNextCol].getButton().setGraphic(
                             getWhiteImage());
+                    break;
                 } else {
                     enemy.get(finalI).setHealth(difference);
                 }
@@ -653,16 +657,20 @@ public class InitialGameScreenController {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
                         player.setMoney(player.getMoney() + 30);
+                        player.setScore(player.getScore() + 10);
                     } else if (enemy.get(finalI) instanceof StrongEnemy) {
                         player.setMoney(player.getMoney() + 50);
-                    } else {
+                        player.setScore(player.getScore() + 25);
+                    } else if (enemy.get(finalI) instanceof BossEnemy) {
                         player.setMoney(player.getMoney() + 100);
+                        player.setScore(player.getScore() + 50);
                     }
                     grid[finalNextRow][finalNextCol].setOccupied(null);
                     grid[finalNextRow][finalNextCol].getButton()
                             .setFocusTraversable(false);
                     grid[finalNextRow][finalNextCol].getButton().setGraphic(
                             getWhiteImage());
+                    break;
                 } else {
                     enemy.get(finalI).setHealth(difference);
                 }
@@ -677,16 +685,20 @@ public class InitialGameScreenController {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
                         player.setMoney(player.getMoney() + 30);
+                        player.setScore(player.getScore() + 10);
                     } else if (enemy.get(finalI) instanceof StrongEnemy) {
                         player.setMoney(player.getMoney() + 50);
-                    } else {
+                        player.setScore(player.getScore() + 25);
+                    } else if (enemy.get(finalI) instanceof BossEnemy) {
                         player.setMoney(player.getMoney() + 100);
+                        player.setScore(player.getScore() + 50);
                     }
                     grid[finalNextRow][finalNextCol].setOccupied(null);
                     grid[finalNextRow][finalNextCol].getButton()
                             .setFocusTraversable(false);
                     grid[finalNextRow][finalNextCol].getButton().setGraphic(
                             getWhiteImage());
+                    break;
                 } else {
                     enemy.get(finalI).setHealth(difference);
                 }

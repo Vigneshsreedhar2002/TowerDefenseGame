@@ -69,7 +69,7 @@ public class StartWaveTest extends ApplicationTest {
         Button startingSquare = lookup("#30").query();
         verifyThat(startingSquare, Node::isFocusTraversable);
 
-        Thread.sleep(2000);
+        Thread.sleep(2500);
 
         assertFalse(startingSquare.isFocusTraversable());
 
@@ -93,18 +93,17 @@ public class StartWaveTest extends ApplicationTest {
      */
     @Test
     public void testEnemyOnPath() throws InterruptedException {
-        clickOn("Easy");
+        clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        verifyThat("#30", Node::isFocusTraversable);
-        Thread.sleep(2000);
-        verifyThat("#31", Node::isFocusTraversable);
-        Thread.sleep(2000);
-        verifyThat("#32", Node::isFocusTraversable);
-        Thread.sleep(2000);
-        verifyThat("#22", Node::isFocusTraversable);
-        Thread.sleep(2000);
-        verifyThat("#12", Node::isFocusTraversable);
+        Thread.sleep(2100);
+        assertFalse(lookup("#30").query().isFocusTraversable());
+        Thread.sleep(2100);
+        assertFalse(lookup("#31").query().isFocusTraversable());
+        Thread.sleep(2100);
+        assertFalse(lookup("#32").query().isFocusTraversable());
+        Thread.sleep(2100);
+        assertFalse(lookup("#22").query().isFocusTraversable());
     }
 
     /**
@@ -116,7 +115,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(20000);
+        Thread.sleep(30000);
         verifyThat("#restart", NodeMatchers.isNotNull());
         verifyThat("#close", NodeMatchers.isNotNull());
 
@@ -131,7 +130,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(20000);
+        Thread.sleep(30000);
         clickOn("#restart");
         verifyThat("#welcomeText", NodeMatchers.isNotNull());
 
@@ -146,8 +145,8 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(15000);
-        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 30"));
+        Thread.sleep(27000);
+        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 27"));
     }
 
     /**
@@ -159,7 +158,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Easy");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(3500);
+        Thread.sleep(4700);
         verifyThat("#31", Node::isFocusTraversable);
     }
 
@@ -172,7 +171,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Medium");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(2500);
+        Thread.sleep(4300);
         verifyThat("#31", Node::isFocusTraversable);
     }
 
@@ -185,7 +184,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(1500);
+        Thread.sleep(4000);
         verifyThat("#31", Node::isFocusTraversable);
     }
 
