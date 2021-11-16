@@ -14,8 +14,13 @@
         <Label fx:id="moneyLabel" textFill="white"/>
         <Label fx:id="scoreLabel" textFill="white"/>
         <Label fx:id="levelLabel" textFill="white"/>
-        <Label fx:id="enemyHealthLabel" textFill="white"/>
         <Label fx:id="healthLabel" textFill="white"/>
+    </VBox>
+
+    <VBox fx:id="enemyHealthData">
+        <Label fx:id="basicEnemyHealthLabel" textFill="white"/>
+        <Label fx:id="strongEnemyHealthLabel" textFill="white"/>
+        <Label fx:id="bossEnemyHealthLabel" textFill="white"/>
     </VBox>
 
     <VBox fx:id="gameButtons">
