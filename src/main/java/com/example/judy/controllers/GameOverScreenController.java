@@ -25,7 +25,8 @@ public class GameOverScreenController {
 
     @FXML
     private void initialize() {
-        gameOverText.setText("You lost! The enemy has captured Judy!");
+        gameOverText.setText("You lost, " + GameAdmin.getGame().getPlayer().getName()
+                + "! The enemy has captured Judy!");
     }
 
     /**

@@ -5,20 +5,20 @@ public abstract class Enemy {
     private int speed;
     private int health;
     private int damage;
-    private boolean inLine;
+    private boolean inDamageZone;
 
     public Enemy() {
         this.speed = 0;
         this.health = 0;
         this.damage = 0;
-        this.inLine = false;
+        this.inDamageZone = false;
     }
 
     public Enemy(int speed, int health, int damage) {
         this.speed = speed;
         this.health = health;
         this.damage = damage;
-        this.inLine = false;
+        this.inDamageZone = false;
     }
 
     public int getSpeed() {
@@ -45,7 +45,11 @@ public abstract class Enemy {
         this.damage = damage;
     }
 
-    public boolean isInLine() { return inLine; }
+    public boolean isInDamageZone() {
+        return inDamageZone;
+    }
 
-    public void setInLine(boolean bool) { inLine = bool; }
+    public void setInDamageZone(boolean inDamageZone) {
+        this.inDamageZone = inDamageZone;
+    }
 }

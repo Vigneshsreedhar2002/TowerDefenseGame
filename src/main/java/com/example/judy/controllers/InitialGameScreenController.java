@@ -41,8 +41,6 @@ public class InitialGameScreenController {
     @FXML
     private Label healthLabel;
     @FXML
-    private Label enemyHealthLabel;
-    @FXML
     private VBox gameButtons;
     @FXML
     private Button towerMenu;
@@ -50,6 +48,14 @@ public class InitialGameScreenController {
     private Button inventoryMenu;
     @FXML
     private Button startCombat;
+    @FXML
+    private VBox enemyHealthData;
+    @FXML
+    private Label basicEnemyHealthLabel;
+    @FXML
+    private Label strongEnemyHealthLabel;
+    @FXML
+    private Label bossEnemyHealthLabel;
 
     private static Tower towerToPlace;
     private static boolean placementDone;
@@ -60,8 +66,6 @@ public class InitialGameScreenController {
     private Player player;
     private Monument monument;
     private ArrayList<Enemy> enemy = new ArrayList<>();
-
-    private boolean inDamageZone;
 
     public static final int NUM_ROWS = 5;
     public static final int NUM_COLS = 9;
@@ -136,7 +140,8 @@ public class InitialGameScreenController {
             }
             for (int row = 0; row < NUM_ROWS; row++) {
                 for (int col = 0; col < NUM_COLS; col++) {
-                    if ((row == 0 && col == 0) || (row == 0 && col == 8)) {
+                    if ((row == 0 && col == 0) || (row == 0 && col == 8)
+                            || (row == 0 && col == 4)) {
                         continue;
                     }
                     if (path.containsKey(row) && path.get(row).contains(col)) {
@@ -224,7 +229,15 @@ public class InitialGameScreenController {
 
         healthLabel.setFont(Font.font("Courier New", 15));
 
-        enemyHealthLabel.setFont(Font.font("Courier New", 15));
+        GridPane.setRowIndex(enemyHealthData, 0);
+        GridPane.setColumnIndex(enemyHealthData, 4);
+        enemyHealthData.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        basicEnemyHealthLabel.setFont(Font.font("Courier New", 15));
+
+        strongEnemyHealthLabel.setFont(Font.font("Courier New", 15));
+
+        bossEnemyHealthLabel.setFont(Font.font("Courier New", 15));
 
         Task task = new Task<Integer>() {
             @Override
@@ -240,7 +253,9 @@ public class InitialGameScreenController {
                             levelLabel.setText("LEVEL: "
                                     + game.getLevel());
                             healthLabel.setText("HP: " + monument.getHealth());
-                            enemyHealthLabel.setText("ENEMY HP: " + enemy.get(0).getHealth());
+                            basicEnemyHealthLabel.setText("TROOP HP: " + enemy.get(0).getHealth());
+                            strongEnemyHealthLabel.setText("LT. HP: " + enemy.get(1).getHealth());
+                            bossEnemyHealthLabel.setText("BOSS HP: " + enemy.get(2).getHealth());
                         }
                     });
                     Thread.sleep(100);
@@ -281,6 +296,26 @@ public class InitialGameScreenController {
     private ImageView getRedSkullImage() {
         try {
             URL url = TowerDefenseApplication.class.getResource("assets/icons/redskull.png");
+            image = new Image(String.valueOf(url));
+        } catch (IllegalArgumentException exception) {
+            System.out.println("error");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error in accessing assets");
+            alert.show();
+        }
+        ImageView skullImage = new ImageView();
+        skullImage.setImage(image);
+        skullImage.setFitWidth(120);
+        skullImage.setPreserveRatio(true);
+        return skullImage;
+    }
+
+    /**
+     * Gets boss skull image
+     * @return skullImage
+     */
+    private ImageView getBossSkullImage() {
+        try {
+            URL url = TowerDefenseApplication.class.getResource("assets/icons/bossskull.png");
             image = new Image(String.valueOf(url));
         } catch (IllegalArgumentException exception) {
             System.out.println("error");
@@ -381,6 +416,7 @@ public class InitialGameScreenController {
 
     /**
      * Starts combat
+     * @throws Exception exception
      */
     @FXML
     private void onStartCombat() throws Exception {
@@ -389,7 +425,6 @@ public class InitialGameScreenController {
         }
         game.setStarted(true);
         startWave();
-        System.out.println("here");
     }
 
 
@@ -403,11 +438,14 @@ public class InitialGameScreenController {
         if (towerToPlace != null && towerToPlace.getImage() != null
                 && !InitialGameScreenController.placementDone && tile.occupiedBy() == null) {
             tile.getButton().setGraphic(towerToPlace.getImage());
+            towerToPlace.setX(tile.getRow());
+            towerToPlace.setY(tile.getCol());
             tile.setOccupied(towerToPlace);
             game.getTowersPlaced().add(towerToPlace);
             game.removeTower(towerToPlace);
             towerToPlace = null;
             InitialGameScreenController.placementDone = true;
+            System.out.println(game.getTowersPlaced());
         } else if (towerToPlace != null && towerToPlace.getImage() != null
                 && !InitialGameScreenController.placementDone && tile.occupiedBy() != null) {
             onNotTowerTileClicked(tile);
@@ -460,8 +498,6 @@ public class InitialGameScreenController {
         }
         System.out.println("Start wave");
         for (int i = 0; i < enemy.size(); i++) {
-            // Thread.sleep(sleepTimer);
-            // sleepTimer += enemy.get(i).getSpeed();
             int finalI = i;
             Task task = new Task<Integer>() {
                 @Override
@@ -470,10 +506,15 @@ public class InitialGameScreenController {
                     int col = -1;
                     int nextRow = 3;
                     int nextCol = 0;
-                    while (nextRow < NUM_ROWS && nextCol < NUM_COLS && grid[nextRow][nextCol].isPath()
+                    while (nextRow < NUM_ROWS && nextCol < NUM_COLS
+                            && grid[nextRow][nextCol].isPath()
                             && enemy.get(finalI).getHealth() > 0 && monument.getHealth() > 0) {
-                        if (nextRow == 3 && nextCol == 7) {
-                            inDamageZone = true;
+                        if (finalI == 0 && nextRow == 3 && nextCol == 8) {
+                            enemy.get(finalI).setInDamageZone(true);
+                        } else if (finalI == 1 && nextRow == 3 && nextCol == 7) {
+                            enemy.get(finalI).setInDamageZone(true);
+                        } else if (finalI == 2 && nextRow == 3 && nextCol == 6) {
+                            enemy.get(finalI).setInDamageZone(true);
                         }
                         final int finalCol = col;
                         final int finalRow = row;
@@ -483,29 +524,33 @@ public class InitialGameScreenController {
                             @Override
                             public void run() {
                                 System.out.println("Run function");
-                                if (finalI == 0 || !enemy.get(finalI - 1).isInLine()) {
-                                    grid[finalNextRow][finalNextCol].setOccupied(enemy.get(finalI));
-                                    grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(true);
+                                if (!enemy.get(finalI).isInDamageZone()) {
+                                    grid[finalNextRow][finalNextCol].setOccupied(
+                                            enemy.get(finalI));
+                                    grid[finalNextRow][finalNextCol].getButton()
+                                            .setFocusTraversable(true);
                                     if (enemy.get(finalI) instanceof BasicEnemy) {
                                         grid[finalNextRow][finalNextCol].getButton().setGraphic(
                                                 getSkullImage());
-                                    } else {
+                                    } else if (enemy.get(finalI) instanceof StrongEnemy) {
                                         grid[finalNextRow][finalNextCol].getButton().setGraphic(
                                                 getRedSkullImage());
+                                    } else {
+                                        grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                                getBossSkullImage());
                                     }
                                     if (!(finalNextRow == 3 && finalNextCol == 0)) {
-                                        if (grid[finalRow][finalCol].occupiedBy() == enemy.get(finalI)) {
+                                        if (grid[finalRow][finalCol].occupiedBy()
+                                                == enemy.get(finalI)) {
                                             grid[finalRow][finalCol].setOccupied(null);
-                                            grid[finalRow][finalCol].getButton().setFocusTraversable(false);
+                                            grid[finalRow][finalCol].getButton()
+                                                    .setFocusTraversable(false);
                                             grid[finalRow][finalCol].getButton().setGraphic(
                                                     getWhiteImage());
                                         }
                                     }
-
-                                     /* if (finalI != 0 && enemy.get(finalI - 1).isInLine()) {
-                                        enemy.get(finalI).setInLine(true);
-                                    } */
                                 }
+                                towerDamage(finalI, finalNextRow, finalNextCol);
                             }
                         });
                         if (nextRow == 3 && nextCol < 2) {
@@ -535,18 +580,23 @@ public class InitialGameScreenController {
                             break;
                         }
                         Thread.sleep(enemy.get(finalI).getSpeed());
-                        if (finalI != 0 && enemy.get(finalI - 1).isInLine()) {
-                            enemy.get(finalI).setInLine(true);
-                        }
                     }
                     System.out.println("end of loop");
-                    System.out.println(inDamageZone);
-                    if (inDamageZone) {
-                        enemy.get(finalI).setInLine(true);
+                    if (enemy.get(finalI).isInDamageZone()) {
                         grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
                                 + "-fx-background-radius: 0;");
                         healthLabel.setTextFill(Paint.valueOf("RED"));
-                        damageMonument();
+                        if (finalI == 0) {
+                            System.out.println("damage basic");
+                            damageMonument(finalI, 3, 7);
+                        } else if (finalI == 1) {
+                            System.out.println("damage strong");
+                            damageMonument(finalI, 3, 6);
+                        } else {
+                            System.out.println("damage boss");
+                            damageMonument(finalI, 2, 6);
+                        }
+
                     }
                     return monument.getHealth();
                 }
@@ -562,18 +612,121 @@ public class InitialGameScreenController {
     }
 
     /**
-     * Damage monument
+     * Tower damage
+     * @param finalI finalI
+     * @param finalNextRow finalNextRow
+     * @param finalNextCol finalNextCol
      */
-    private void damageMonument() {
+    public void towerDamage(int finalI, int finalNextRow, int finalNextCol) {
+        for (Tower tower : game.getTowersPlaced()) {
+            if (tower instanceof Cannon && (finalNextRow == tower.getX()
+                    || finalNextCol == tower.getY())) {
+                System.out.println("Cannon damage");
+                int difference = enemy.get(finalI).getHealth()
+                        - (enemy.get(finalI).getSpeed() / 1000
+                        * Cannon.DAMAGE_PER_SECOND);
+                if (difference <= 0) {
+                    enemy.get(finalI).setHealth(0);
+                    if (enemy.get(finalI) instanceof BasicEnemy) {
+                        player.setMoney(player.getMoney() + 30);
+                    } else if (enemy.get(finalI) instanceof StrongEnemy) {
+                        player.setMoney(player.getMoney() + 50);
+                    } else {
+                        player.setMoney(player.getMoney() + 100);
+                    }
+                    grid[finalNextRow][finalNextCol].setOccupied(null);
+                    grid[finalNextRow][finalNextCol].getButton()
+                            .setFocusTraversable(false);
+                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                            getWhiteImage());
+                } else {
+                    enemy.get(finalI).setHealth(difference);
+                }
+            }  else if (tower instanceof Crossbow
+                    && (finalNextRow == tower.getX()
+                    || finalNextCol == tower.getY())) {
+                System.out.println("Crossbow damage");
+                int difference = enemy.get(finalI).getHealth()
+                        - (enemy.get(finalI).getSpeed() / 1000
+                        * Crossbow.DAMAGE_PER_SECOND);
+                if (difference <= 0) {
+                    enemy.get(finalI).setHealth(0);
+                    if (enemy.get(finalI) instanceof BasicEnemy) {
+                        player.setMoney(player.getMoney() + 30);
+                    } else if (enemy.get(finalI) instanceof StrongEnemy) {
+                        player.setMoney(player.getMoney() + 50);
+                    } else {
+                        player.setMoney(player.getMoney() + 100);
+                    }
+                    grid[finalNextRow][finalNextCol].setOccupied(null);
+                    grid[finalNextRow][finalNextCol].getButton()
+                            .setFocusTraversable(false);
+                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                            getWhiteImage());
+                } else {
+                    enemy.get(finalI).setHealth(difference);
+                }
+            } else if (tower instanceof Tank
+                    && (Math.abs(finalNextRow - tower.getX()) <= 2
+                    && Math.abs(finalNextCol - tower.getY()) <= 2)) {
+                System.out.println("Tank damage");
+                int difference = enemy.get(finalI).getHealth()
+                        - (enemy.get(finalI).getSpeed() / 1000
+                        * Tank.DAMAGE_PER_SECOND);
+                if (difference <= 0) {
+                    enemy.get(finalI).setHealth(0);
+                    if (enemy.get(finalI) instanceof BasicEnemy) {
+                        player.setMoney(player.getMoney() + 30);
+                    } else if (enemy.get(finalI) instanceof StrongEnemy) {
+                        player.setMoney(player.getMoney() + 50);
+                    } else {
+                        player.setMoney(player.getMoney() + 100);
+                    }
+                    grid[finalNextRow][finalNextCol].setOccupied(null);
+                    grid[finalNextRow][finalNextCol].getButton()
+                            .setFocusTraversable(false);
+                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                            getWhiteImage());
+                } else {
+                    enemy.get(finalI).setHealth(difference);
+                }
+            }
+        }
+    }
+
+    /**
+     * Damage monument
+     * @param finalI finalI
+     * @param finalNextRow finalNextRow
+     * @param finalNextCol finalNextCol
+     */
+    private void damageMonument(int finalI, int finalNextRow, int finalNextCol) {
         System.out.println("damaging");
+        if (enemy.get(finalI).getHealth() <= 0) {
+            if (enemy.get(finalI) instanceof BasicEnemy) {
+                player.setMoney(player.getMoney() + 30);
+            } else if (enemy.get(finalI) instanceof StrongEnemy) {
+                player.setMoney(player.getMoney() + 50);
+            } else {
+                player.setMoney(player.getMoney() + 100);
+            }
+            grid[finalNextRow][finalNextCol].setOccupied(null);
+            grid[finalNextRow][finalNextCol].getButton().setFocusTraversable(false);
+            grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                    getWhiteImage());
+            return;
+        }
+
         Task task = new Task<Integer>() {
             @Override
             public Integer call() throws Exception {
-                while (enemy.get(0).getHealth() > 0 && monument.getHealth() > 0) {
+                while (enemy.get(finalI).getHealth() > 0 && monument.getHealth() > 0) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            monument.setHealth(monument.getHealth() - enemy.get(0).getDamage());
+                            towerDamage(finalI, finalNextRow, finalNextCol);
+                            monument.setHealth(monument.getHealth()
+                                    - enemy.get(finalI).getDamage());
                             if (monument.getHealth() <= 0) {
                                 try {
                                     openGameOverScreen();
@@ -583,8 +736,11 @@ public class InitialGameScreenController {
                             }
                         }
                     });
-                    Thread.sleep(2000);
+                    Thread.sleep(enemy.get(0).getSpeed());
                 }
+
+
+
                 return monument.getHealth();
             }
         };
