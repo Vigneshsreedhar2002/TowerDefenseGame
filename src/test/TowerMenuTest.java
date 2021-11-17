@@ -96,6 +96,9 @@ public class TowerMenuTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#towerMenu");
         clickOn("#tank");
         clickOn("YES");
         clickOn("OK");
@@ -136,13 +139,13 @@ public class TowerMenuTest extends ApplicationTest {
         clickOn("#crossbow");
         clickOn("YES");
         Thread.sleep(500);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $65.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $75.00"));
 
         clickOn("#towerMenu");
         clickOn("#cannon");
         clickOn("YES");
         Thread.sleep(500);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $15.00"));
     }
 
     /**
@@ -157,13 +160,13 @@ public class TowerMenuTest extends ApplicationTest {
         clickOn("#crossbow");
         clickOn("YES");
         Thread.sleep(500);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $40.00"));
 
         clickOn("#towerMenu");
-        clickOn("#tank");
+        clickOn("#cannon");
         clickOn("YES");
         Thread.sleep(500);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $5.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $0.00"));
     }
 
 }
