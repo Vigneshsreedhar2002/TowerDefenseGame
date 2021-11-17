@@ -623,7 +623,8 @@ public class InitialGameScreenController {
                     || finalNextCol == tower.getY())) {
                 System.out.println("Cannon damage");
                 System.out.print(GameAdmin.getGame().getDifficulty());
-                int difference = enemy.get(finalI).getHealth() - (5 - GameAdmin.getGame().getDifficulty())
+                int difference = enemy.get(finalI).getHealth()
+                        - (5 - GameAdmin.getGame().getDifficulty())
                         * Cannon.DAMAGE_PER_SECOND;
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
@@ -650,7 +651,8 @@ public class InitialGameScreenController {
                     && (finalNextRow == tower.getX()
                     || finalNextCol == tower.getY())) {
                 System.out.println("Crossbow damage");
-                int difference = enemy.get(finalI).getHealth() - (5 - GameAdmin.getGame().getDifficulty())
+                int difference = enemy.get(finalI).getHealth()
+                        - (5 - GameAdmin.getGame().getDifficulty())
                         * Crossbow.DAMAGE_PER_SECOND;
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
@@ -677,7 +679,8 @@ public class InitialGameScreenController {
                     && (Math.abs(finalNextRow - tower.getX()) <= 2
                     && Math.abs(finalNextCol - tower.getY()) <= 2)) {
                 System.out.println("Tank damage");
-                int difference = enemy.get(finalI).getHealth() - (5 - GameAdmin.getGame().getDifficulty())
+                int difference = enemy.get(finalI).getHealth()
+                        - (5 - GameAdmin.getGame().getDifficulty())
                         * Tank.DAMAGE_PER_SECOND;
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
