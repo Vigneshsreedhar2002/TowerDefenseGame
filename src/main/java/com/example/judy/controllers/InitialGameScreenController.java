@@ -398,7 +398,7 @@ public class InitialGameScreenController {
     }
 
     /**
-     * Sets the monument data
+     * Sets monument data
      *
      * @throws IOException FileNotFoundException
      */
