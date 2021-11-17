@@ -49,8 +49,8 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#cannon");
         clickOn("#33");
         clickOn("Start");
-        Thread.sleep(2500);
-        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 20"));
+        Thread.sleep(2000);
+        verifyThat("#strongEnemyHealthLabel", LabeledMatchers.hasText("LT. HP: 25"));
     }
 
     /**
@@ -184,7 +184,15 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-
+        Thread.sleep(1000);
+        clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#crossbow");
+        clickOn("#24");
+        Thread.sleep(6000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 51"));
     }
 
     /**
@@ -195,7 +203,15 @@ public class TowerCombatTest extends ApplicationTest {
     public void testTowerDamageOnEasy() throws InterruptedException {
         clickOn("Easy");
         clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#cannon");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#cannon");
+        clickOn("#24");
         clickOn("#startCombat");
+        Thread.sleep(3000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 25"));
     }
 
     /**
@@ -206,7 +222,15 @@ public class TowerCombatTest extends ApplicationTest {
     public void testTowerDamageOnMedium() throws InterruptedException {
         clickOn("Medium");
         clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#cannon");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#cannon");
+        clickOn("#24");
         clickOn("#startCombat");
+        Thread.sleep(3000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 45"));
     }
 
     /**
@@ -217,7 +241,15 @@ public class TowerCombatTest extends ApplicationTest {
     public void testTowerDamageOnHard() throws InterruptedException {
         clickOn("Hard");
         clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#cannon");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#cannon");
+        clickOn("#24");
         clickOn("#startCombat");
+        Thread.sleep(3000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 60"));
     }
 
 }
