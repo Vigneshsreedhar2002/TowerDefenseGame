@@ -1,0 +1,24 @@
+Unit test: testUpgradeCannonCost()
+Description: Verifies that a cannon can be successfully upgraded
+How it verifies functionality: The test will upgrade the cannon and check if the right cost has been lost
+
+Unit test: testUpgradeCrossbowCost()
+Description: Verifies that a crossbow can be successfully upgraded
+How it verifies functionality: The test will upgrade the crossbow and check if the right cost has been lost
+
+Unit test: testUpgradeTankCost()
+Description: Verifies that a tank can be successfully upgraded
+How it verifies functionality: The test will upgrade the tank and check if the right cost has been lost
+
+Unit test: testUpgradeImpossible()
+Description: Verifies that upgrade is not possible with insufficient money
+How it verifies functionality: The test will spend too much money and check if upgrade is not possible
+
+Unit test: testUpgradeDamage()
+Description: Verifies that upgraded cannon increases damage correctly
+How it verifies functionality: The test will upgrade the cannon and check if the upgraded damage is appropriate
+
+Unit test: testMoneyGainOnHard()
+Description: Verifies that correct money is gained after killing enemies on hard
+How it verifies functionality: The test will enter on hard, check if the right money is gained after killing enemies
+

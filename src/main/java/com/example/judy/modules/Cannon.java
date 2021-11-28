@@ -14,14 +14,17 @@ public class Cannon extends Tower {
 
     public Cannon() {
         super();
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public Cannon(ImageView image) {
         super(image);
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public Cannon(int x, int y, ImageView image) {
         super(x, y, image);
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public static void setDescription(String description) {

@@ -46,7 +46,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("Easy");
         clickOn("Start");
         verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 0"));
-        verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 0"));
+        verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 1"));
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $200.00"));
         verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 150"));
     }
@@ -60,7 +60,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("Medium");
         clickOn("Start");
         verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 0"));
-        verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 0"));
+        verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 1"));
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $150.00"));
         verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 125"));
     }
@@ -74,7 +74,7 @@ public class InitialGameScreenTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 0"));
-        verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 0"));
+        verifyThat("#levelLabel", LabeledMatchers.hasText("LEVEL: 1"));
         verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $100.00"));
         verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 100"));
     }

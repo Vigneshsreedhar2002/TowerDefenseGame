@@ -50,7 +50,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#33");
         clickOn("Start");
         Thread.sleep(2000);
-        verifyThat("#strongEnemyHealthLabel", LabeledMatchers.hasText("LT. HP: 25"));
+        verifyThat("#strongEnemyHealthLabel", LabeledMatchers.hasText("LT. HP: 100"));
     }
 
     /**
@@ -70,7 +70,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#47");
         clickOn("Start");
         Thread.sleep(2500);
-        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 50"));
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 100"));
     }
 
     /**
@@ -95,7 +95,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#17");
         clickOn("#startCombat");
         Thread.sleep(19000);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $255.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $155.00"));
     }
 
     /**
@@ -120,7 +120,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#17");
         clickOn("#startCombat");
         Thread.sleep(19000);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $195.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $95.00"));
     }
 
     /**
@@ -145,7 +145,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#17");
         clickOn("#startCombat");
         Thread.sleep(19000);
-        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $180.00"));
+        verifyThat("#moneyLabel", LabeledMatchers.hasText("MONEY: $80.00"));
     }
 
     /**
@@ -170,7 +170,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#17");
         clickOn("#startCombat");
         Thread.sleep(19000);
-        verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 85"));
+        verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 35"));
     }
 
 
@@ -192,7 +192,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#crossbow");
         clickOn("#24");
         Thread.sleep(6000);
-        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 51"));
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 126"));
     }
 
     /**
@@ -210,8 +210,8 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#cannon");
         clickOn("#24");
         clickOn("#startCombat");
-        Thread.sleep(3000);
-        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 25"));
+        Thread.sleep(5000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 75"));
     }
 
     /**
@@ -229,8 +229,8 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#cannon");
         clickOn("#24");
         clickOn("#startCombat");
-        Thread.sleep(3000);
-        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 45"));
+        Thread.sleep(5000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 105"));
     }
 
     /**
@@ -248,8 +248,8 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#cannon");
         clickOn("#24");
         clickOn("#startCombat");
-        Thread.sleep(3000);
-        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 60"));
+        Thread.sleep(5000);
+        verifyThat("#basicEnemyHealthLabel", LabeledMatchers.hasText("TROOP HP: 135"));
     }
 
 }

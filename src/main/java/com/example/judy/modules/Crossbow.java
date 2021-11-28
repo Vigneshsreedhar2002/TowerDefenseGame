@@ -12,14 +12,17 @@ public class Crossbow extends Tower {
 
     public Crossbow() {
         super();
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public Crossbow(int x, int y, ImageView image) {
         super(x, y, image);
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public Crossbow(ImageView image) {
         super(image);
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public static void setDescription(String description) {
