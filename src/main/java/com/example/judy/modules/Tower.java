@@ -6,12 +6,11 @@ public abstract class Tower {
 
     public static final String NAME = "TOWER";
     public static final String DESCRIPTION = "An abstract tower";
-    public static final int DAMAGE = 0;
-    public static final int DAMAGE_PER_SECOND = 0;
     private static double cost;
 
     private int x;
     private int y;
+    private int damage;
     private ImageView image;
 
     public Tower() {
@@ -62,5 +61,13 @@ public abstract class Tower {
 
     public static void setCost(double cost) {
         Tower.cost = cost;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 }

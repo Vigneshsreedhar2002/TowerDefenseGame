@@ -23,7 +23,7 @@ public class Game {
      */
     public Game(int difficulty, Player player) throws IllegalArgumentException {
         this.difficulty = difficulty;
-        this.level = 0;
+        this.level = 1;
         this.player = player;
         this.started = false;
         towers = new HashMap<>(3);
@@ -34,9 +34,9 @@ public class Game {
         switch (difficulty) {
         case 0:
             this.player.setMoney(200);
-            this.enemy.add(new BasicEnemy(2500, 50, 10));
-            this.enemy.add(new StrongEnemy(2500, 75, 13));
-            this.enemy.add(new BossEnemy(2500, 100, 15));
+            this.enemy.add(new BasicEnemy(2500, 100, 10));
+            this.enemy.add(new StrongEnemy(2500, 125, 13));
+            this.enemy.add(new BossEnemy(2500, 200, 25));
             this.monument = new Monument(150);
             Cannon.setCost(50);
             Crossbow.setCost(75);
@@ -44,9 +44,9 @@ public class Game {
             break;
         case 1:
             this.player.setMoney(150);
-            this.enemy.add(new BasicEnemy(2300, 65, 11));
-            this.enemy.add(new StrongEnemy(2300, 85, 12));
-            this.enemy.add(new BossEnemy(2300, 115, 16));
+            this.enemy.add(new BasicEnemy(2300, 125, 11));
+            this.enemy.add(new StrongEnemy(2300, 150, 12));
+            this.enemy.add(new BossEnemy(2300, 250, 35));
             this.monument = new Monument(125);
             Cannon.setCost(60);
             Crossbow.setCost(75);
@@ -54,9 +54,9 @@ public class Game {
             break;
         case 2:
             this.player.setMoney(100);
-            this.enemy.add(new BasicEnemy(2100, 75, 12));
-            this.enemy.add(new StrongEnemy(2100, 95, 13));
-            this.enemy.add(new BossEnemy(2100, 125, 17));
+            this.enemy.add(new BasicEnemy(2100, 150, 12));
+            this.enemy.add(new StrongEnemy(2100, 175, 13));
+            this.enemy.add(new BossEnemy(2100, 300, 45));
             this.monument = new Monument(100);
             Cannon.setCost(40);
             Crossbow.setCost(60);

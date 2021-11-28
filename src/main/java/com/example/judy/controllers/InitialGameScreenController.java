@@ -10,9 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -26,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 public class InitialGameScreenController {
     @FXML
@@ -421,17 +420,23 @@ public class InitialGameScreenController {
     @FXML
     private void onStartCombat() throws Exception {
         if (game.hasStarted()) {
-            System.out.println("Round 2 check");
+            if (game.getLevel() == 2) {
+                return;
+            }
+            System.out.println("Level 2 check");
             for (int i = 0; i < enemy.size() - 1; i++) {
                 if (enemy.get(i).getHealth() > 0) {
-                    System.out.println("Round 2 can't run");
+                    System.out.println("Level 2 can't run");
                     return;
                 }
             }
-            startWave(2);
+            game.setLevel(game.getLevel() + 1);
+            startWave(game.getLevel());
+        } else {
+            game.setStarted(true);
+            startWave(game.getLevel());
         }
-        game.setStarted(true);
-        startWave(1);
+
     }
 
 
@@ -457,10 +462,52 @@ public class InitialGameScreenController {
                 && !InitialGameScreenController.placementDone && tile.occupiedBy() != null) {
             onNotTowerTileClicked(tile);
         } else if (tile.occupiedBy() != null) {
-            System.out.println("occupied");
-            ImageView graphic = (ImageView) tile.getButton().getGraphic();
-            graphic.setRotate(graphic.getRotate() + 90);
-            tile.getButton().setGraphic(graphic);
+            System.out.println("upgrade");
+            upgradeTower(tile.getRow(), tile.getCol());
+        }
+    }
+
+    /**
+     * Upgrade tower (upgrade cost = 0.6 * buy cost)
+     * @param row tower row
+     * @param col tower col
+     * @throws IllegalArgumentException when no tower exists on row, col
+     */
+    public void upgradeTower(int row, int col) throws IllegalArgumentException {
+        Tower toUpgrade = null;
+        for (Tower tower : game.getTowersPlaced()) {
+            if (tower.getX() == row && tower.getY() == col) {
+                toUpgrade = tower;
+                break;
+            }
+        }
+        if (toUpgrade == null) {
+            throw new IllegalArgumentException("No tower exists here");
+        } else {
+            double upgradeCost = 0;
+            if (toUpgrade instanceof Cannon) {
+                upgradeCost = Cannon.getCost() * 0.6;
+            } else if (toUpgrade instanceof Crossbow) {
+                upgradeCost = Crossbow.getCost() * 0.6;
+            } else {
+                upgradeCost = Tank.getCost() * 0.6;
+            }
+            ButtonType yes = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("NO", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert buttonAlert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Do you wish to upgrade this tower? It costs $" + upgradeCost, yes, no);
+            buttonAlert.setTitle("Upgrade Confirmation");
+            buttonAlert.setHeaderText("Tower Upgrade Confirmation");
+            Optional<ButtonType> result = buttonAlert.showAndWait();
+            if (result.isPresent() && result.get().getButtonData().toString().equals("OK_DONE")) {
+                if (game.getPlayer().getMoney() >= upgradeCost) {
+                    game.getPlayer().setMoney(game.getPlayer().getMoney() - upgradeCost);
+                    toUpgrade.setDamage(toUpgrade.getDamage() + 5);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "You don't have enough money!");
+                    alert.show();
+                }
+            }
         }
     }
 
@@ -498,13 +545,13 @@ public class InitialGameScreenController {
         inventoryMenu.show();
     }
 
-    private void startWave(int round) throws Exception {
+    private void startWave(int level) throws Exception {
         int sleepTimer = enemy.get(0).getSpeed();
         if (!game.hasStarted()) {
             return;
         }
         System.out.println("Start wave");
-        if (round == 1) {
+        if (level == 1) {
             for (int i = 0; i < enemy.size() - 1; i++) {
                 int finalI = i;
                 Task task = new Task<Integer>() {
@@ -609,125 +656,107 @@ public class InitialGameScreenController {
                         return monument.getHealth();
                     }
                 };
-
                 Thread.sleep(sleepTimer);
                 Thread th = new Thread(task);
                 th.setDaemon(true);
                 System.out.println("Thread " + finalI + " starting");
                 th.start();
+
             }
-        } else if (round == 2) {
-            int finalI = enemy.size() - 1;
-            Task task = new Task<Integer>() {
-                @Override
-                public Integer call() throws Exception {
-                    int row = 3;
-                    int col = -1;
-                    int nextRow = 3;
-                    int nextCol = 0;
-                    while (nextRow < NUM_ROWS && nextCol < NUM_COLS
-                            && grid[nextRow][nextCol].isPath()
-                            && enemy.get(finalI).getHealth() > 0 && monument.getHealth() > 0) {
-                        if (finalI == 0 && nextRow == 3 && nextCol == 8) {
-                            enemy.get(finalI).setInDamageZone(true);
-                        } else if (finalI == 1 && nextRow == 3 && nextCol == 7) {
-                            enemy.get(finalI).setInDamageZone(true);
-                        } else if (finalI == 2 && nextRow == 3 && nextCol == 6) {
-                            enemy.get(finalI).setInDamageZone(true);
-                        }
-                        final int finalCol = col;
-                        final int finalRow = row;
-                        final int finalNextCol = nextCol;
-                        final int finalNextRow = nextRow;
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.out.println("Run function");
-                                if (!enemy.get(finalI).isInDamageZone()) {
-                                    grid[finalNextRow][finalNextCol].setOccupied(
-                                            enemy.get(finalI));
-                                    grid[finalNextRow][finalNextCol].getButton()
-                                            .setFocusTraversable(true);
-                                    if (enemy.get(finalI) instanceof BasicEnemy) {
-                                        grid[finalNextRow][finalNextCol].getButton().setGraphic(
-                                                getSkullImage());
-                                    } else if (enemy.get(finalI) instanceof StrongEnemy) {
-                                        grid[finalNextRow][finalNextCol].getButton().setGraphic(
-                                                getRedSkullImage());
-                                    } else {
-                                        grid[finalNextRow][finalNextCol].getButton().setGraphic(
-                                                getBossSkullImage());
-                                    }
-                                    if (!(finalNextRow == 3 && finalNextCol == 0)) {
-                                        if (grid[finalRow][finalCol].occupiedBy()
-                                                == enemy.get(finalI)) {
-                                            grid[finalRow][finalCol].setOccupied(null);
-                                            grid[finalRow][finalCol].getButton()
-                                                    .setFocusTraversable(false);
-                                            grid[finalRow][finalCol].getButton().setGraphic(
-                                                    getWhiteImage());
-                                        }
-                                    }
-                                }
-                                towerDamage(finalI, finalNextRow, finalNextCol);
-                            }
-                        });
-                        if (nextRow == 3 && nextCol < 2) {
-                            nextCol++;
-                        } else if (nextRow > 1 && nextCol == 2) {
-                            nextRow--;
-                        } else if (nextRow == 1 && nextCol < 6) {
-                            nextCol++;
-                        } else if (nextRow < 3 && nextCol == 6) {
-                            nextRow++;
-                        } else if (nextRow == 3 && nextCol < 7) {
-                            nextCol++;
-                        } else {
-                            break;
-                        }
-                        if (row == 3 && col < 2) {
-                            col++;
-                        } else if (row > 1 && col == 2) {
-                            row--;
-                        } else if (row == 1 && col < 6) {
-                            col++;
-                        } else if (row < 3 && col == 6) {
-                            row++;
-                        } else if (row == 3 && col < 6) {
-                            col++;
-                        } else {
-                            break;
-                        }
-                        Thread.sleep(enemy.get(finalI).getSpeed());
-                    }
-                    System.out.println("end of loop");
-                    if (enemy.get(finalI).isInDamageZone()) {
-                        grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
-                                + "-fx-background-radius: 0;");
-                        healthLabel.setTextFill(Paint.valueOf("RED"));
-                        if (finalI == 0) {
-                            System.out.println("damage basic");
-                            damageMonument(finalI, 3, 7);
-                        } else if (finalI == 1) {
-                            System.out.println("damage strong");
-                            damageMonument(finalI, 3, 6);
-                        } else {
-                            System.out.println("damage boss");
-                            damageMonument(finalI, 2, 6);
-                        }
-
-                    }
-                    return monument.getHealth();
-                }
-            };
-
-            Thread.sleep(sleepTimer);
-            Thread th = new Thread(task);
-            th.setDaemon(true);
-            System.out.println("Thread " + finalI + " starting");
-            th.start();
+            return;
+        } else if (level == 2) {
+            bossEnemyWave();
         }
     }
+
+    /**
+     * Boss Enemy wave
+     * @throws InterruptedException exception
+     */
+    public void bossEnemyWave() throws InterruptedException {
+        Enemy bossEnemy = enemy.get(enemy.size() - 1);
+        int sleepTimer = enemy.get(0).getSpeed();
+        Task task = new Task<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                int row = 3;
+                int col = -1;
+                int nextRow = 3;
+                int nextCol = 0;
+                while (nextRow < NUM_ROWS && nextCol < NUM_COLS
+                        && grid[nextRow][nextCol].isPath() && bossEnemy.getHealth() > 0
+                        && monument.getHealth() > 0) {
+                    System.out.println("Loop: " + nextRow + " " + nextCol);
+                    if (nextRow == 3 && nextCol == 7) {
+                        bossEnemy.setInDamageZone(true);
+                    }
+                    final int finalCol = col;
+                    final int finalRow = row;
+                    final int finalNextCol = nextCol;
+                    final int finalNextRow = nextRow;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            grid[finalNextRow][finalNextCol].setOccupied(true);
+                            grid[finalNextRow][finalNextCol].getButton()
+                                    .setFocusTraversable(true);
+                            grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                    getBossSkullImage());
+                            if (!(finalNextRow == 3 && finalNextCol == 0)) {
+                                grid[finalRow][finalCol].setOccupied(false);
+                                grid[finalRow][finalCol].getButton()
+                                        .setFocusTraversable(false);
+                                grid[finalRow][finalCol].getButton().setGraphic(
+                                        getWhiteImage());
+                            }
+                            towerDamage(2, finalNextRow, finalNextCol);
+
+                        }
+                    });
+                    if (nextRow == 3 && nextCol < 2) {
+                        nextCol++;
+                    } else if (nextRow > 1 && nextCol == 2) {
+                        nextRow--;
+                    } else if (nextRow == 1 && nextCol < 6) {
+                        nextCol++;
+                    } else if (nextRow < 3 && nextCol == 6) {
+                        nextRow++;
+                    } else if (nextRow == 3 && nextCol < 7) {
+                        nextCol++;
+                    } else {
+                        break;
+                    }
+                    if (row == 3 && col < 2) {
+                        col++;
+                    } else if (row > 1 && col == 2) {
+                        row--;
+                    } else if (row == 1 && col < 6) {
+                        col++;
+                    } else if (row < 3 && col == 6) {
+                        row++;
+                    } else if (row == 3 && col < 6) {
+                        col++;
+                    } else {
+                        break;
+                    }
+                    Thread.sleep(bossEnemy.getSpeed());
+                }
+                System.out.println("end of loop");
+                if (bossEnemy.isInDamageZone()) {
+                    grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
+                            + "-fx-background-radius: 0;");
+                    healthLabel.setTextFill(Paint.valueOf("RED"));
+                    damageMonument(2, 2, 6);
+                }
+                return monument.getHealth();
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        System.out.println("Thread " + 2 + " starting");
+        th.start();
+    }
+
 
     /**
      * Tower damage
@@ -743,7 +772,8 @@ public class InitialGameScreenController {
                 System.out.print(GameAdmin.getGame().getDifficulty());
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
-                        * Cannon.DAMAGE_PER_SECOND;
+                        * tower.getDamage();
+                System.out.println(enemy.get(finalI).getHealth());
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
@@ -771,7 +801,7 @@ public class InitialGameScreenController {
                 System.out.println("Crossbow damage");
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
-                        * Crossbow.DAMAGE_PER_SECOND;
+                        * tower.getDamage();
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
@@ -799,7 +829,7 @@ public class InitialGameScreenController {
                 System.out.println("Tank damage");
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
-                        * Tank.DAMAGE_PER_SECOND;
+                        * tower.getDamage();
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {

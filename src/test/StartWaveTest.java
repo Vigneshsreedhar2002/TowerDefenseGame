@@ -42,19 +42,13 @@ public class StartWaveTest extends ApplicationTest {
      * Tests if the start combat button exists and starts the next wave on click
      */
     @Test
-    public void testStartNextWave() throws InterruptedException {
+    public void testStartNextWave() {
         clickOn("Easy");
-        clickOn("Start");
-
         verifyThat("Start", NodeMatchers.isNotNull());
         clickOn("Start");
 
         Button startingSquare = lookup("#30").query();
         verifyThat(startingSquare, Node::isFocusTraversable);
-
-        Thread.sleep(2000);
-        clickOn("Start");
-        assertFalse(startingSquare.isFocusTraversable());
     }
 
     /**
@@ -115,7 +109,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(30000);
+        Thread.sleep(42000);
         verifyThat("#restart", NodeMatchers.isNotNull());
         verifyThat("#close", NodeMatchers.isNotNull());
 
@@ -130,7 +124,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Hard");
         clickOn("Start");
         clickOn("#startCombat");
-        Thread.sleep(30000);
+        Thread.sleep(42000);
         clickOn("#restart");
         verifyThat("#welcomeText", NodeMatchers.isNotNull());
 
@@ -146,7 +140,7 @@ public class StartWaveTest extends ApplicationTest {
         clickOn("Start");
         clickOn("#startCombat");
         Thread.sleep(27000);
-        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 27"));
+        verifyThat("#healthLabel", LabeledMatchers.hasText("HP: 74"));
     }
 
     /**

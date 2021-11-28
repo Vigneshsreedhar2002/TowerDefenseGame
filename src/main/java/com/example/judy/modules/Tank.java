@@ -8,18 +8,21 @@ public class Tank extends Tower {
     public static final String NAME = "TANK";
     private static String description;
     public static final int DAMAGE = 40;
-    public static final int DAMAGE_PER_SECOND = 8;
+    public static final int DAMAGE_PER_SECOND = 12;
 
     public Tank() {
         super();
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public Tank(ImageView image) {
         super(image);
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public Tank(int x, int y, ImageView image) {
         super(x, y, image);
+        setDamage(DAMAGE_PER_SECOND);
     }
 
     public static void setDescription(String description) {
