@@ -14,16 +14,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GameOverScreenController {
+public class WinScreenController {
     @FXML
-    private Label gameOverText;
+    private Label winText;
     @FXML
     private Label statsText;
 
     @FXML
     private void initialize() {
-        gameOverText.setText("You lost, " + GameAdmin.getGame().getPlayer().getName()
-                + "! The enemy has captured Judy!");
+        winText.setText("Congratulations " + GameAdmin.getGame().getPlayer().getName()
+                + ", you win!");
         statsText.setText("\nScore: " + GameAdmin.getGame().getPlayer().getScore()
                 + "\nDamage taken: " + (GameAdmin.getGame().getMonument().getMaxHealth()
                 - GameAdmin.getGame().getMonument().getHealth())

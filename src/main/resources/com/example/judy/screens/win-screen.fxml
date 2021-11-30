@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.judy.controllers.GameOverScreenController">
+            fx:controller="com.example.judy.controllers.WinScreenController">
     <Rectangle height="700" width="1260" fill="#1224b6">
     </Rectangle>
     <top>
         <VBox>
             <StackPane>
-                <Label fx:id="gameOverText" textFill="white" wrapText="true" alignment="CENTER">
+                <Label fx:id="winText" textFill="white" wrapText="true" alignment="CENTER">
                     <font>
                         <Font name="Arial Black" size="36"/>
                     </font>
@@ -54,4 +54,5 @@
     </center>
 
 </BorderPane>
+
 

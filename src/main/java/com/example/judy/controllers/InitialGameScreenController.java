@@ -739,14 +739,9 @@ public class InitialGameScreenController {
                     } else {
                         break;
                     }
-                    Thread.sleep(bossEnemy.getSpeed());
-                }
-                System.out.println("end of loop");
-                if (bossEnemy.isInDamageZone()) {
-                    grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
-                            + "-fx-background-radius: 0;");
-                    healthLabel.setTextFill(Paint.valueOf("RED"));
-                    damageMonument(2, 2, 6);
+                    if (bossEnemy.getHealth() > 0) {
+                        Thread.sleep(bossEnemy.getSpeed());
+                    }
                 }
                 return monument.getHealth();
             }
@@ -773,18 +768,37 @@ public class InitialGameScreenController {
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
                         * tower.getDamage();
+                GameAdmin.getGame().setDmgDealt(GameAdmin.getGame().getDmgDealt()
+                        + (5 - GameAdmin.getGame().getDifficulty())
+                        * tower.getDamage());
                 System.out.println(enemy.get(finalI).getHealth());
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
                         player.setMoney(player.getMoney() + 30);
-                        player.setScore(player.getScore() + 10);
+                        player.setScore(player.getScore() + 10
+                                * (3 + GameAdmin.getGame().getDifficulty()));
                     } else if (enemy.get(finalI) instanceof StrongEnemy) {
                         player.setMoney(player.getMoney() + 50);
-                        player.setScore(player.getScore() + 25);
+                        player.setScore(player.getScore() + 25
+                                * (3 + GameAdmin.getGame().getDifficulty()));
                     } else if (enemy.get(finalI) instanceof BossEnemy) {
                         player.setMoney(player.getMoney() + 100);
-                        player.setScore(player.getScore() + 50);
+                        player.setScore(player.getScore() + 50
+                                * (3 + GameAdmin.getGame().getDifficulty()));
+                        bossEnemyHealthLabel.setText("BOSS HP: 0");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                            getWhiteImage());
+                                    openWinScreen();
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                     grid[finalNextRow][finalNextCol].setOccupied(null);
                     grid[finalNextRow][finalNextCol].getButton()
@@ -802,17 +816,36 @@ public class InitialGameScreenController {
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
                         * tower.getDamage();
+                GameAdmin.getGame().setDmgDealt(GameAdmin.getGame().getDmgDealt()
+                        + (5 - GameAdmin.getGame().getDifficulty())
+                                * tower.getDamage());
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
                         player.setMoney(player.getMoney() + 30);
-                        player.setScore(player.getScore() + 10);
+                        player.setScore(player.getScore() + 10
+                                * (3 + GameAdmin.getGame().getDifficulty()));
                     } else if (enemy.get(finalI) instanceof StrongEnemy) {
                         player.setMoney(player.getMoney() + 50);
-                        player.setScore(player.getScore() + 25);
+                        player.setScore(player.getScore() + 25
+                                * (3 + GameAdmin.getGame().getDifficulty()));
                     } else if (enemy.get(finalI) instanceof BossEnemy) {
                         player.setMoney(player.getMoney() + 100);
-                        player.setScore(player.getScore() + 50);
+                        player.setScore(player.getScore() + 50
+                                * (3 + GameAdmin.getGame().getDifficulty()));
+                        bossEnemyHealthLabel.setText("BOSS HP: 0");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                            getWhiteImage());
+                                    openWinScreen();
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                     grid[finalNextRow][finalNextCol].setOccupied(null);
                     grid[finalNextRow][finalNextCol].getButton()
@@ -830,17 +863,36 @@ public class InitialGameScreenController {
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
                         * tower.getDamage();
+                GameAdmin.getGame().setDmgDealt(GameAdmin.getGame().getDmgDealt()
+                        + (5 - GameAdmin.getGame().getDifficulty())
+                                * tower.getDamage());
                 if (difference <= 0) {
                     enemy.get(finalI).setHealth(0);
                     if (enemy.get(finalI) instanceof BasicEnemy) {
                         player.setMoney(player.getMoney() + 30);
-                        player.setScore(player.getScore() + 10);
+                        player.setScore(player.getScore() + 10
+                                * (3 + GameAdmin.getGame().getDifficulty()));
                     } else if (enemy.get(finalI) instanceof StrongEnemy) {
                         player.setMoney(player.getMoney() + 50);
-                        player.setScore(player.getScore() + 25);
+                        player.setScore(player.getScore() + 25
+                                * (3 + GameAdmin.getGame().getDifficulty()));
                     } else if (enemy.get(finalI) instanceof BossEnemy) {
                         player.setMoney(player.getMoney() + 100);
-                        player.setScore(player.getScore() + 50);
+                        player.setScore(player.getScore() + 50
+                                * (3 + GameAdmin.getGame().getDifficulty()));
+                        bossEnemyHealthLabel.setText("BOSS HP: 0");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    grid[finalNextRow][finalNextCol].getButton().setGraphic(
+                                            getWhiteImage());
+                                    openWinScreen();
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                     grid[finalNextRow][finalNextCol].setOccupied(null);
                     grid[finalNextRow][finalNextCol].getButton()
@@ -920,6 +972,20 @@ public class InitialGameScreenController {
         initialGameScene.getStylesheets().addAll(Objects.requireNonNull(
                 TowerDefenseApplication.class.getResource("assets/style.css")).toExternalForm());
         Stage stage = (Stage) gridPane.getScene().getWindow();
+        stage.setScene(initialGameScene);
+    }
+
+    public void openWinScreen() throws IOException, InterruptedException {
+        // getting loader and a pane for the initial game screen
+        FXMLLoader initialGamePaneLoader = new FXMLLoader(
+                TowerDefenseApplication.class.getResource("screens/win-screen.fxml"));
+        Parent initialGamePane = initialGamePaneLoader.load();
+        Scene initialGameScene = new Scene(initialGamePane, 1260, 700);
+        initialGameScene.getRoot().setStyle("-fx-font-family: 'Courier New'");
+        initialGameScene.getStylesheets().addAll(Objects.requireNonNull(
+                TowerDefenseApplication.class.getResource("assets/style.css")).toExternalForm());
+        Stage stage = (Stage) gridPane.getScene().getWindow();
+        Thread.sleep(1500);
         stage.setScene(initialGameScene);
     }
 

@@ -170,7 +170,7 @@ public class TowerCombatTest extends ApplicationTest {
         clickOn("#17");
         clickOn("#startCombat");
         Thread.sleep(19000);
-        verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 35"));
+        verifyThat("#scoreLabel", LabeledMatchers.hasText("SCORE: 175"));
     }
 
 
