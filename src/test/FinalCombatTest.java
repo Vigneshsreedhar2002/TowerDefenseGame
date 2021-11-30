@@ -1,11 +1,14 @@
 import com.example.judy.TowerDefenseApplication;
+import com.example.judy.modules.GameAdmin;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.junit.Assert.assertEquals;
 
 public class FinalCombatTest extends ApplicationTest {
 
@@ -129,6 +132,149 @@ public class FinalCombatTest extends ApplicationTest {
 
     }
 
+    /**
+     * Checks to ensure that the win screen appears after killing the boss.
+     * @throws InterruptedException Exception
+     */
+    @Test
+    public void testWinScreen() throws InterruptedException {
+        clickOn("Hard");
+        clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#tank");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#tank");
+        clickOn("#33");
+        clickOn("Start");
+        Thread.sleep(12000);
+        clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#crossbow");
+        clickOn("#23");
+        clickOn("Start");
+        Thread.sleep(18000);
+        verifyThat("#statsText", NodeMatchers.isNotNull());
+    }
 
+    /**
+     * Tests that, upon completing the game, the player is sent back to the welcome screen.
+     * @throws InterruptedException Exception
+     */
+    @Test
+    public void testWinReplay() throws InterruptedException {
+        clickOn("Hard");
+        clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#tank");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#tank");
+        clickOn("#33");
+        clickOn("Start");
+        Thread.sleep(12000);
+        clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#crossbow");
+        clickOn("#23");
+        clickOn("Start");
+        Thread.sleep(18000);
+        clickOn("RESTART");
+        verifyThat("#welcomeText", NodeMatchers.isNotNull());
+    }
 
+    /**
+     * Tests that the game displays the correct stats upon winning.
+     * @throws InterruptedException Exception
+     */
+    @Test
+    public void testWinStats() throws InterruptedException {
+        clickOn("Hard");
+        clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#tank");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#tank");
+        clickOn("#33");
+        clickOn("Start");
+        Thread.sleep(12000);
+        clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#crossbow");
+        clickOn("#23");
+        clickOn("Start");
+        Thread.sleep(19000);
+        verifyThat("#statsText", NodeMatchers.isNotNull());
+        assertEquals(GameAdmin.getGame().getPlayer().getScore(), 425);
+        assertEquals(GameAdmin.getGame().getMonument().getMaxHealth()
+                - GameAdmin.getGame().getMonument().getHealth(), 0);
+        assertEquals(GameAdmin.getGame().getDmgDealt(), 660);
+
+    }
+
+    /**
+     * Tests that the game displays the correct name upon winning.
+     * @throws InterruptedException Exception
+     */
+    @Test
+    public void testCorrectName() throws InterruptedException {
+        clickOn("Hard");
+        clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#tank");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#tank");
+        clickOn("#33");
+        clickOn("Start");
+        Thread.sleep(12000);
+        clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#crossbow");
+        clickOn("#23");
+        clickOn("Start");
+        Thread.sleep(19000);
+        assertEquals(GameAdmin.getGame().getPlayer().getName(), "Test");
+
+    }
+
+    /**
+     * Tests that replaying without closing the game resets all values and nothing is
+     * carried over from the previous game.
+     * @throws InterruptedException Exception
+     */
+    @Test
+    public void testMultipleGames() throws InterruptedException {
+        clickOn("Hard");
+        clickOn("Start");
+        clickOn("#towerMenu");
+        clickOn("#tank");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#tank");
+        clickOn("#33");
+        clickOn("Start");
+        Thread.sleep(12000);
+        clickOn("#towerMenu");
+        clickOn("#crossbow");
+        clickOn("YES");
+        clickOn("#inventoryMenu");
+        clickOn("#crossbow");
+        clickOn("#23");
+        clickOn("Start");
+        Thread.sleep(18000);
+        clickOn("RESTART");
+        traverseToInitialConfigScreen();
+        testWinStats();
+
+    }
 }

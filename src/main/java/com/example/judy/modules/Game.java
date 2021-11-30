@@ -11,6 +11,7 @@ public class Game {
     private int difficulty; // between 0 and 2 (easy, medium, hard)
     private int level;
     private boolean started;
+    private int dmgDealt = 0;
     private HashMap<String, Integer> towers;
     private ArrayList<Tower> towersPlaced;
 
@@ -238,5 +239,13 @@ public class Game {
      */
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public int getDmgDealt() {
+        return dmgDealt;
+    }
+
+    public void setDmgDealt(int dmgDealt) {
+        this.dmgDealt = dmgDealt;
     }
 }
