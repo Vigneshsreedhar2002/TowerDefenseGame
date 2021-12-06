@@ -18,7 +18,23 @@ Unit test: testUpgradeDamage()
 Description: Verifies that upgraded cannon increases damage correctly
 How it verifies functionality: The test will upgrade the cannon and check if the upgraded damage is appropriate
 
-Unit test: testMoneyGainOnHard()
-Description: Verifies that correct money is gained after killing enemies on hard
-How it verifies functionality: The test will enter on hard, check if the right money is gained after killing enemies
+Unit test: testWinScreen()
+Description: Checks to ensure that the win screen appears after killing the boss
+How it verifies functionality: The test will proceed to win the game and then check that the win screen appears
+
+Unit test: testWinReplay()
+Description: Tests restart function
+How it verifies functionality: The test wins the game and checks the player is sent back to the welcome screen upon restarting
+
+Unit test: testWinStats()
+Description: Tests that the game displays the correct stats upon winning
+How it verifies functionality: The test will win the game and check if the stats are accurate
+
+Unit test: testCorrectName()
+Description: Tests that the game displays the correct name upon winning
+How it verifies functionality: The test will win the game and check if the name is accurate
+
+Unit test: testMultipleGames()
+Description: Tests that replaying without closing the game resets all values
+How it verifies functionality: The test will win and check that nothing is carried over from the previous game
 
