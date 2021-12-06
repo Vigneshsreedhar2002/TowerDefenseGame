@@ -495,7 +495,8 @@ public class InitialGameScreenController {
             ButtonType yes = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
             ButtonType no = new ButtonType("NO", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert buttonAlert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Do you wish to upgrade this tower? It costs $" + upgradeCost, yes, no);
+                    "Do you wish to upgrade this tower? It costs $"
+                            + String.format("%.2f", upgradeCost), yes, no);
             buttonAlert.setTitle("Upgrade Confirmation");
             buttonAlert.setHeaderText("Tower Upgrade Confirmation");
             Optional<ButtonType> result = buttonAlert.showAndWait();
