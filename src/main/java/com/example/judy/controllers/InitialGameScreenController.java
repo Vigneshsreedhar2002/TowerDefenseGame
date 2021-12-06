@@ -687,7 +687,6 @@ public class InitialGameScreenController {
                 while (nextRow < NUM_ROWS && nextCol < NUM_COLS
                         && grid[nextRow][nextCol].isPath() && bossEnemy.getHealth() > 0
                         && monument.getHealth() > 0) {
-                    System.out.println("Loop: " + nextRow + " " + nextCol);
                     if (nextRow == 3 && nextCol == 7) {
                         bossEnemy.setInDamageZone(true);
                     }
