@@ -645,12 +645,9 @@ public class InitialGameScreenController {
                             if (finalI == 0) {
                                 System.out.println("damage basic");
                                 damageMonument(finalI, 3, 7);
-                            } else if (finalI == 1) {
+                            } else {
                                 System.out.println("damage strong");
                                 damageMonument(finalI, 3, 6);
-                            } else {
-                                System.out.println("damage boss");
-                                damageMonument(finalI, 2, 6);
                             }
 
                         }
@@ -741,6 +738,15 @@ public class InitialGameScreenController {
                     if (bossEnemy.getHealth() > 0) {
                         Thread.sleep(bossEnemy.getSpeed());
                     }
+                }
+                System.out.println("end of loop");
+                if (bossEnemy.isInDamageZone()) {
+                    grid[3][8].getButton().setStyle("-fx-background-color: #FF0000; "
+                            + "-fx-background-radius: 0;");
+                    healthLabel.setTextFill(Paint.valueOf("RED"));
+                    System.out.println("damage boss");
+                    damageMonument(2, 3, 7);
+
                 }
                 return monument.getHealth();
             }
@@ -941,6 +947,12 @@ public class InitialGameScreenController {
                                 try {
                                     openGameOverScreen();
                                 } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (enemy.get(finalI).getHealth() <= 0 && finalI == 2) {
+                                try {
+                                    openWinScreen();
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
