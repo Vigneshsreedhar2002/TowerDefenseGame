@@ -664,7 +664,6 @@ public class InitialGameScreenController {
                 th.start();
 
             }
-            return;
         } else if (level == 2) {
             bossEnemyWave();
         }
@@ -763,8 +762,6 @@ public class InitialGameScreenController {
         for (Tower tower : game.getTowersPlaced()) {
             if (tower instanceof Cannon && (finalNextRow == tower.getX()
                     || finalNextCol == tower.getY())) {
-                System.out.println("Cannon damage");
-                System.out.print(GameAdmin.getGame().getDifficulty());
                 int difference = enemy.get(finalI).getHealth()
                         - (5 - GameAdmin.getGame().getDifficulty())
                         * tower.getDamage();
